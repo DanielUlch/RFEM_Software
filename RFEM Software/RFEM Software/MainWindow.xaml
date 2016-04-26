@@ -1,0 +1,110 @@
+﻿
+    <RibbonWindow x:Class="RFEM_Software.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:self="clr-namespace:RFEM_Software.Commands"
+        xmlns:local="clr-namespace:RFEM_Software"
+        mc:Ignorable="d"
+        WindowState="maximized"
+        x:Name="mainWin"
+        Title="RFEM Software" Height="350" Width="650"
+            >
+    <RibbonWindow.CommandBindings>
+        <CommandBinding Command="Help" CanExecute="HelpCanExecute"
+                        Executed="HelpExecuted"
+                        />
+        <CommandBinding Command="self:CustomCommands.HelpClick" CanExecute="HelpClick_CanExecute"
+                        Executed="HelpClick_Executed" />
+    </RibbonWindow.CommandBindings>
+   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <local:RFEMRibbon Grid.Row="0"
+                          x:Name="mainRibbon"/>
+
+        <DockPanel Grid.Row="1" Width="{Binding ActualWidth, ElementName=mainWin}"
+                  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                AncestorType={x:Type UniformGrid}}, Path=Height}"
+                   
+                   >
+            <StackPanel Name="ButtonBar" Orientation="Horizontal" DockPanel.Dock="right"
+                        Margin="0 0 10 0"
+                        Background="lightblue">
+                <StackPanel.LayoutTransform>
+                    <RotateTransform Angle="90" />
+                </StackPanel.LayoutTransform>
+                <Button Name="helpPaneButton" Content="Help Pane"
+                    Padding="5 0 5 0"
+                    MouseEnter="helpPaneButton_MouseEnter" />
+            </StackPanel>
+
+            <Grid Name="parentGrid" Grid.IsSharedSizeScope="True" >
+                <!-- Layer 1 -->
+                <Grid Name="layer1" MouseEnter="layer1_MouseEnter" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <UniformGrid Grid.Column="0">
+                        <TabControl x:Name="tabControl" 
+                        
+                        
+                        ItemsSource="{Binding}" 
+                        SelectionChanged="TabSelectionChanged">
+
+                        </TabControl>
+                    </UniformGrid>
+                </Grid>
+                <!-- Layer 2-->
+                <Grid Name="layer2" Visibility="collapsed" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="column1" Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1" MouseEnter="helpPane_MouseEnter" 
+                          Background="{DynamicResource {x:Static 
+                            SystemColors.ActiveCaptionBrushKey}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0">
+                            <Button Name="helpPanePin" Width="26"
+                                    DockPanel.Dock="right" Click="helpPanePin_Click"
+                                    Background="White">
+                                <Image Name="helpPanePinImage" Source="/Images/Pin.png" />
+                                
+                            </Button>
+                            <Label Content="Help Pane" DockPanel.Dock="Left" />
+                                       
+                        </DockPanel>
+                        
+                        <UniformGrid Grid.Row="1">
+                            <FlowDocumentReader x:Name="HelpReader"/>
+                        </UniformGrid>
+                        
+                    </Grid>
+                    <GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Left" />
+                </Grid>
+            </Grid>
+
+        </DockPanel>
+
+
+        <StatusBar Grid.Row="2">
+            <Label Content="Status:"/>
+            <Label x:Name="lblStatus" Content="Ready" />
+            <ProgressBar  x:Name="progressBar" 
+                          Width="100"
+                          Visibility="hidden"/>
+        </StatusBar>
+        
+        
+    </Grid>
+</RibbonWindow>

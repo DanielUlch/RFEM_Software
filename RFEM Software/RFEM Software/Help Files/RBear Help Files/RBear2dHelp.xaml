@@ -1,0 +1,428 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        RBEAR2D(1)
+
+NAME
+  rbear2d - computes bearing capacity statistics in a soil with spatially
+            random properties
+
+SYNOPSIS
+  rbear2d datafile
+
+DESCRIPTION
+  This program performs a bearing capacity stochastic analysis of a soil
+  mass. In particular, it computes the plane strain deformation of an
+  elastic-plastic Von-Mises solid using 8-node quadrilateral elements
+  via the viscoplastic strain method.
+
+  The data file is assumed to have the following format (see rbear2d.1 
+for
+  detailed information). Optional quantities are shown in square 
+brackets;
+  if absent, reasonable defaults are provided, as shown in the following
+  example data file. If a value is provided, do NOT include the brackets.
+
+       Description					Variable
+       ===========					========
+
+    1) Job title					job
+    2) Echo input data?					echo
+    3) Report progress to standard output?		verbos
+    4) Dump debug data?					debug
+    5) Display one of the random fields?		dmpfld [nfld] [jfld]
+    6) Display displaced finite element mesh?		dmpdis [ndis]
+    7) Normalise bearing capacities (/determ)?		lnormb
+    8) Output bearing capacity samples?			dmpcap
+    9) Number of elements in X and Y directions		nxe nye
+   10) Element size					dx dy
+   11) Number of footings, width, gap			nfound nfoot ngap
+   12) Displacement inc, plastic tol, bearing tol	presc tolp tolb
+   13) Max displacement step, max iterations 		maxst maxit
+   14) Cohesion(1) mean, SD, dist, etc			c(1)... [c(4)... 
+c(7)]
+   15) Friction angle(2) mean, SD, dist, etc	
+	phi(1)..[phi(4)..phi(7)]
+   16) Dilation angle(3) mean, SD, dist, etc	
+	psi(1)..[psi(4)..psi(7)]
+   17) Elastic modulus(4) mean, SD, dist, etc		e(1)... [e(4)... 
+e(7)]
+   18) Poisson's ratio(5) mean, SD, dist, etc		v(1)... [v(4)... 
+v(7)]
+   19) Number of realisations				nsim
+   20) Generator seed					kseed
+   21) Scale of fluctuation				thx thy
+   22) Variance/Covariance function name		varfnc
+   23)				[blank line]		(ignored)
+   24)	Material Property Correlation Matrix Data	(ignored)
+   25) =========================================	(ignored)
+   26) Property 1    Property 2    Correlation		(ignored)
+   27) ----------    ----------    -----------		(ignored)
+  28a)    c             phi            0.2		(for example)
+  28b)   psi             e             0.4		(for example)
+  28c)    v              e             0.3		(for example)
+   29) 			[blank line]			(ignored)
+   30) Show element boundaries on displaced mesh plot?	[lmesh]
+   31) Show random field as background on plot?	[lgrey] [llog] 
+[which]
+   32) Plot width in inches				[xsize [ysize]]
+   33) Plot offset from page's lower left corner	[xoff [yoff]]
+
+  All data after the end of the `Material Property Correlation Matrix 
+Data'
+  are optional. If absent, the default plotting options are provided
+  internally. In the following example data file, default options are
+  shown in square brackets with the default value inside the brackets.
+  When providing values, do not actually include the brackets. If you
+  wish to provide one of the later optional data items, you must provide
+  all intervening items.
+
+  An example data file is as follows;
+
+	Bearing capacity analysis under two footings
+	Echo input data to stats file? . . . . . . . . . t
+	Report progress to standard output?  . . . . . . t
+	Dump debug data to stats file? . . . . . . . . . t
+	Display one random field? [realization] [which]. t 1 phi
+	Display displaced FEM mesh? [realization]  . . . t 1
+	Normalise bearing capacities (/det)?   . . . . . f
+	Output bearing nodal reaction samples? . . . . . t
+	Number of elements in X and Y directions . . . . 128 32
+	Element size, X x Y dimensions . . . . . . . . . 0.5 0.5
+	Number of footings, width, gap . . . . . . . . . 2 30 20
+	Displacement increment, plastic tol, bearing tol 0.001 0.001 0.001
+	Max displacement step, max iterations  . . . . . 20 300
+	Cohesion (c) mean, SD, dist, etc . . . . . . . . 100.0  140.0
+	lognorm
+	Friction angle (phi) mean, SD, dist, etc . . . . 20.0   5.0
+	bounded 0. 40. 0.0 1.0
+	Dilation angle (psi) mean, SD, dist, etc . . . . 15.0   5.0
+	bounded 0. 30. 0.0 1.0
+	Elastic modulus (e)  mean, SD, dist, etc . . . . 1.E+05 1.E+05
+	lognorm
+	Poisson's ratio (v) mean, SD, dist, etc  . . . . 0.3 0.1	bounded 
+0.2 0.4 0.0 1.0
+	Number of realisations . . . . . . . . . . . . . 2000
+	Generator seed (0 for random seed) . . . . . . . 0
+	Scale of fluctuation (X and Y directions)  . . . 4.0 4.0
+	Name of Var/Covar function used by LAS2G . . . . dlavx2
+
+	Material Property Correlation Matrix Data
+	=========================================
+	Property 1    Property 2    Correlation
+	----------    ----------    -----------
+	   c             phi            0.2
+	  psi             e             0.4
+	   v              e             0.3
+
+	Show element boundaries on *.dis?  . . . . . . . [t]
+	Show random field on *.dis? [log?] [which] . . . [t] [f] [c]
+	Plot width in inches . . . . . . . . . . . . . . [4.0]
+	Plot offset in x- [and y-]directions (inches)  . [1.5 [1.5]]
+
+  where each line starts in the 1st column and each input data value
+  starts in the 50th column (ie, the first 49 characters are ignored).
+  Input is free format.
+
+  Detailed comments on the data file are as follows;
+
+    1)	the job title is a character string which is simply
+	echoed to various output files.
+    2)	the `echo input data' flag, when set to true, results in the
+	input data being echoed to the output *.stt file.
+    3)	the `report progess' flag, when set to true, reports which 
+realization
+	is being currently processed to standard output.
+    4)	the `dump debug data' flag, when set to true, results in 
+detailed
+	information being dumped to the *.stt file as the run proceeds.
+	This flag should probably only be used with small runs (nsim 
+small).
+    5)	the `display random field' flag, when set to true, produces a
+	DISPLAY format output file of the grey-scaled random field to 
+*.fld.
+	The flag is optionally followed by up to two quantities;
+	 i) the realization number to be plotted, defaulting to the first,
+	ii) a character string denoting the type of field to display. This
+	    string can be one of
+		`c'   (cohesion),
+		`phi' (friction angle),
+		`psi' (dilation angle),
+		`e'   (elastic modulus), or
+		`v'   (Poisson's ratio)',
+	    defaulting to the cohesion field.
+    6)	the `display displaced finite element mesh' flag, when set to 
+true,
+	produces a PostScript output file of the finite element mesh after
+	bearing failure to *.dis. The flag is optionally followed by the
+	realization number to be plotted. If absent, the first random field
+	is plotted. A number of additional plotting options are provided 
+for
+	at the end of the data file.
+    7)	the `normalize bearing capacities' flag, when set to true, 
+causes
+	the individual bearing capacity realizations to be divided by the
+	deterministic (at the mean) bearing capacity. The resulting 
+normalized
+	bearing capacity statistics thus tend to be centered around 1.0,
+	although the mean may not be 1.0.
+    8)	the `output bearing nodal reaction samples' flag, when set to 
+true,
+	results in the output of a sequence of (nsim) bearing capacity
+	(in the form of maximum nodal reactions) realizations to output
+	file *.cap.
+    9)	on this line the number of elements in the x (horizontal) and
+	y (vertical) directions are input. All elements are assumed to
+	have the same size and aspect ratio. 
+   10)	on this line the element size, in the x (horizontal) and y
+	(vertical) directions are input. The `sizes' are the physical
+	dimensions of the elements, in units consistent with, for example,
+	the scale of fluctuation.
+   11)	on this line, three integers, referred to here as `nfound', 
+`nfoot',
+	and `ngap' are defined.
+	  i) `nfound' denotes the number of footings applied to the soil 
+mass.
+	     It can take values 1 or 2. If nfound = 1, then the value of
+	     ngap is ignored.
+	 ii) `nfoot' gives the number of elements, in the x-direction, 
+underc
+	     the footing. If there are two footings, each is assumed to 
+have
+	     width nfoot elements (and thus physical width of a footing is
+	     equal to nfoot*dx).
+	iii) `ngap' gives the number of elements, in the x-direction, 
+between
+	     the two footings when nfound = 2. If nfound = 1, this 
+parameter
+	     is ignored.
+   12)	on this line, three real values are defined;
+	  i) `presc' is the vertical displacement increment. The bearing
+	     capacity analysis involves a displacement controlled loading,
+	     and displacement is incremented in maxst (see next) downward
+	     displacement steps each of size equal to presc. Ideally, presc
+	     should be selected so that bearing capacity is achieved in
+	     about 10 displacement steps -- too much less and the bearing
+	     capacity accuracy degrades, too much more and too much time
+	     is wasted getting to the bearing capacity. The output *.stt
+	     file can be consulted to see how many displacement steps were
+	     required in the deterministic case, and this can be used to
+	     estimate presc, sometimes through trial and error.
+	 ii) `tolp' is the convergence tolerance in the plasticity
+	     algorithm. When the nodal displacement state from one 
+iteration
+	     to the next has a relative change (max-norm) of less than tolp
+	     the iterations are halted.
+	iii) `tolb' is the convergence tolerance on the computed bearing
+	     capacity. When the bearing stress under the footing(s) from
+	     one increment to the next has a relative change (max-norm) of
+	     less than tolb, or is starting to decrease, bearing capacity
+	     is assumed reached, and the displacement steps are 
+discontinued. 
+   13)	on this line, two integers are defined;
+	  i) `maxst' is the ceiling on the number of displacement 
+increments
+	     allowed to be carried out. This is to prevent a runaway 
+analysis.
+	 ii) `maxit' is the ceiling on the number of iterations allowed for
+	     each displacement increment.
+   14)	this line contains the soil cohesion mean, standard 
+deviation, and
+	distribution type. The last is one of
+		`d[eterministic], `n[ormal]', `l[ognormal]', or `b[ounded]'
+	(actually only the minimal identifying character string needs to be
+	input, ie, `d', `n', `l', or `b'. Thus, the letters
+	within the [...] are optional and are provided only for clarity).
+	The distribution type is followed by the distribution parameters,
+	p(4), p(5), p(6), and p(7) (where `p' is replaced by the soil
+	property variable name -- see above), if the distribution type 
+needs
+	more parameters than the mean and standard deviation.
+	The `deterministic' distribution type needs only the mean, although
+	the standard deviation parameter must be present (set it to zero 
+for
+	consistency - it is, however, ignored anyhow).
+	The normal and lognormal distributions require only the mean and
+	standard deviation as parameters.
+	The bounded distribution requires additional parameters, namely the
+	lower and upper bounds on the distribution and the location and 
+scale
+	parameters. In the bounded case, the provided mean and standard
+	deviation are ignored, the distribution shape and range being 
+entirely
+	dictated by its four parameters (p(4),p(5),p(6),p(7)) = (a,b,m,s).
+	The bounded distribution is derived from the transformation
+
+	   U = a + 0.5*(b-a)*[ 1 + tanh((m + s*Y)/2*pi) ]
+
+	where Y is a Gaussian random field with mean zero and unit 
+variance,
+	(a,b) are the lower and upper bounds of the distribution, and (m,s)
+	are the distribution parameters controlling its shape. When m = 0,
+	the distribution is symmetric about the midpoint, 0.5*(a + b), with
+	smaller values of s yielding a narrower unimodal peak. Note that 
+using
+	m = 0 implies that the mean value is centered on the range. Other
+	values of m have not been investigated. See also Fenton, G.A.,
+	Simulation and Analysis of Random Fields, Ph.D. Thesis, Princeton
+	University, 1990, pg 139, and Spatial Variation in Liquefaction
+	Risk, Geotechnique, Vol 48(6), 1998, pgs 821 and 822 for further
+	details on this bounded distribution.
+   15)	this line contains the soil friction angle mean, standard 
+deviation
+	and distribution type. See above for details on the distribution
+	type. An exception is that if the distribution type is prefixed
+	by the letter `t', then the random variable is assumed to be
+	tan(phi), rather than phi itself. For example, the input line
+
+	Friction ang tan(phi) mean, SD, and dist . . . . 0.36   0.2 tl
+
+	implies that tan(phi) has mean 0.36, standard deviation 0.2 and
+	is lognormally distributed.
+   16)	this line contains the soil dilation angle (in degrees) mean,
+	standard deviation, and distribution type. See line 14 for details
+	on the distribution type.
+   17)	this line contains the soil elastic modulus mean, standard 
+deviation,
+	and distribution type. See line 14 for details on the distribution
+	type.
+   18)	this line contains the soil Poisson ratio mean, standard 
+deviation,
+	and distribution type. See line 14 for details on the distribution
+	type.
+   19)	this is the number of realizations to perform. As the number 
+of
+	realizations increases, the `accuracy' of estimated output 
+statistics
+	also increases. To accurately estimate the probability of some very
+	unlikely outcomes of interest, a very large number of realizations
+	may be required. In most cases, the standard deviation of any
+	estimate of probability obtained from nsim realizations is
+	just that for the Bernoulli random variable: sqrt(p*q/nsim), where
+	p = estimated probability, and q = 1-p. A rough guideline is to
+	use nsim > (4*p*q)/(e*e) for target probability, p, and error
+	tolerance on p of size `e'. (For example, if p = 0.001, and e = 
+0.0001,
+	then nsim > (4*0.001*0.999)/(0.0001*0.0001) = about 400,000
+	realizations. Such a large number of realizations, however, may
+	be prohibitive even with modern fast computers.)
+   20)	this is a non-negative integer generator seed. If this number 
+is 0,
+	then a generator seed is produced internally using either the 
+process
+	PID or the clock time (depending on the machine operating system 
+and
+	how this program was compiled). Otherwise, the pseudo-random number
+	generator is initialized with the provided whole number.
+   21)	here the x- and y-direction scales of fluctuation are input. 
+The
+	`scale of fluctuation' is, loosely speaking, the distance within
+	which the material properties are significantly correlated. For
+	example, if the x-direction scale of fluctuation is 2.0 metres, 
+then
+	the elastic modulus at x = 0.0 metres is reasonably well correlated
+	to the elastic modulus at x = 0.8 metres, but negligibly correlated 
+to
+	elastic modulus at x = 4.0 metres. The actual definition of the
+	scale of fluctuation is more involved. See Vanmarcke, `Random
+	Fields: Analysis and Synthesis', MIT Press, 1984, for more details.
+	Note that in the case of the lognormal or bounded distributions,
+	the parameter provided here refers to the transformed random 
+fields.
+	For example, if elastic modulus is lognormally distributed, then
+	the scales given here are the scales of log-elastic modulus field
+	(estimated directly from the logarithm of the data). Similarly, if
+	the elastic modulus, E, is bounded with parameters (a,b,m=0,s), 
+then
+	the scales are estimated from the
+
+	   pi*ln[(E-a)/(b-E)]
+
+	transformed data. The parameter `s' may also be estimated from this
+	transformed data using an estimate of its standard deviation.
+	NOTE: the `scales of fluctuation' are, more specifically, used here
+	to contain the primary parameters of the variance functions listed
+	below.
+   22)	on this line the name of the variance/covariance function
+	corresponding to the random field is input. Possible variance/covar
+	function names are as follows;
+		`dlavx2' - 2-D exponentially decaying (Markov) model
+			   requires X- and Y-direction scales of fluctuation
+		`dlafr2' - 2-D isotropic fractional Gaussian noise model
+			   requires (H,delta) as parameters. In this case,
+			   thx is H, and delta is the minimum element
+			   dimension.
+		`dlsep2' - 2-D separable (1D x 1D) Markov model
+			   requires X- and Y-direction scales of fluctuation
+		`dlsfr2' - 2-D separable fractional Gaussian noise model
+			   requires (H_x,H_y,delta) as parameters. In this
+			   case, thx is H_x, thy is H_y, and delta is the
+			   minimum element dimension.
+		`dlspx2' - 2-D separable Gaussian decaying model
+			   requires X- and Y-direction scales of fluctuation
+ 23-27) these are simply title lines and are ignored by the program 
+(although
+	they MUST be present.
+   28)	on this, and on as many more lines as necessary, the 
+correlation
+	coefficient acting (on a point-wise basis) between the random 
+material
+	properties is input. In the example file shown above, we are saying
+	that the correlation coefficient between the cohesion and the 
+friction
+	angle is 0.2, between the dilation angle and elastic modulus is 
+0.4,
+	etc. Only non-zero correlations need to be mentioned in the table, 
+all
+	others are assumed to be uncorrelated.
+	NOTE: the correlations are assumed to apply to the transformed
+	variates. For example, if c is assumed normally distributed and
+	phi is assumed to be lognormally distributed, then the correlation
+	coefficient is assumed to be 0.2 between c and log(phi).
+   29)	this blank line denotes the end of the correlation matrix 
+data and
+	must be present even if there is no non-zero correlation (in which
+	case only the blank line will be present).
+   30)	the `show element boundaries' flag, when set to true, results 
+in
+	elements being drawn onto the displaced mesh plot, *.dis, outlined
+	with black lines.
+   31)	the `show random field' flag, when set to true, results in 
+the random
+ 	field being displayed as a greyscale background to the displaced 
+mesh
+ 	plot, *.dis. Low values are light and high values are dark.
+	This flag may be optionally followed by a logical flag
+ 	which is true if the log(random field) is to be displayed (default 
+is
+ 	false). In turn, this flag may be optionally followed by a 
+character
+ 	string, one of `c', `phi', `psi', `e', or `v' denoting the actual
+ 	random field to display. The default is the cohesion field (c).
+   32)	this line contains a positive real number giving the desired
+	width of the displaced mesh plot, in inches. This refers 
+specifically
+	to the width of the soil mass itself -- any labels, arrows, titles, 
+etc
+	will appear outside the soil mass. The height of the soil mass
+	is computed internally so that the finite element model aspect
+	ratio is preserved. This number may be optionally followed by
+	another real number specifying the height, in inches, of the soil
+	domain (if the default aspect ratio is not to be preserved).
+   33)	this line contains two real numbers giving the offset, in the 
+X-
+	and Y-directions, respectively, from the lower left corner of the
+	paper to the lower left corner of the soil mass as measured on the
+	printed page. If the second value is missing, it is assumed equal
+	to the first.
+
+SEE ALSO
+	display(1), plotps(1), dlavx2(3f), dlsep2(3f),
+        dlspx2(3f), las2g(3f), GAF77(3f)
+
+AUTHORS
+     Gordon A. Fenton, DalHousie University, 1999
+     D. Vaughan Griffiths, Colorado School of Mines, 1999
+    </Paragraph>
+</FlowDocument>

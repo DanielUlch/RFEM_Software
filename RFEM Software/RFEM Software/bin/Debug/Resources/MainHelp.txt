@@ -1,0 +1,267 @@
+                      THE RANDOM FINITE ELEMENT METHOD
+
+                            Software Version 1.0.0
+
+                                 Written by
+
+Professors:	Dr. Gordon A. Fenton	Dr. D.V. Griffiths
+Email:		Gordon.Fenton@dal.ca	d.v.griffiths@mines.edu
+Phone:		902-494-6002		303-273-3669
+Location:	Dalhousie University	Colorado School of Mines
+		Halifax, Canada		Golden, Colorado
+
+In 1992 Drs. G.A. Fenton and D.V. Griffiths combined random field simulation
+with the finite element method to produce the Random Finite Element Method, or
+RFEM. The method has been used to investigate the random behaviour of soils in
+the context of a variety of classical geotechnical problems, ranging from
+settlement of shallow foundations to the collapse of rock pillars. All but the
+most recent publications arising out of this research can be found at
+http://www.engmath.dal.ca/rfem/rfem_pubs.html.  (For the most recent
+publications, you will have to obtain the journal versions.)
+
+The authors are making all of their RFEM software freely available, along with
+the finite element libraries written by I.M. Smith and D.V. Griffiths (which
+have been public for many years) and the simulation and numerical library
+written by G.A. Fenton.
+
+The RFEM front end executables (under Windows) include the following;
+
+	mrbear2d:  2-D shallow foundation stochastic bearing capacity analysis,
+
+	mrdam2d:   2-D stochastic earth dam analysis,
+
+	mrearth2d: 2-D stochastic earth pressure analysis,
+
+	mrflow2d:  2-D stochastic seepage analysis,
+
+	mrflow3d:  3-D stochastic seepage analysis,
+
+	mrpill2d:  2-D stochastic pillar analysis,
+
+	mrpill3d:  3-D stochastic pillar analysis,
+
+	mrsetl2d:  2-D shallow foundation stochastic settlement analysis,
+
+	mrsetl3d:  3-D shallow foundation stochastic settlement analysis,
+
+	mrslope2d: 2-D stochastic slope stability analysis,
+
+In order to look at some of the output of these programs, you will need to
+install a Postscript viewer. See http://www.engmath.dal.ca/ghostscript for the
+required software packages. You need to install ghostscript first, then
+ghostview (the 64bit version of both is for x86_64 computers).  Remember what
+folder you install the viewer into -- you will need to know the directory
+(folder) and the executable name in order to get the RFEM programs to view
+graphical results. Use Windows Explorer to find the executable, which is
+(probably) called gsview32.exe or gsview64.exe. This information is placed
+in the rfem.inf file, discussed shortly.
+
+The complete current version of the RFEM distribution for the Windows
+environment is at http://www.engmath.dal.ca/rfem/RFEM_Windows_1.1.1.exe
+
+The easiest way to install the RFEM distribution is to extract it into the c:\
+directory. This will create a subdirectory called c:\rfem within which all of
+the executables, libraries, and source code resides.
+
+After extracting the distribution, you will need to perform the
+following steps;
+
+     1)	edit the file rfem\rfem.inf using an ordinary editor (e.g. Notepad,
+	not MS Word).
+
+     2)	set BINDIR to the path to the rfem\bin folder (c:\rfem\bin by
+	default),
+
+     3)	set HELPDIR to the path to the rfem\lib\help folder (c:\rfem\lib\help
+	by default),
+
+     4)	set GHOSTVIEW to the path and executable name of a Postscript
+	viewing program (see discussion about GSView above),
+
+     5)	move or copy the rfem.inf file into the directory c:\windows\inf.
+
+To uninstall the distribution simply remove the rfem directory and the
+c:\windows\inf\rfem.inf file (if you copied the latter over).
+
+Now, if you look in the rfem\bin directory, you should be able to run any
+of the programs listed above, e.g. mrsetl2d.exe. Some hints at running
+these programs;
+
+     -	to get the output to appear in a specific folder, simply set the
+	basename to include the folder path, e.g. d:\gordon\temp\rsetl2d
+     -	virtually all of the entries have a little button beside it labeled
+	"Help". If in doubt, click on it.
+     -	the non-linear programs (mrbear2d, mrslope2d, mrpill?d, mrearth2d)
+	may take a LONG time to run. You may want to test it using just
+	a few realizations to get a sense for timing prior to cranking
+	the final run(s).
+     -	the leading "m" in these programs stands for "graphical front
+	end" (in whatever language "graphical front end" starts with
+	the letter "m"! Actually, it was sort of a mistake -- I usually
+	name just the main routine of a program with a leading "m", and
+	my early attempts at Borland C++ Builder named the executable the
+	same name as the main...). Anyhow, what this means is that when
+	you "run" mrbear2d, for example, by clicking on the little black
+	triangle, it actually executes another program named "rbear2d"
+	which reads the data file you have just created and runs the
+	RFEM simulations. "rbear2d.exe" is in the rfem\bin directory. The
+	source code for rbear2d.exe is in rfem\sim\rbear2d. The source
+	code for mrbear2d.exe is in rfem\sim\rbear2d\gui.
+
+Also included in this distribution are the following;
+
+     1)	DVGlib: double precision finite element
+	library, written by I.M. Smith and D.V. Griffiths.
+
+     2)	VGlib: single precision finite element
+	library, written by I.M. Smith and D.V. Griffiths. The
+	compiled version of this library is in rfem\lib\vfem.lib. This
+	library is needed to recompile any of the r-progs, e.g. rbear2d.
+
+     3)	doc: documentation for; the r-progs, a
+	series of r-prog utilities (e.g. hist_* are programs designed to
+	create histograms of the output samples from the r-progs), plotps,
+	display, and a bunch of other things which you should be able to find
+	somewhere in this distribution.
+
+     4)	gaf77: simulation routines (e.g. LAS) written
+	by Gordon A. Fenton. This library includes LOTS of other things --
+	a complete list of the routines can be found in rfem\gaf77\Summary.doc,
+	which is an ordinary text file, NOT an MS Word document. Each routine
+	has a lengthy commentary at its start explaining the routine in
+	detail. The compiled library is in rfem\lib\gaf77.lib. It is needed
+	if you want to recompile virtually all of the programs in this
+	distribution (NOTE: to recompile a particular program, you will need
+	to edit its "Makefile" to tell it where the library is prior to
+	running "make").
+
+     5)	graphics: this folder actually includes three
+	subfolders:
+
+	     a)	pslib: a postscript plotting library
+		written by Gordon A. Fenton. See the files PSLIB.3f (text),
+		PSLIB.ps (postscript), or Summary.doc (text) in
+		rfem\graphics\pslib for more details.
+
+	     b)	plotps: a program which produces x-y
+		type plots in postscript, written by Gordon A. Fenton.
+		See rfem\doc\plotps.txt for more details.
+
+	     c)	display: a program which produces plots
+		of 3-D data in postscript, written by Gordon A. Fenton.
+		See rfem\doc\display.txt for more details.
+
+     6)	lib: where the compiled libraries and help
+	files are stored.
+
+     7)	sim: includes a series of sub-folders which contain the source code
+	for various programs. The following are the r-progs written by
+	Gordon A. Fenton and D.V. Griffiths;
+
+	     a)	rbear2d: 2-D shallow foundation stochastic bearing capacity
+			analysis,
+	     b)	rdam2d: 2-D stochastic earth dam analysis,
+	     c)	rearth2d: 2-D stochastic earth pressure analysis,
+	     d)	rflow2d: 2-D stochastic seepage analysis,
+	     e)	rflow3d: 3-D stochastic seepage analysis,
+	     f)	rpill2d: 2-D stochastic pillar analysis,
+	     g)	rpill3d: 3-D stochastic pillar analysis,
+	     h)	rsetl2d: 2-D shallow foundation stochastic settlement analysis,
+	     i)	rsetl3d: 3-D shallow foundation stochastic settlement analysis,
+	     j)	rslope2d: 2-D stochastic slope stability analysis,
+	     k)	rpile1d: 1-D deep foundation stochastic analysis.
+		The last is a recent addition, with no corresponding graphical
+		front-end at this time.
+
+	In addition, the following codes are provided;
+
+	     l)	rfest1d: a suite of programs developed by Gordon A. Fenton
+		at the Norwegian Geotechnical Institute to statistically
+		analyze CPT soundings.
+	     m)	simqke2: a program developed by Gordon A. Fenton, Erik H.
+		Vanmarcke, and Ernesto Heredia to simulate spatially
+		correlated and optionally conditioned earthquake ground
+		motions.
+	     n)	test routines: a set of folders (test* and tst*) containing
+		programs designed to run the various random field generators.
+		They are primarily included here for those of you interested
+		in writing your own simulation programs -- these can be used
+		as templates.
+	     o)	utils: a series of programs to compute things such as local
+		average variances, generate random variables, and compute
+		normal distribution probabilities. See the Makefile for a
+		brief descriptions of each program.
+
+
+     8)	utils: this folder includes several subfolders:
+
+	     a)	cor2d: a program which estimates a
+		2-D correlation structure, written by Gordon A. Fenton. See
+		cor2d.1 (text) for details.
+
+	     b)	krige: a program which computes
+		best linear unbiased estimates (kriging), written by
+		Gordon A. Fenton. See krige.1 (text) for details.
+
+	     c)	mkhst: a program which plots a
+		histogram of data with optional fitted distribution,
+		written by Gordon A. Fenton. See mkhst.1 (text) for
+		more details.
+
+	     d)	mmat: a program which performs various
+		matrix operations (e.g. multiplication, Cholesky decomposition,
+		LU decomposition, solution to linear system, matrix inverse,
+		condition number, singular-value-decomposition). Written by
+		Gordon A. Fenton. See mmat.1 (text) for more details.
+
+	     e)	psd: a program which estimates
+		a power spectral density function, written by Gordon
+		A. Fenton. See estpsd.1 and psdana.1 (text) for details.
+
+	     f)	reg1d: a program which performs a
+		1-D regression, written by Gordon A. Fenton. See
+		regr1d.1 (text) for details.
+
+	     g)	reg2d: a program which performs a
+		2-D regression, written by Gordon A. Fenton. See
+		regr2d.1 (text) for details.
+
+	     h)	stats: two programs which estimate
+		mean, variance, and covariance, written by Gordon A. Fenton.
+		See mncov.1 and mnvar.1 (text) for details.
+
+
+A condition of using these RFEM r-progs (e.g. rbear2d through to rpile1d and
+their corresponding front-end programs, mrbear2d, etc.)  is that users cite
+the developers, Gordon A. Fenton and D.V. Griffiths, in any publication that
+comes out of the use of these programs by citing at least one of the journal
+papers found in their RFEM Publications as well as the textbook written by the
+developers. The appropriate references can be found in
+http://www.engmath.dal.ca/rfem/rfem_pubs.html
+
+
+NOTE: THIS SOFTWARE COMES WITH NO WARRANTY. YOU ARE WELCOME TO COPY AND
+MODIFY THE CODE TO SUIT YOUR NEEDS, BUT THE NAMES OF THE ORIGINAL AUTHORS
+(WHO ARE COPYRIGHT HOLDERS) MUST REMAIN WITH THE CODE (IN THOSE CODES
+WHERE THESE NAMES ARE CURRENTLY PROVIDED).
+
+FOR EACH PROGRAM INCLUDED IN THIS DISTRIBUTION OR DERIVED FROM THIS
+DISTRIBUTION, THE FOLLOWING HOLDS:
+
+BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY FOR THE
+PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE
+STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE
+PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND
+PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE,
+YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY
+COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE
+PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR
+DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR
+A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH
+HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.

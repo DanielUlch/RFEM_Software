@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="RFEM_Software.Rbear2d"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RFEM_Software"
+        xmlns:self="clr-namespace:RFEM_Software.Commands"
+        mc:Ignorable="d"
+        Height="300" Width="700"
+        x:Name="rbearForm" >
+    <UserControl.Resources>
+        <ToolTip x:Key="DefaultToolTip">
+            <StackPanel Orientation="vertical">
+                <Label FontWeight="Bold"
+                                               Background="Blue"
+                                               Foreground="White">Help Title</Label>
+                <TextBlock Padding="10" 
+                                               TextWrapping="WrapWithOverflow"
+                                               Width="200">Brief description</TextBlock>
+                <Line Stroke="Black"
+                                          StrokeThickness="1"
+                                          X2="200"/>
+                <StackPanel Orientation="Horizontal">
+                    <Image Margin="2" 
+                                               Height="15"
+                                               Width="15"
+                                               Source="/Images/Help_2.png"/>
+                    <TextBlock TextWrapping="WrapWithOverflow" 
+                                                   Width="181"
+                                                   FontStyle="Italic">For more help right click and select help, or hover over an element and press F1</TextBlock>
+                </StackPanel>
+
+            </StackPanel>
+        </ToolTip>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="self:CustomCommands.HelpClick" CanExecute="HelpClickStub"
+                        Executed="HelpClickExeStub"/>
+        
+    </UserControl.CommandBindings>
+    <StackPanel Orientation="Vertical" Name="MainPanel">
+        
+
+        <StackPanel Orientation="Horizontal">
+        <Label Content="Job Title:"
+               ToolTip="{StaticResource DefaultToolTip}"/>
+        <TextBox x:Name="txtJobTitle" 
+                         Width="200"
+                 ToolTip="{StaticResource DefaultToolTip}"/>
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal">
+        <Label Content="Basename:" 
+               ToolTip="{StaticResource DefaultToolTip}"/>
+        <TextBox x:Name="txtBaseName"
+                         Width="100" 
+                 ToolTip="{StaticResource DefaultToolTip}"/>
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" >
+            <CheckBox x:Name="chkEchoInput"
+                          Content="Echo input data to output *.stt file?" 
+                          VerticalAlignment="center"
+                      ToolTip="{StaticResource DefaultToolTip}">
+                <CheckBox.ContextMenu>
+                    <ContextMenu Name="contextMenu1"  >
+                        <MenuItem Header="Help" 
+                      
+                                  Command="self:CustomCommands.HelpClick"
+                                  CommandParameter="{Binding ElementName=chkEchoInput}"
+                                  
+                                  />
+                    </ContextMenu>
+                </CheckBox.ContextMenu>
+            </CheckBox>
+
+        </StackPanel>
+
+    <StackPanel Orientation="Horizontal" >
+        <CheckBox x:Name="chkReportProgress"
+                          Content="Report Progress of the run to the screen?"
+                          VerticalAlignment="center" 
+                  ToolTip="{StaticResource DefaultToolTip}"/>
+
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" >
+        <CheckBox x:Name="chkOutputDebugData"
+                          Content="Write debug data to the *.stt file?"
+                          VerticalAlignment="center"
+                  ToolTip="{StaticResource DefaultToolTip}"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal">
+        <CheckBox x:Name="chkPlotFirstRF"
+                          Content="Plot first random field?"
+                          VerticalAlignment="center"
+                  ToolTip="{StaticResource DefaultToolTip}"/>
+        <Label Content="Property to plot:"
+                       IsEnabled="False" 
+               ToolTip="{StaticResource DefaultToolTip}"/>
+        <ComboBox x:Name="cboPlotFirstRF"
+                          IsEnabled="false"
+                          Width="75"
+                  ToolTip="{StaticResource DefaultToolTip}"/>
+
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" >
+        <CheckBox x:Name="chkProducePSPLOTOfFirstFEM"
+                          Content="Produce a PostScript format file of first displayed finite element mesh"
+                          VerticalAlignment="center" 
+                  ToolTip="{StaticResource DefaultToolTip}"/>
+    </StackPanel>
+    <StackPanel Orientation="Vertical" Margin="30 0 0 0">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox x:Name="chkShowMeshOnDisplacedPlot"
+                              Content="Show mesh on displaced mesh plot?"
+                              VerticalAlignment="center" 
+                      ToolTip="{StaticResource DefaultToolTip}"/>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" >
+                <CheckBox x:Name="chkShowRFOnPlot"
+                              Content="Show random field on plot?"
+                              VerticalAlignment="center"
+                          ToolTip="{StaticResource DefaultToolTip}"
+                      
+                              >
+                    <CheckBox.ContextMenu>
+                        <ContextMenu Name="contextMenu"  >
+                            <MenuItem Header="Help" 
+                      
+                                  Command="self:CustomCommands.HelpClick"
+                                  CommandParameter="{Binding ElementName=chkShowRFOnPlot}"
+                                  
+                                  />
+                        </ContextMenu>
+                    </CheckBox.ContextMenu>
+                
+            </CheckBox>
+                <CheckBox x:Name="chkShowLogRF"
+                      Content="Show log-random field"
+                      VerticalAlignment="Center"
+                          ToolTip="{StaticResource DefaultToolTip}">
+                    <CheckBox.ContextMenu>
+                        <ContextMenu Name="contextMenu2"  >
+                            <MenuItem Header="Help" 
+                      
+                                  Command="self:CustomCommands.HelpClick"
+                                  CommandParameter="{Binding ElementName=chkShowLogRF}"
+                                  
+                                  />
+                        </ContextMenu>
+                    </CheckBox.ContextMenu>
+                </CheckBox>
+                <Label Content="Property to plot:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu Name="contextMenu3"  >
+                            <MenuItem Header="Help" 
+                      
+                                  Command="self:CustomCommands.HelpClick"
+                                  CommandParameter="{Binding ElementName=cboPropertyToPlot}"
+                                  
+                                  />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <ComboBox x:Name="cboPropertyToPlot"
+                          Width="75"
+                          ToolTip="{StaticResource DefaultToolTip}">
+                    <ComboBox.ContextMenu>
+                        <ContextMenu Name="contextMenu4"  >
+                            <MenuItem Header="Help" 
+                      
+                                  Command="self:CustomCommands.HelpClick"
+                                  CommandParameter="{Binding ElementName=cboPropertyToPlot}"
+                                  
+                                  />
+                        </ContextMenu>
+                    </ComboBox.ContextMenu>
+                </ComboBox>
+                      
+        </StackPanel>
+    </StackPanel>
+
+    </StackPanel>
+
+</UserControl>
