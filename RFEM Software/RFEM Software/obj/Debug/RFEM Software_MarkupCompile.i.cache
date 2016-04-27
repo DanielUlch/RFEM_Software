@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\obj\Debug\
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\
 RFEM_Software
 none
 false
 DEBUG;TRACE
-C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\App.xaml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml
 3856293636
 
 131211897584
 16655557161
 MainWindow.xaml;Forms\Rbear2d.xaml;RFEMRibbon.xaml;
 rfemsplashscreen.png
-False
+True
 

@@ -1,0 +1,34 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The bearing capacity of the soil underlying the footing is computed by
+gradually displacing the footing into the soil until the soil reaction
+fails to increase by more than a small relative tolerance (bearing
+tolerance). On this line, three quantities are specified;
+
+   1) the vertical displacement increment: This is the distance (in length
+      units consistent with the rest of the data, normally metres) that
+      the footing is displaced on each `displacement step'. The displacement
+      increment should be small, to avoid missing the true bearing capacity,
+      but not too small, to avoid having an excessive number of displacement
+      increments before the bearing capacity is reached. The size of the
+      increment is normally determined by trial and error, perhaps by
+      running the deterministic analysis (all soil properties spatially
+      constant) and aiming for a displacement increment which gives about
+      10 displacement steps until failure. The number of displacement steps
+      taken in the deterministic case is reported to the output *.stt file
+      (see Summary, after running the program).
+
+   2) The convergence tolerance for the plasticity algorithm: When the nodal
+      displacement state from one iteration to the next has a relative
+      change (max-norm) of less than this convergence tolerance the soil
+      is assumed to have achieved equilibrium and iterations are halted.
+
+   3) The convergence tolerance on the computed bearing capacity: When the
+      bearing stress under the footing(s) from one increment to the next
+      has a relative change (max-norm) of less than this tolerance, or is
+      starting to decrease, the bearing capacity is assumed to have been
+      reached and the displacement steps are discontinued.
+    </Paragraph>
+</FlowDocument>

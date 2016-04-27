@@ -1,0 +1,44 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        On this line, three integers, referred to here as `nfound', `nfoot',
+and `ngap' are specified. These are described as follows;
+
+  i) `nfound' denotes the number of footings applied to the surface
+     of the soil mass. It can take values 1 or 2. If nfound = 1, then
+     the value of ngap is ignored. See below for an nfound = 2 example.
+
+ ii) `nfoot' gives the number of elements, in the x-direction, under
+     the footing. If there are two footings, each is assumed to have
+     width nfoot elements. The physical width of a footing is
+     equal to nfoot*dx.
+
+iii) `ngap' gives the number of elements, in the x-direction, between
+     the two footings when nfound = 2. If nfound = 1, this parameter
+     is ignored. The footings are otherwise centered on the soil mass.
+
+
+                                 nfound = 2
+
+                       Footing 1            Footing 2
+                      ###########          ###########
+ ---  --------------------------------------------------------------- (ground
+  ^   |               |
+       |nfoot->|
+           |-ngap-->|
+                |nfoot->|              |  level)
+  |   |                                                             |
+  |   |     y                                                       |
+  |   |    |                                                        |
+ nye  |    |                                                        |
+  |   |    |                                                        |
+  |   |    |_______ x                                               |
+  |   |                                                             |
+  v   |                                                             |
+ ---  =============================================================== (rigid
+                                                                      boundary)
+      |--------------------------- nxe --------------------------->|
+
+    </Paragraph>
+</FlowDocument>

@@ -1,0 +1,8 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This option, if enabled, causes the progress of the program to be
+reported to the command-line window. This is generally useful.
+    </Paragraph>
+</FlowDocument>

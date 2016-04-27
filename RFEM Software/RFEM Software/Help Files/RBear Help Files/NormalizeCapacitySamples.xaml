@@ -1,0 +1,12 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The `normalize bearing capacities' flag, when checked, causes
+the individual bearing capacity realizations to be divided by the
+deterministic (at the mean) bearing capacity. The resulting normalized
+bearing capacity statistics thus tend to be centered around 1.0,
+although the mean may not be 1.0. This is mainly useful to give a sense
+of relative capacity variabilty and the coefficient of variation.
+    </Paragraph>
+</FlowDocument>

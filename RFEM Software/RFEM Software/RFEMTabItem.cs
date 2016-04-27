@@ -7,12 +7,17 @@ using System.Windows.Controls;
 
 namespace RFEM_Software
 {
-    class RFEMTabItem: TabItem
+    /// <summary>
+    /// Adds a TabType field to tabs to determine which type of tab it is
+    /// </summary>
+    class RFEMTabItem : TabItem
     {
-
         public RFEMTabType TabType { get; set; }
     }
 }
+/// <summary>
+/// Enumeration for different TabTypes
+/// </summary>
 public enum RFEMTabType
 {
     DataInput,

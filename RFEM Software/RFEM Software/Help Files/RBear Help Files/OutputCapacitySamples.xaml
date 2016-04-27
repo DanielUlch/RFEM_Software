@@ -1,0 +1,12 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The `output bearing capacity samples' flag, when checked,
+results in the output of a sequence of (nsim) computed bearing
+capacity realizations to the output file *.cap. This is usually
+worth doing, since the output file can then be postprocessed to
+estimate distributions and probabilities associated with bearing
+capacity. See the Results menu after the program has completed.
+    </Paragraph>
+</FlowDocument>

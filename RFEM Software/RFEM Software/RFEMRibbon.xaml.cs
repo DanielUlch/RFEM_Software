@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace RFEM_Software
 {
     /// <summary>
-    /// Interaction logic for RFEMRibbon.xaml
+    /// Ribbon control used in the main window
     /// </summary>
     public partial class RFEMRibbon : UserControl
     {
@@ -25,6 +25,6 @@ namespace RFEM_Software
             InitializeComponent();
         }
 
-        //Event handling is done in MainWindow.xaml
+        //Event handling is done in a partial class in MainWindow.xaml
     }
 }

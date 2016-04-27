@@ -30,8 +30,7 @@
                           x:Name="mainRibbon"/>
 
         <DockPanel Grid.Row="1" Width="{Binding ActualWidth, ElementName=mainWin}"
-                  Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                AncestorType={x:Type UniformGrid}}, Path=Height}"
+                  
                    
                    >
             <StackPanel Name="ButtonBar" Orientation="Horizontal" DockPanel.Dock="right"
@@ -45,7 +44,7 @@
                     MouseEnter="helpPaneButton_MouseEnter" />
             </StackPanel>
 
-            <Grid Name="parentGrid" Grid.IsSharedSizeScope="True" >
+            <Grid Name="parentGrid" Grid.IsSharedSizeScope="True" Height="auto">
                 <!-- Layer 1 -->
                 <Grid Name="layer1" MouseEnter="layer1_MouseEnter" >
                     <Grid.ColumnDefinitions>
@@ -67,7 +66,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition SharedSizeGroup="column1" Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" MouseEnter="helpPane_MouseEnter" 
+                    <Grid Grid.Column="1" 
                           Background="{DynamicResource {x:Static 
                             SystemColors.ActiveCaptionBrushKey}}">
                         <Grid.RowDefinitions>

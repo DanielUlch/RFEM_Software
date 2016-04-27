@@ -1,0 +1,107 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This is the name of the covariance function defining how the covariance
+falls off with separation distance. This program is currently aware of 5
+different covariance functions;
+
+   1) dlavx2 - this is a Markovian covariance function. That is, the
+               covariance between points in the field decays exponentially
+               with absolute distance between the points
+                      r(X,Y) = var * exp( -tau )
+               where tau is the absolute scaled distance between the points;
+                      tau = sqrt[ (2*X/dthx)^2 + (2*Y/dthy)^2 ]
+               The field is assumed to be quadrant symmetric (correlation
+               between points with lag (x,y) is the same as the correlation
+               between points with lag (-x,y), (x,-y), etc.). If
+               dthx = dthy, then the field is isotropic. The parameters
+               dthx and dthy are the directional correlation lengths in
+               the x and y directions, respectively.
+
+   2) dlsep2 - this is a separable Markovian covariance function. That
+               is, the covariance between points in the field decays
+               according to the product of the 2 directional 1-D Markovian
+               covariance functions
+                      r(X,Y) = var*r(X)*r(Y)
+               where
+                      r(X) = exp(-2|X|/dthx)
+                      r(Y) = exp(-2|Y|/dthy)
+               Note that this covariance function is NOT isotropic even if
+               dthx = dthy, where dthx and dthy are the correlation lengths
+               in the x and y directions, respectively.
+
+   3) dlspx2 - this is a separable covariance function which decays
+               exponentially with the squared distance between two points
+               (a Gaussian type covariance function). The covariance
+               function has the form
+                      r(X,Y) = var*r(X)*r(Y)
+               where
+                      r(X) = exp( -pi*(X/dthx)^2 )
+                      r(Y) = exp( -pi*(Y/dthy)^2 )
+               This covariance function is isotropic if dthx = dthy,
+               where dthx and dthy are the correlation lengths in
+               the x and y directions, respectively.
+
+   4) dlafr2 - this is an approximately isotropic fractional Gaussian
+               noise, or self-similar process, as defined by Mandelbrot.
+               In this case,
+
+                                 var              2H       2H           2H
+                      r(X,Y) = -------- [ |s + pb|  -  2|s|  +  |s - pb|  ]
+                                    2H
+                                2*pb
+
+               where s = sqrt(X*X + Y*Y), and `pb' is the length over which
+               the fractional Brownian motion is averaged in order to make
+               this, the derivative process, exist.  Normally `pb' is selected
+               to be quite small (of the order of the size of the
+               discretization interval).  The parameter `H' is the
+               self-similar parameter, or Hurst exponent, (0.5
+        &lt; H &lt; 1)
+               with H = 1 giving a totally correlated field and H = 0.5
+               giving a white noise field (for sufficiently small pb).
+               In this program, the x-direction correlation length is taken
+               to be H. The y-direction correlation length is ignored.
+               The averaging length, pb, is set equal to the minimum
+               element dimension (e.g. pb = min(dx,dy)).
+
+   5) dlsfr2 - this is a separable fractional Gaussian noise covariance
+               function,
+                          r(X,Y) = var*r(X)*r(Y)
+               for two points separated by distance {X,Y}, where
+               r(X) and r(Y) are the correlation functions
+               given by
+
+                                    1               2H       2H           2H
+                          r(X) = -------- [ |X + pb|  -  2|X|  +  |X - pb|  ]
+                                      2H
+                                  2*pb
+
+
+                                    1               2G       2G           2G
+                          r(Y) = -------- [ |Y + pb|  -  2|Y|  +  |Y - pb|  ]
+                                      2G
+                                  2*pb
+
+               and where `pb' is the length over which the fractional
+               Brownian motion is averaged in order to make this, the
+               derivative process, exist. Normally `pb' is selected
+               to be quite small (of the order of the size of the
+               discretization interval). The parameters `G' and
+               `H' are the self-similar parameters, or Hurst
+               exponents, (0.5 &lt; G,H &lt; 1) with G = H = 1 giving
+               a total correlated field and G = H = 0.5 giving
+               a white noise field (for sufficiently small pb).
+               In this program, the x-direction correlation length
+               is taken to be H and the y-direction correlation length
+               is taken to be G.
+               The averaging length, pb, is set equal to the minimum
+               element dimension (e.g. pb = min(dx,dy)).
+
+In all cases, var is the point variance of the process.
+
+If in doubt, the most commonly used correlation function is dlavx2,
+primarily because of its simplicity.
+    </Paragraph>
+</FlowDocument>

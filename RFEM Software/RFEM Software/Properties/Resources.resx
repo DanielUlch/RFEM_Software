@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="AppHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\AppHelp.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="EchoInputToOutputFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\RBear Help Files\EchoInputToOutputFile.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Help_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Help_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainHelp.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="PropertyToPlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\RBear Help Files\PropertyToPlot.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="RBear2dHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\RBear Help Files\RBear2dHelp.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="ShowLogRF" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\RBear Help Files\ShowLogRF.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="ShowRFOnDisplacedMeshPlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
 </root>
