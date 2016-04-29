@@ -28,6 +28,24 @@ namespace RFEM_Software
         private Dictionary<FrameworkElement, string> HelpLocations;
 
         /// <summary>
+        /// List of properties that can be plotted. This list is data bound to ComboBoxes in
+        /// the form.
+        /// </summary>
+        public List<PlotProperty> PlotProperties;
+
+        /// <summary>
+        /// List of distributions that can be selected for the soil parameters. This list is
+        /// data bound to ComboBoxes in the form.
+        /// </summary>
+        private List<Distribution> Distributions;
+
+        /// <summary>
+        /// List of covariance functions that can be selected. This list is bound to a ComboBox 
+        /// in the form.
+        /// </summary>
+        private List<CovFunction> CovarianceFunctions;
+
+        /// <summary>
         /// Default help file location for this form
         /// </summary>
         private string DefaultHelp;
@@ -42,6 +60,58 @@ namespace RFEM_Software
 
             //Load the locations of the help files into memory
             HelpLocations = InitializeHelpLocations();
+
+            //Initialize the various enumerations bound to ComboBoxes in the form
+            InitializeEnumStructs();
+
+            //Set the ItemsSource for each ComboBox to the appropriate List of enumerations
+            SetItemsSourceForComboBoxes();
+        }
+
+        /// <summary>
+        /// Initializes and fills the lists of enumerations. These lists are bound to 
+        /// ComboBoxes in the forms.
+        /// </summary>
+        private void InitializeEnumStructs()
+        {
+            //Initialize Lists
+            Distributions = new List<Distribution>();
+            PlotProperties = new List<PlotProperty>();
+            CovarianceFunctions = new List<CovFunction>();
+
+            //Fill them will all defined values
+            foreach (DistributionType d in Enum.GetValues(typeof(DistributionType)))
+            {
+                Distributions.Add(new Distribution(d));
+            }
+
+            foreach (PlotableProperty p in Enum.GetValues(typeof(PlotableProperty)))
+            {
+                PlotProperties.Add(new PlotProperty(p));
+            }
+
+            foreach (CovarianceFunction c in Enum.GetValues(typeof(CovarianceFunction)))
+            {
+                CovarianceFunctions.Add(new CovFunction(c));
+            }
+        }
+
+        /// <summary>
+        /// This method sets the ItemsSource of each combobox in the form to the appropriate list.
+        /// </summary>
+        private void SetItemsSourceForComboBoxes()
+        {
+            cboPlotFirstRF.ItemsSource = PlotProperties;
+            cboPropertyToPlot.ItemsSource = PlotProperties;
+
+            cboCovarianceFunc.ItemsSource = CovarianceFunctions;
+
+            cboCohesionDist.ItemsSource = Distributions;
+            cboFrictionAngleDist.ItemsSource = Distributions;
+            cboDilationAngleDist.ItemsSource = Distributions;
+            cboElasticModDist.ItemsSource = Distributions;
+            cboPoissonRTIODist.ItemsSource = Distributions;
+
         }
       
         /// <summary>
@@ -107,7 +177,28 @@ namespace RFEM_Software
             dict.Add(txtFrictionAngleUB, Base + "FrictionAngleDistribution.xaml");
             dict.Add(txtFrictionAngleLocation, Base + "FrictionAngleDistribution.xaml");
             dict.Add(txtFrictionAngleScale, Base + "FrictionAngleDistribution.xaml");
-
+            dict.Add(cboDilationAngleDist, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleMean, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleStdDev, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleLB, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleUB, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleLocation, Base + "DilationAngleDistribution.xaml");
+            dict.Add(txtDilationAngleScale, Base + "DilationAngleDistribution.xaml");
+            dict.Add(cboElasticModDist, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModMean, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModStdDev, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModLB, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModUB, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModLocation, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(txtElasticModScale, Base + "ElasticModulusDistribution.xaml");
+            dict.Add(cboPoissonRTIODist, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioMean, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioStdDev, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioLB, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioUB, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioLocation, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(txtPoissonRatioScale, Base + "PoissonRatioDistribution.xaml");
+            dict.Add(GridSoilPropCorrelationMatrix, Base + "SoilPropertyCorrelationMatrix.xaml");
 
             return dict;       
         }
@@ -203,6 +294,564 @@ namespace RFEM_Software
             throw new NotImplementedException();
         }
         #endregion
+
+        /// <summary>
+        /// Enable and make visible the ComboBox(and its label) to select which property to plot 
+        /// when PlotFirstRandomField is checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkPlotFirstRF_Checked(object sender, RoutedEventArgs e)
+        {
+            cboPlotFirstRF.IsEnabled = true;
+            lbPlotFirstRF.IsEnabled = true;
+            cboPlotFirstRF.Visibility = Visibility.Visible;
+            lbPlotFirstRF.Visibility = Visibility.Visible;
+        }
+        /// <summary>
+        /// Disable and collapse ComboBox(and its label) to select which property to plot 
+        /// when PlotFirstRandomField is unchecked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkPlotFirstRF_UnChecked(object sender, RoutedEventArgs e)
+        {
+            cboPlotFirstRF.IsEnabled = false;
+            lbPlotFirstRF.IsEnabled = false;
+            cboPlotFirstRF.Visibility = Visibility.Collapsed;
+            lbPlotFirstRF.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Enable and make visible the StackPanel with the details of the postscript file of
+        /// the first displaced finite element mesh.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkProducePSPLOTOfFirstFEM_Checked(object sender, RoutedEventArgs e)
+        {
+            spProducePSPLOTOfFirstFEM.Visibility = Visibility.Visible;
+            SetPostScriptOfFirstFEMSection(true);
+        }
+
+        /// <summary>
+        /// Disable and collapse the StackPanel with the details of the postscript file of 
+        /// the first displaed finite element mesh.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkProducePSPLOTOfFirstFEM_Unchecked(object sender, RoutedEventArgs e)
+        {
+            spProducePSPLOTOfFirstFEM.Visibility = Visibility.Collapsed;
+            SetPostScriptOfFirstFEMSection(false);
+        }
+
+        /// <summary>
+        /// This method enables or disables all of the controls in the StackPanel with the 
+        /// details of the first displaced finite element mesh.
+        /// </summary>
+        /// <param name="isEnabled">
+        /// If true, this method enables the controls.
+        /// If false, this method disables the controls.
+        /// </param>
+        private void SetPostScriptOfFirstFEMSection(bool isEnabled)
+        {
+            chkShowMeshOnDisplacedPlot.IsEnabled = isEnabled;
+            chkShowRFOnPlot.IsEnabled = isEnabled;
+            chkShowLogRF.IsEnabled = isEnabled;
+            cboPropertyToPlot.IsEnabled = isEnabled;
+            lbPropertyToPlot.IsEnabled = isEnabled;
+            lbDisplacedMeshWidth.IsEnabled = isEnabled;
+            txtDisplacedMeshWidth.IsEnabled = isEnabled;
+            lbDisplacedMeshWidthUnits.IsEnabled = isEnabled;
+
+        }
+
+        /// <summary>
+        /// This method is activated when a user indicates that there are two footings. This method
+        /// enables the Footing Gap textbox and label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rbTwoFootings_Checked(object sender, RoutedEventArgs e)
+        {
+            lbFootingGap.Visibility = Visibility.Visible;
+            txtFootingGap.Visibility = Visibility.Visible;
+            lbFootingGap.IsEnabled = true;
+            txtFootingGap.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// This method is activated when a user indicates that there is only one footing. This method
+        /// hides the Footing Gap textbox and label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rbTwoFootings_Unchecked(object sender, RoutedEventArgs e)
+        {
+            lbFootingGap.Visibility = Visibility.Collapsed;
+            txtFootingGap.Visibility = Visibility.Collapsed;
+            lbFootingGap.IsEnabled = false;
+            txtFootingGap.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// This method is activated when a user selects a distribution for the Cohesion property.
+        /// It will show and hide the appropriate labels and textboxes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboCohesionDist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((DistributionType)cboCohesionDist.SelectedValue)
+            {
+                case DistributionType.Deterministic:
+                    lbCohesionMean.Visibility = Visibility.Visible;
+                    txtCohesionMean.Visibility = Visibility.Visible;
+
+                    lbCohesionStdDev.Visibility = Visibility.Collapsed;
+                    txtCohesionStdDev.Visibility = Visibility.Collapsed;
+
+                    lbCohesionLB.Visibility = Visibility.Collapsed;
+                    txtCohesionLB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionUB.Visibility = Visibility.Collapsed;
+                    txtCohesionUB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionLocation.Visibility = Visibility.Collapsed;
+                    txtCohesionLocation.Visibility = Visibility.Collapsed;
+
+                    lbCohesionScale.Visibility = Visibility.Collapsed;
+                    txtCohesionScale.Visibility = Visibility.Collapsed;
+                    break;
+                case DistributionType.Normal:
+                    lbCohesionMean.Visibility = Visibility.Visible;
+                    txtCohesionMean.Visibility = Visibility.Visible;
+
+                    lbCohesionStdDev.Visibility = Visibility.Visible;
+                    txtCohesionStdDev.Visibility = Visibility.Visible;
+
+                    lbCohesionLB.Visibility = Visibility.Collapsed;
+                    txtCohesionLB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionUB.Visibility = Visibility.Collapsed;
+                    txtCohesionUB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionLocation.Visibility = Visibility.Collapsed;
+                    txtCohesionLocation.Visibility = Visibility.Collapsed;
+
+                    lbCohesionScale.Visibility = Visibility.Collapsed;
+                    txtCohesionScale.Visibility = Visibility.Collapsed;
+                    break;
+                case DistributionType.LogNormal:
+                    lbCohesionMean.Visibility = Visibility.Visible;
+                    txtCohesionMean.Visibility = Visibility.Visible;
+
+                    lbCohesionStdDev.Visibility = Visibility.Visible;
+                    txtCohesionStdDev.Visibility = Visibility.Visible;
+
+                    lbCohesionLB.Visibility = Visibility.Collapsed;
+                    txtCohesionLB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionUB.Visibility = Visibility.Collapsed;
+                    txtCohesionUB.Visibility = Visibility.Collapsed;
+
+                    lbCohesionLocation.Visibility = Visibility.Collapsed;
+                    txtCohesionLocation.Visibility = Visibility.Collapsed;
+
+                    lbCohesionScale.Visibility = Visibility.Collapsed;
+                    txtCohesionScale.Visibility = Visibility.Collapsed;
+                    break;
+                case DistributionType.Bounded:
+                    lbCohesionMean.Visibility = Visibility.Collapsed;
+                    txtCohesionMean.Visibility = Visibility.Collapsed;
+
+                    lbCohesionStdDev.Visibility = Visibility.Collapsed;
+                    txtCohesionStdDev.Visibility = Visibility.Collapsed;
+
+                    lbCohesionLB.Visibility = Visibility.Visible;
+                    txtCohesionLB.Visibility = Visibility.Visible;
+
+                    lbCohesionUB.Visibility = Visibility.Visible;
+                    txtCohesionUB.Visibility = Visibility.Visible;
+
+                    lbCohesionLocation.Visibility = Visibility.Visible;
+                    txtCohesionLocation.Visibility = Visibility.Visible;
+
+                    lbCohesionScale.Visibility = Visibility.Visible;
+                    txtCohesionScale.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// This method is activated when a user selects a distribution for the Friction Angle property.
+        /// It will show and hide the appropriate labels and textboxes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboFrictionAngleDist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((DistributionType)cboFrictionAngleDist.SelectedValue)
+            {
+                case DistributionType.Deterministic:
+                    lbFrictionAngleMean.Visibility = Visibility.Visible;
+                    txtFrictionAngleMean.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleStdDev.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleStdDev.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleLB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleUB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleLocation.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Normal:
+                    lbFrictionAngleMean.Visibility = Visibility.Visible;
+                    txtFrictionAngleMean.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleStdDev.Visibility = Visibility.Visible;
+                    txtFrictionAngleStdDev.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleLB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleUB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleLocation.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.LogNormal:
+                    lbFrictionAngleMean.Visibility = Visibility.Visible;
+                    txtFrictionAngleMean.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleStdDev.Visibility = Visibility.Visible;
+                    txtFrictionAngleStdDev.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleLB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleUB.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleLocation.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Bounded:
+                    lbFrictionAngleMean.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleMean.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleStdDev.Visibility = Visibility.Collapsed;
+                    txtFrictionAngleStdDev.Visibility = Visibility.Collapsed;
+
+                    lbFrictionAngleLB.Visibility = Visibility.Visible;
+                    txtFrictionAngleLB.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleUB.Visibility = Visibility.Visible;
+                    txtFrictionAngleUB.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleLocation.Visibility = Visibility.Visible;
+                    txtFrictionAngleLocation.Visibility = Visibility.Visible;
+
+                    lbFrictionAngleScale.Visibility = Visibility.Visible;
+                    txtFrictionAngleScale.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// This method is activated when a user selects a distribution for the Dilation Angle property.
+        /// It will show and hide the appropriate labels and textboxes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboDilationAngleDist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((DistributionType)cboDilationAngleDist.SelectedValue)
+            {
+                case DistributionType.Deterministic:
+                    lbDilationAngleMean.Visibility = Visibility.Visible;
+                    txtDilationAngleMean.Visibility = Visibility.Visible;
+
+                    lbDilationAngleStdDev.Visibility = Visibility.Collapsed;
+                    txtDilationAngleStdDev.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleLB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleUB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleLocation.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleScale.Visibility = Visibility.Collapsed;
+                    txtDilationAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Normal:
+                    lbDilationAngleMean.Visibility = Visibility.Visible;
+                    txtDilationAngleMean.Visibility = Visibility.Visible;
+
+                    lbDilationAngleStdDev.Visibility = Visibility.Visible;
+                    txtDilationAngleStdDev.Visibility = Visibility.Visible;
+
+                    lbDilationAngleLB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleUB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleLocation.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleScale.Visibility = Visibility.Collapsed;
+                    txtDilationAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+                case DistributionType.LogNormal:
+                    lbDilationAngleMean.Visibility = Visibility.Visible;
+                    txtDilationAngleMean.Visibility = Visibility.Visible;
+
+                    lbDilationAngleStdDev.Visibility = Visibility.Visible;
+                    txtDilationAngleStdDev.Visibility = Visibility.Visible;
+
+                    lbDilationAngleLB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleUB.Visibility = Visibility.Collapsed;
+                    txtDilationAngleUB.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleLocation.Visibility = Visibility.Collapsed;
+                    txtDilationAngleLocation.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleScale.Visibility = Visibility.Collapsed;
+                    txtDilationAngleScale.Visibility = Visibility.Collapsed;
+                    break;
+                case DistributionType.Bounded:
+                    lbDilationAngleMean.Visibility = Visibility.Collapsed;
+                    txtDilationAngleMean.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleStdDev.Visibility = Visibility.Collapsed;
+                    txtDilationAngleStdDev.Visibility = Visibility.Collapsed;
+
+                    lbDilationAngleLB.Visibility = Visibility.Visible;
+                    txtDilationAngleLB.Visibility = Visibility.Visible;
+
+                    lbDilationAngleUB.Visibility = Visibility.Visible;
+                    txtDilationAngleUB.Visibility = Visibility.Visible;
+
+                    lbDilationAngleLocation.Visibility = Visibility.Visible;
+                    txtDilationAngleLocation.Visibility = Visibility.Visible;
+
+                    lbDilationAngleScale.Visibility = Visibility.Visible;
+                    txtDilationAngleScale.Visibility = Visibility.Visible;
+                    break;
+            }
+
+
+        }
+
+        /// <summary>
+        /// This method is activated when a user selects a distribution for the Elastic Modulus property.
+        /// It will show and hide the appropriate labels and textboxes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboElasticModDist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((DistributionType)cboElasticModDist.SelectedValue)
+            {
+                case DistributionType.Deterministic:
+                    lbElasticModMean.Visibility = Visibility.Visible;
+                    txtElasticModMean.Visibility = Visibility.Visible;
+
+                    lbElasticModStdDev.Visibility = Visibility.Collapsed;
+                    txtElasticModStdDev.Visibility = Visibility.Collapsed;
+
+                    lbElasticModLB.Visibility = Visibility.Collapsed;
+                    txtElasticModLB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModUB.Visibility = Visibility.Collapsed;
+                    txtElasticModUB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModLocation.Visibility = Visibility.Collapsed;
+                    txtElasticModLocation.Visibility = Visibility.Collapsed;
+
+                    lbElasticModScale.Visibility = Visibility.Collapsed;
+                    txtElasticModScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Normal:
+                    lbElasticModMean.Visibility = Visibility.Visible;
+                    txtElasticModMean.Visibility = Visibility.Visible;
+
+                    lbElasticModStdDev.Visibility = Visibility.Visible;
+                    txtElasticModStdDev.Visibility = Visibility.Visible;
+
+                    lbElasticModLB.Visibility = Visibility.Collapsed;
+                    txtElasticModLB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModUB.Visibility = Visibility.Collapsed;
+                    txtElasticModUB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModLocation.Visibility = Visibility.Collapsed;
+                    txtElasticModLocation.Visibility = Visibility.Collapsed;
+
+                    lbElasticModScale.Visibility = Visibility.Collapsed;
+                    txtElasticModScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.LogNormal:
+                    lbElasticModMean.Visibility = Visibility.Visible;
+                    txtElasticModMean.Visibility = Visibility.Visible;
+
+                    lbElasticModStdDev.Visibility = Visibility.Visible;
+                    txtElasticModStdDev.Visibility = Visibility.Visible;
+
+                    lbElasticModLB.Visibility = Visibility.Collapsed;
+                    txtElasticModLB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModUB.Visibility = Visibility.Collapsed;
+                    txtElasticModUB.Visibility = Visibility.Collapsed;
+
+                    lbElasticModLocation.Visibility = Visibility.Collapsed;
+                    txtElasticModLocation.Visibility = Visibility.Collapsed;
+
+                    lbElasticModScale.Visibility = Visibility.Collapsed;
+                    txtElasticModScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Bounded:
+                    lbElasticModMean.Visibility = Visibility.Collapsed;
+                    txtElasticModMean.Visibility = Visibility.Collapsed;
+
+                    lbElasticModStdDev.Visibility = Visibility.Collapsed;
+                    txtElasticModStdDev.Visibility = Visibility.Collapsed;
+
+                    lbElasticModLB.Visibility = Visibility.Visible;
+                    txtElasticModLB.Visibility = Visibility.Visible;
+
+                    lbElasticModUB.Visibility = Visibility.Visible;
+                    txtElasticModUB.Visibility = Visibility.Visible;
+
+                    lbElasticModLocation.Visibility = Visibility.Visible;
+                    txtElasticModLocation.Visibility = Visibility.Visible;
+
+                    lbElasticModScale.Visibility = Visibility.Visible;
+                    txtElasticModScale.Visibility = Visibility.Visible;
+                    break;
+
+            }
+        }
+
+        /// <summary>
+        /// This method is activated when a user selects a distribution for the Poisson's Ratio property.
+        /// It will show and hide the appropriate labels and textboxes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboPoissonRTIODist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((DistributionType)cboPoissonRTIODist.SelectedValue)
+            {
+                case DistributionType.Deterministic:
+                    lbPoissonRatioMean.Visibility = Visibility.Visible;
+                    txtPoissonRatioMean.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioStdDev.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioStdDev.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioLB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioUB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioUB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioLocation.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLocation.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Normal:
+                    lbPoissonRatioMean.Visibility = Visibility.Visible;
+                    txtPoissonRatioMean.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioStdDev.Visibility = Visibility.Visible;
+                    txtPoissonRatioStdDev.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioLB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioUB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioUB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioLocation.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLocation.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.LogNormal:
+                    lbPoissonRatioMean.Visibility = Visibility.Visible;
+                    txtPoissonRatioMean.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioStdDev.Visibility = Visibility.Visible;
+                    txtPoissonRatioStdDev.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioLB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioUB.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioUB.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioLocation.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioLocation.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioScale.Visibility = Visibility.Collapsed;
+                    break;
+
+                case DistributionType.Bounded:
+                    lbPoissonRatioMean.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioMean.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioStdDev.Visibility = Visibility.Collapsed;
+                    txtPoissonRatioStdDev.Visibility = Visibility.Collapsed;
+
+                    lbPoissonRatioLB.Visibility = Visibility.Visible;
+                    txtPoissonRatioLB.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioUB.Visibility = Visibility.Visible;
+                    txtPoissonRatioUB.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioLocation.Visibility = Visibility.Visible;
+                    txtPoissonRatioLocation.Visibility = Visibility.Visible;
+
+                    lbPoissonRatioScale.Visibility = Visibility.Visible;
+                    txtPoissonRatioScale.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
     }
 }
 

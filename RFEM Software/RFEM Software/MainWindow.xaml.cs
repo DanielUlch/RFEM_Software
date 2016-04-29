@@ -337,7 +337,7 @@ namespace RFEM_Software
                 if (tab.TabType == RFEMTabType.DataInput)
                 {
                     //Get the selected form
-                    var helpTab = (RFEM_Software.Forms.IHelpFiled)tab.Content;
+                    var helpTab = ((RFEM_Software.Forms.IHelpFiled)((ScrollViewer)tab.Content).Content);
 
                     //Ask the selected form for the help file associated with a hovered control
                     string helpLocation = helpTab.hoveredHelpDocLocation();

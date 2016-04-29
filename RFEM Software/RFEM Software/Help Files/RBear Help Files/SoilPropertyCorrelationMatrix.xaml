@@ -1,0 +1,68 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The correlation coefficients, acting between each random soil
+property, can be defined in the following table. For example,
+if the correlation coefficient between `cohesion' and
+`friction angle' is -0.4, then the 2nd box from the left on
+the top line of boxes would be edited to contain the string
+`-0.4'. Only non-zero correlation coefficients need to be
+specified in the table. Also the correlation coefficient between
+a soil property and itself is 1.0, so the diagonal elements of
+the table are held fixed at 1.0 and cannot be changed.
+
+Note that the correlation coefficient(s) are assumed to act
+between the underlying normally distributed random fields from
+which the soil properties are eventually obtained. For example,
+suppose that the correlation coefficient between `friction
+angle' and `elastic modulus' is set to 0.4. Further, suppose that
+the friction angle, phi, is assumed normally distributed and the
+elastic modulus, e, is assumed lognormally distributed. Then the
+prescribed correlation coefficient of 0.4 is assumed to act
+between phi and ln(e), since ln(e) is normally distributed.
+
+The correlation coefficients used in this program can be
+estimated from real data by converting the data to its assumed
+underlying normal distribution. That is, if a soil property is
+assumed to be lognormally distributed, then statistical
+analyses designed to estimate a correlation coefficient or
+correlation length should be performed using the natural
+logarithm of the data. Similarly, if an observed soil property,
+say x_1, x_2, ..., x_n, is assumed to follow a bounded 
+distribution (using the distribution assumed in this program
+with location parameter, m, equal to 0 so that the distribution
+is symmetric about the midpoint of its bounds), then statistical
+analyses for the correlation structure should be done using the
+data y_1, y_2, ... y_n, derived from
+
+   y = pi*ln[(x-a)/(b-x)]
+
+where `a' is the lower bound on the distribution and `b' is the
+upper bound. Note that the above relationship should also be
+used to produce the data to estimate the scale parameter, `s',
+for the bounded distribution.
+
+In practice, there is much uncertainty about the precise value
+of the correlation coefficient between two soil properties.
+Thus, it may not be worth worrying about the often slight
+changes in correlation arising from the non-linear
+transformations between the underlying normal distribution and
+the specified distribution (eg., lognormal or bounded, see
+above). If in doubt, just specify the correlation coefficient
+that has been estimated between the two properties from
+measured field properties or as reported in the literature.
+Given the usual estimation errors arising from insufficient
+data, worrying about non-linear transformation details is
+probably not justified.
+
+Finally, it should be pointed out that the prescribed
+correlation coefficient is assumed to act between one property
+at a point and a second property at the same point. That is,
+the complete cross-correlation matrix between all points of
+the first property and all points of the second property cannot
+be specified here. Again, given the level of knowledge about
+correlation coefficients between soil properties, this
+`pointwise' correlation structure is more than sufficient.
+    </Paragraph>
+</FlowDocument>

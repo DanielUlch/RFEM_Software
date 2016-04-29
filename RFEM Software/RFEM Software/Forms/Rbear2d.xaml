@@ -12,22 +12,22 @@
         <ToolTip x:Key="DefaultToolTip">
             <StackPanel Orientation="vertical">
                 <Label FontWeight="Bold"
-                                               Background="Blue"
-                                               Foreground="White">Help Title</Label>
+                       Background="Blue"
+                       Foreground="White">Help Title</Label>
                 <TextBlock Padding="10" 
-                                               TextWrapping="WrapWithOverflow"
-                                               Width="200">Brief description</TextBlock>
+                           TextWrapping="WrapWithOverflow"
+                           Width="200">Brief description</TextBlock>
                 <Line Stroke="Black"
-                                          StrokeThickness="1"
-                                          X2="200"/>
+                      StrokeThickness="1"
+                      X2="200"/>
                 <StackPanel Orientation="Horizontal">
                     <Image Margin="2" 
-                                               Height="15"
-                                               Width="15"
-                                               Source="/Images/Help_2.png"/>
+                           Height="15"
+                           Width="15"
+                           Source="/Images/Help_2.png"/>
                     <TextBlock TextWrapping="WrapWithOverflow" 
-                                                   Width="181"
-                                                   FontStyle="Italic">For more help right click and select help, or hover over an element and press F1</TextBlock>
+                               Width="181"
+                               FontStyle="Italic">For more help right click and select help, or hover over an element and press F1</TextBlock>
                 </StackPanel>
 
             </StackPanel>
@@ -45,7 +45,7 @@
         <Label Content="Job Title:"
                ToolTip="{StaticResource DefaultToolTip}"/>
         <TextBox x:Name="txtJobTitle" 
-                         Width="200"
+                 Width="200"
                  ToolTip="{StaticResource DefaultToolTip}"/>
         </StackPanel>
 
@@ -109,9 +109,12 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <CheckBox x:Name="chkPlotFirstRF"
-                          Content="Plot first random field?"
-                          VerticalAlignment="center"
-                  ToolTip="{StaticResource DefaultToolTip}">
+                      Content="Plot first random field?"
+                      VerticalAlignment="center"
+                      ToolTip="{StaticResource DefaultToolTip}" 
+                      Checked="chkPlotFirstRF_Checked"
+                      Unchecked="chkPlotFirstRF_UnChecked"
+                      >
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu10"  >
                         <MenuItem Header="Help" 
@@ -121,9 +124,11 @@
                     </ContextMenu>                    
                 </CheckBox.ContextMenu>
             </CheckBox>
-            <Label Content="Property to plot:"
-                       IsEnabled="False" 
-               ToolTip="{StaticResource DefaultToolTip}">
+            <Label Name="lbPlotFirstRF" 
+                   Content="Property to plot:"
+                   IsEnabled="False" 
+                   ToolTip="{StaticResource DefaultToolTip}"
+                   Visibility="Collapsed">
                 <Label.ContextMenu>
                     <ContextMenu Name="contextMenu11"  >
                         <MenuItem Header="Help" 
@@ -134,9 +139,13 @@
                 </Label.ContextMenu>
             </Label>
             <ComboBox x:Name="cboPlotFirstRF"
-                          IsEnabled="false"
-                          Width="75"
-                  ToolTip="{StaticResource DefaultToolTip}">
+                      IsEnabled="false"
+                      Width="75"
+                      ToolTip="{StaticResource DefaultToolTip}"
+                      Visibility="Collapsed"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value"
+                      >
                 <ComboBox.ContextMenu>
                     <ContextMenu Name="contextMenu12"  >
                         <MenuItem Header="Help" 
@@ -152,7 +161,7 @@
             <CheckBox x:Name="chkProducePSPLOTOfFirstFEM"
                           Content="Produce a PostScript format file of first displayed finite element mesh"
                           VerticalAlignment="center" 
-                  ToolTip="{StaticResource DefaultToolTip}">
+                  ToolTip="{StaticResource DefaultToolTip}" Checked="chkProducePSPLOTOfFirstFEM_Checked" Unchecked="chkProducePSPLOTOfFirstFEM_Unchecked">
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu13"  >
                         <MenuItem Header="Help" 
@@ -163,12 +172,16 @@
                 </CheckBox.ContextMenu>
             </CheckBox>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Margin="30 0 0 0">
+        <StackPanel Name ="spProducePSPLOTOfFirstFEM" 
+                    Orientation="Vertical" 
+                    Margin="30 0 0 0"
+                    Visibility="Collapsed">
             <StackPanel Orientation="Horizontal">
                     <CheckBox x:Name="chkShowMeshOnDisplacedPlot"
-                                  Content="Show mesh on displaced mesh plot?"
-                                  VerticalAlignment="center" 
-                          ToolTip="{StaticResource DefaultToolTip}">
+                              Content="Show mesh on displaced mesh plot?"
+                              VerticalAlignment="center" 
+                              ToolTip="{StaticResource DefaultToolTip}"
+                              IsEnabled="False">
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu14"  >
                                 <MenuItem Header="Help" 
@@ -182,11 +195,10 @@
                 </StackPanel>
             <StackPanel Orientation="Horizontal" >
                     <CheckBox x:Name="chkShowRFOnPlot"
-                                  Content="Show random field on plot?"
-                                  VerticalAlignment="center"
+                              Content="Show random field on plot?"
+                              VerticalAlignment="center"
                               ToolTip="{StaticResource DefaultToolTip}"
-                      
-                                  >
+                              IsEnabled="False" >
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu"  >
                                 <MenuItem Header="Help" 
@@ -198,11 +210,12 @@
                             </ContextMenu>
                         </CheckBox.ContextMenu>
                 
-                </CheckBox>
+                    </CheckBox>
                     <CheckBox x:Name="chkShowLogRF"
-                          Content="Show log-random field"
-                          VerticalAlignment="Center"
-                              ToolTip="{StaticResource DefaultToolTip}">
+                              Content="Show log-random field"
+                              VerticalAlignment="Center"
+                              ToolTip="{StaticResource DefaultToolTip}"
+                              IsEnabled="False">
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu2"  >
                                 <MenuItem Header="Help" 
@@ -214,8 +227,10 @@
                             </ContextMenu>
                         </CheckBox.ContextMenu>
                     </CheckBox>
-                    <Label Content="Property to plot:"
-                           ToolTip="{StaticResource DefaultToolTip}">
+                    <Label Name="lbPropertyToPlot"
+                           Content="Property to plot:"
+                           ToolTip="{StaticResource DefaultToolTip}"
+                           IsEnabled="False">
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu3"  >
                                 <MenuItem Header="Help" 
@@ -229,7 +244,10 @@
                     </Label>
                     <ComboBox x:Name="cboPropertyToPlot"
                               Width="75"
-                              ToolTip="{StaticResource DefaultToolTip}">
+                              ToolTip="{StaticResource DefaultToolTip}"
+                              IsEnabled="False"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="Value">
                         <ComboBox.ContextMenu>
                             <ContextMenu Name="contextMenu4"  >
                                 <MenuItem Header="Help" 
@@ -242,8 +260,10 @@
                       
             </StackPanel>
                 <StackPanel Orientation="Horizontal" >
-                    <Label Content="Displaced mesh plot width:" 
-                           ToolTip="{StaticResource DefaultToolTip}">
+                    <Label Name="lbDisplacedMeshWidth" 
+                           Content="Displaced mesh plot width:" 
+                           ToolTip="{StaticResource DefaultToolTip}"
+                           IsEnabled="False">
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu5"  >
                                 <MenuItem Header="Help" 
@@ -255,7 +275,8 @@
                     </Label>
                     <TextBox Name="txtDisplacedMeshWidth"
                              ToolTip="{StaticResource DefaultToolTip}"
-                             Width="50">
+                             Width="50"
+                             IsEnabled="False">
                         <TextBox.ContextMenu>
                             <ContextMenu Name="contextMenu6"  >
                                 <MenuItem Header="Help" 
@@ -265,8 +286,10 @@
                             </ContextMenu>
                         </TextBox.ContextMenu>
                     </TextBox>
-                    <Label Content="inches"
-                           ToolTip="{StaticResource DefaultToolTip}" >
+                    <Label Name="lbDisplacedMeshWidthUnits" 
+                           Content="inches"
+                           ToolTip="{StaticResource DefaultToolTip}"
+                           IsEnabled="False">
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu7"  >
                                 <MenuItem Header="Help" 
@@ -461,7 +484,7 @@
                     <RadioButton Name="rbTwoFootings"
                                     GroupName="gpNFootings"
                                     Content="2"
-                                    ToolTip="{StaticResource DefaultToolTip}">
+                                    ToolTip="{StaticResource DefaultToolTip}" Checked="rbTwoFootings_Checked" Unchecked="rbTwoFootings_Unchecked">
                         <RadioButton.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Help"
@@ -493,8 +516,11 @@
                     </ContextMenu>
                 </TextBox.ContextMenu>
             </TextBox>
-            <Label Content="Footing gap"
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Name="lbFootingGap" 
+                   Content="Footing gap"
+                   ToolTip="{StaticResource DefaultToolTip}"
+                   IsEnabled="false"
+                   Visibility="Collapsed">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -505,7 +531,9 @@
             </Label>
             <TextBox Name="txtFootingGap"
                      ToolTip="{StaticResource DefaultToolTip}"
-                     Width="50">
+                     Width="50"
+                     IsEnabled="false"
+                     Visibility="collapsed">
                 <TextBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -740,7 +768,9 @@
             </Label>
             <ComboBox Name="cboCovarianceFunc"
                       ToolTip="{StaticResource DefaultToolTip}"
-                      Width="50">
+                      Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value">
                 <ComboBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -764,7 +794,9 @@
 
             <ComboBox Name="cboCohesionDist"
                       ToolTip="{StaticResource DefaultToolTip}"
-                      Width="50">
+                      Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboCohesionDist_SelectionChanged">
                 <ComboBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -778,7 +810,8 @@
         <StackPanel Orientation="Vertical"
                     Margin="25 0 0 0">
             <StackPanel Orientation="Horizontal">
-                <Label Content="Mean: "
+                <Label Name="lbCohesionMean" 
+                       Content="Mean: "
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -799,7 +832,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Standard deviation:"
+                <Label Name="lbCohesionStdDev" 
+                       Content="Standard deviation:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -822,7 +856,8 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Lower bound:"
+                <Label Name="lbCohesionLB" 
+                       Content="Lower bound:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -843,7 +878,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Upper bound:"
+                <Label Name="lbCohesionUB" 
+                       Content="Upper bound:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -866,7 +902,8 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Location: "
+                <Label Name="lbCohesionLocation" 
+                       Content="Location: "
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -887,7 +924,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Scale:"
+                <Label Name="lbCohesionScale" 
+                       Content="Scale:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -923,7 +961,9 @@
             </Label>
             <ComboBox Name="cboFrictionAngleDist"
                       ToolTip="{StaticResource DefaultToolTip}"
-                      Width="50">
+                      Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboFrictionAngleDist_SelectionChanged">
                 <ComboBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -972,7 +1012,8 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Margin="25 0 0 0">
             <StackPanel Orientation="Horizontal">
-                <Label Content="Mean:"
+                <Label Name="lbFrictionAngleMean" 
+                       Content="Mean:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -993,7 +1034,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Standard deviation:"
+                <Label Name="lbFrictionAngleStdDev" 
+                       Content="Standard deviation:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -1016,7 +1058,8 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Lower bound:"
+                <Label Name="lbFrictionAngleLB" 
+                       Content="Lower bound:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -1037,7 +1080,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Upper bound:"
+                <Label Name="lbFrictionAngleUB" 
+                       Content="Upper bound:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -1061,7 +1105,8 @@
                        
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Location:"
+                <Label Name="lbFrictionAngleLocation" 
+                       Content="Location:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -1082,7 +1127,8 @@
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
-                <Label Content="Scale:"
+                <Label Name="lbFrictionAngleScale" 
+                       Content="Scale:"
                        ToolTip="{StaticResource DefaultToolTip}">
                     <Label.ContextMenu>
                         <ContextMenu>
@@ -1106,8 +1152,642 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            
+            <Label Content="Dilation angle distribution:"
+                   ToolTip="{StaticResource DefaultToolTip}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboDilationAngleDist}" />
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <ComboBox Name="cboDilationAngleDist"
+                      ToolTip="{StaticResource DefaultToolTip}"
+                      Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboDilationAngleDist_SelectionChanged">
+                <ComboBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboDilationAngleDist}" />
+                    </ContextMenu>
+                </ComboBox.ContextMenu>
+            </ComboBox>
+                   
         </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleMean" 
+                       Content="Mean"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleMean}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleMean"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleMean}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbDilationAngleStdDev" 
+                       Content="Standard deviation:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleStdDev}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleStdDev"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleStdDev}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                       
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleLB" 
+                       Content="Lower bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleLB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleLB"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleLB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbDilationAngleUB" 
+                       Content="Upper bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleUB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleUB"
+                         ToolTip="{StaticResource DefaultToolTip }"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleUB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleLocation" 
+                       Content="Location:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleLocation}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleLocation"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleLocation}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbDilationAngleScale" 
+                       Content="Scale:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleScale}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtDilationAngleScale"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtDilationAngleScale}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Elastic modulus distribution"
+                   ToolTip="{StaticResource DefaultToolTip}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboElasticModDist}" />
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <ComboBox Name="cboElasticModDist"
+                      ToolTip="{StaticResource DefaultToolTip}"
+                      Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboElasticModDist_SelectionChanged">
+                <ComboBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboElasticModDist}" />
+                    </ContextMenu>
+                </ComboBox.ContextMenu>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModMean" 
+                       Content="Mean:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModMean}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModMean"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModMean}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbElasticModStdDev" 
+                       Content="Standard deviation"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModStdDev}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModStdDev"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModStdDev}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModLB" 
+                       Content="Lower bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModLB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModLB"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModLB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbElasticModUB" 
+                       Content="Upper bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModUB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModUB"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModUB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModLocation" 
+                       Content="Location:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModLocation}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModLocation"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModLocation}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbElasticModScale" 
+                       Content="Scale:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModScale}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtElasticModScale"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtElasticModScale}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Poisson's ratio distribution"
+                   ToolTip="{StaticResource DefaultToolTip}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboPoissonRTIODist}" />
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <ComboBox Name="cboPoissonRTIODist"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboPoissonRTIODist_SelectionChanged">
+                <ComboBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=cboPoissonRTIODist}" />
+                    </ContextMenu>
+                </ComboBox.ContextMenu>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioMean" 
+                       Content="Mean:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioMean}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioMean"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioMean}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbPoissonRatioStdDev" 
+                       Content="Standard deviation:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioStdDev}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioStdDev"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioStdDev}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioLB" Content="Lower bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioLB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioLB"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioLB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbPoissonRatioUB" 
+                       Content="Upper bound:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioUB}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioUB"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioUB}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioLocation" 
+                       Content="Location:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioLocation}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioLocation"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioLocation}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Name="lbPoissonRatioScale" 
+                       Content="Scale:"
+                       ToolTip="{StaticResource DefaultToolTip}">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioScale}" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <TextBox Name="txtPoissonRatioScale"
+                         ToolTip="{StaticResource DefaultToolTip}"
+                         Width="50">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=txtPoissonRatioScale}" />
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <Label Content="Soil property correlation matrix elements:"
+               ToolTip="{StaticResource DefaultToolTip}">
+            <Label.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=GridSoilPropCorrelationMatrix}" />
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
+        <Grid x:Name="GridSoilPropCorrelationMatrix">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Help"
+                                    Command="self:CustomCommands.HelpClick"
+                                    CommandParameter="{Binding ElementName=GridSoilPropCorrelationMatrix}" />
+                </ContextMenu>
+            </Grid.ContextMenu>
+            
+            <Label Content="Cohesion" Grid.Column="1" Grid.Row="0"/>
+            <Label Content="Cohesion" Grid.Column="0" Grid.Row="1"/>
+            
+            <Label Content="Friction" Grid.Column="2" Grid.Row="0"/>
+            <Label Content="Friction" Grid.Column="0" Grid.Row="2"/>
+            
+            <Label Content="Dilation" Grid.Column="3" Grid.Row="0" />
+            <Label Content="Dilation" Grid.Column="0" Grid.Row="3" />
+            
+            <Label Content="Elastic Mod" Grid.Column="4" Grid.Row="0" />
+            <Label Content="Elastic Mod" Grid.Column="0" Grid.Row="4" />
+            
+            <Label Content="Poisson's Ratio" Grid.Column="5" Grid.Row="0" />
+            <Label Content="Poisson's Ratio" Grid.Column="0" Grid.Row="5" />
+            
+            <TextBox Name="txtCorrCohesionCohesion"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Column="1"
+                     Grid.Row="1"/>
+            <TextBox Name="txtCorrFrictionFriction"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Column="2"
+                     Grid.Row="2" />
+            <TextBox Name="txtCorrDilationDilation"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Row="3"
+                     Grid.Column="3" />
+            <TextBox Name="txtCorrElasModElasMod"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Row="4"
+                     Grid.Column="4" />
+            <TextBox Name="txtCorrPoissonRTPoissonRT"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     IsEnabled="False"
+                     Text="1"
+                     Grid.Row="5"
+                     Grid.Column="5" />
+            
+            <TextBox Name="txtCorrCohesionFriction"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="2" />
+            <TextBox Name="txtCorrCohesionDilation"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="3" />
+            <TextBox Name="txtCorrCohesionElasMod"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="4" />
+            <TextBox Name="txtCorrCohesionPoissonRT"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="5" />
+            
+            <TextBox Name="txtCorrFrictionDilation"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="3" />
+            <TextBox Name="txtCorrFrictionElasMod"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="4" />
+            <TextBox Name="txtCorrFrictionPoissonRT"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="5" />
+            
+            <TextBox Name="txtCorrDilationElasMod"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="3"
+                     Grid.Column="4" />
+            <TextBox Name="txtCorrDilationPoissionRT"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="3"
+                     Grid.Column="5" />
+            
+            <TextBox Name="txtCorrElasModPoissonRT"
+                     ToolTip="{StaticResource DefaultToolTip}"
+                     Width="50"
+                     Grid.Row="4"
+                     Grid.Column="5" />
+
+        </Grid>
 
     </StackPanel>
 
