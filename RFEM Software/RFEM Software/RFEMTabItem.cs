@@ -167,4 +167,14 @@ namespace RFEM_Software
             }
         }
     }
+    public class DistributionInfo
+    {
+        public DistributionType Type { get; set; }
+        public double? Mean { get; set; }
+        public double? StandardDev { get; set; }
+        public double? LowerBound { get; set; }
+        public double? UpperBound { get; set; }
+        public double? Location { get; set; }
+        public double? Scale { get; set; }
+    }
 }

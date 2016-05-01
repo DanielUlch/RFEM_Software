@@ -80,6 +80,7 @@
     <Compile Include="Forms\Rbear2d.xaml.cs">
       <DependentUpon>Rbear2d.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RBear2dViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

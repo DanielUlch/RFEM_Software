@@ -22,6 +22,8 @@ namespace RFEM_Software
     public partial class Rbear2d : UserControl, IHelpFiled
     {
 
+        private RBear2dViewModel _ViewModel;
+
         /// <summary>
         /// Dictionary of controls and the locations of their help files
         /// </summary>
@@ -55,6 +57,8 @@ namespace RFEM_Software
         /// </summary>
         public Rbear2d()
         {
+            
+
             //Required by framework
             InitializeComponent();
 
@@ -66,6 +70,10 @@ namespace RFEM_Software
 
             //Set the ItemsSource for each ComboBox to the appropriate List of enumerations
             SetItemsSourceForComboBoxes();
+
+            _ViewModel = new RBear2dViewModel();
+
+            this.DataContext = _ViewModel;
         }
 
         /// <summary>
@@ -303,8 +311,6 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void chkPlotFirstRF_Checked(object sender, RoutedEventArgs e)
         {
-            cboPlotFirstRF.IsEnabled = true;
-            lbPlotFirstRF.IsEnabled = true;
             cboPlotFirstRF.Visibility = Visibility.Visible;
             lbPlotFirstRF.Visibility = Visibility.Visible;
         }
@@ -316,8 +322,6 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void chkPlotFirstRF_UnChecked(object sender, RoutedEventArgs e)
         {
-            cboPlotFirstRF.IsEnabled = false;
-            lbPlotFirstRF.IsEnabled = false;
             cboPlotFirstRF.Visibility = Visibility.Collapsed;
             lbPlotFirstRF.Visibility = Visibility.Collapsed;
         }
@@ -331,7 +335,6 @@ namespace RFEM_Software
         private void chkProducePSPLOTOfFirstFEM_Checked(object sender, RoutedEventArgs e)
         {
             spProducePSPLOTOfFirstFEM.Visibility = Visibility.Visible;
-            SetPostScriptOfFirstFEMSection(true);
         }
 
         /// <summary>
@@ -343,28 +346,19 @@ namespace RFEM_Software
         private void chkProducePSPLOTOfFirstFEM_Unchecked(object sender, RoutedEventArgs e)
         {
             spProducePSPLOTOfFirstFEM.Visibility = Visibility.Collapsed;
-            SetPostScriptOfFirstFEMSection(false);
         }
 
-        /// <summary>
-        /// This method enables or disables all of the controls in the StackPanel with the 
-        /// details of the first displaced finite element mesh.
-        /// </summary>
-        /// <param name="isEnabled">
-        /// If true, this method enables the controls.
-        /// If false, this method disables the controls.
-        /// </param>
-        private void SetPostScriptOfFirstFEMSection(bool isEnabled)
+        private void chkShowRFOnPlot_Checked(object sender, RoutedEventArgs e)
         {
-            chkShowMeshOnDisplacedPlot.IsEnabled = isEnabled;
-            chkShowRFOnPlot.IsEnabled = isEnabled;
-            chkShowLogRF.IsEnabled = isEnabled;
-            cboPropertyToPlot.IsEnabled = isEnabled;
-            lbPropertyToPlot.IsEnabled = isEnabled;
-            lbDisplacedMeshWidth.IsEnabled = isEnabled;
-            txtDisplacedMeshWidth.IsEnabled = isEnabled;
-            lbDisplacedMeshWidthUnits.IsEnabled = isEnabled;
-
+            chkShowLogRF.Visibility = Visibility.Visible;
+            lbPropertyToPlot.Visibility = Visibility.Visible;
+            cboPropertyToPlot.Visibility = Visibility.Visible;
+        }
+        private void chkShowRFOnPlot_Unchecked(object sender, RoutedEventArgs e)
+        {
+            chkShowLogRF.Visibility = Visibility.Collapsed;
+            lbPropertyToPlot.Visibility = Visibility.Collapsed;
+            cboPropertyToPlot.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -377,8 +371,8 @@ namespace RFEM_Software
         {
             lbFootingGap.Visibility = Visibility.Visible;
             txtFootingGap.Visibility = Visibility.Visible;
-            lbFootingGap.IsEnabled = true;
-            txtFootingGap.IsEnabled = true;
+
+            ((RBear2dViewModel)DataContext).NumberOfFootings = 2;
         }
 
         /// <summary>
@@ -391,8 +385,8 @@ namespace RFEM_Software
         {
             lbFootingGap.Visibility = Visibility.Collapsed;
             txtFootingGap.Visibility = Visibility.Collapsed;
-            lbFootingGap.IsEnabled = false;
-            txtFootingGap.IsEnabled = false;
+
+            ((RBear2dViewModel)DataContext).NumberOfFootings = 1;
         }
 
         /// <summary>
@@ -851,6 +845,11 @@ namespace RFEM_Software
                     txtPoissonRatioScale.Visibility = Visibility.Visible;
                     break;
             }
+        }
+
+        private void ReviseFormData()
+        {
+
         }
     }
 }
