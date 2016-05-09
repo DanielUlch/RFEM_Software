@@ -31,15 +31,18 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEM Software.pdb
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software.csprojResolveAssemblyReference.cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\MainWindow.g.cs
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Rbear2d.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMRibbon.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\App.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software_MarkupCompile.cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software_MarkupCompile.lref
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\MainWindow.baml
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Rbear2d.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMRibbon.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software.g.resources
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM_Software.Properties.Resources.resources
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software.csproj.GenerateResource.Cache
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEM Infrastructure.dll
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEM Infrastructure.pdb
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Rbear2dForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Rbear2dForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rbear2d.exe

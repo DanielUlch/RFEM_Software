@@ -144,6 +144,9 @@
                 
             </RibbonTab>
             <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools">
+                <RibbonGroup Header="Simulation">
+                    <RibbonButton Content="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
+                </RibbonGroup>
                 
             </RibbonTab>
             

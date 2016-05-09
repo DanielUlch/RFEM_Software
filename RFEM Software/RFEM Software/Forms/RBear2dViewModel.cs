@@ -4,75 +4,56 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RFEM_Infrastructure;
+using System.Windows;
+using System.Threading;
 
 namespace RFEM_Software.Forms
 {
     class RBear2dViewModel: INotifyPropertyChanged, IDataErrorInfo
     {
-        private string _JobTitle;
-        private string _BaseName;
-
-        private bool _EchoInputDataToOutputFile;
-        private bool _ReportRunProgress;
-        private bool _WriteDebugDataToOutputFile;
-        private bool _PlotFirstRandomField;
-
-        private PlotableProperty _FirstRandomFieldProperty;
-
-        private bool _ProducePSPLOTOfFirstFEM;
-        private bool _ShowMeshOnDisplacedPlot;
-        private bool _ShowRFOnPSPLOT;
-        private bool _ShowLogRandomField;
-
-        private PlotableProperty _PSPLOTProperty;
-
-        private double? _DisplacedMeshPlotWidth;
-
-        private bool _NormalizeBearingCapacitySamples;
-        private bool _OutputBearingCapacitySamples;
-
-        private int? _NElementsInXDir;
-        private int? _NElementsInYDir;
-
-        private double? _ElementSizeInXDir;
-        private double? _ElementSizeInYDir;
-
-        private int _NumberOfFootings;
-
-        private double? _FootingWidth;
-        private double? _FootingGap;
-        private double? _DisplacementInc;
-        private double? _PlasticTol;
-        private double? _BearingTol;
-
-        private int? _MaxNumSteps;
-        private int? _MaxNumIterations;
-        private int? _NSimulations;
-        private int? _GeneratorSeed;
-
-        private int? _CorLengthInXDir;
-        private int? _CorLengthInYDir;
-
-        private CovarianceFunction _CovFunction;
-
-        private DistributionInfo _CohesionDist;
-        private DistributionInfo _FrictionAngleDist;
-        private DistributionInfo _DilationAngleDist;
-        private DistributionInfo _ElasticModulusDist;
-        private DistributionInfo _PoissonsRatioDist;
-
-        private double[,] _CovMatrix;
-
+        private RBear2D _FormData;
+         
         private bool _ChangesHaveBeenMade;
+
+        private double _ProgressPercentage;
+        private string _CurrentOperation = "Ready";
+
+        private List<string> _Errors;
 
         public string JobTitle
         {
-            get { return _JobTitle; }
+            get { return _FormData.JobTitle; }
             set
             {
-                if (_JobTitle != value)
+                if (_FormData.JobTitle != value)
                 {
-                    _JobTitle = value;
+                    _FormData.JobTitle = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double ProgressPercentage
+        {
+            get { return _ProgressPercentage; }
+            set
+            {
+                if(_ProgressPercentage != value)
+                {
+                    _ProgressPercentage = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string CurrentOperation
+        {
+            get { return _CurrentOperation; }
+            set
+            {
+                if(_CurrentOperation != value)
+                {
+                    _CurrentOperation = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -80,12 +61,12 @@ namespace RFEM_Software.Forms
 
         public string BaseName
         {
-            get { return _BaseName; }
+            get { return _FormData.BaseName; }
             set
             {
-                if (_BaseName != value)
+                if (_FormData.BaseName != value)
                 {
-                    _BaseName = value;
+                    _FormData.BaseName = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -93,12 +74,12 @@ namespace RFEM_Software.Forms
 
         public bool EchoInputDataToOutputFile
         {
-            get { return _EchoInputDataToOutputFile; }
+            get { return _FormData.EchoInputDataToOutputFile; }
             set
             {
-                if(_EchoInputDataToOutputFile != value)
+                if(_FormData.EchoInputDataToOutputFile != value)
                 {
-                    _EchoInputDataToOutputFile = value;
+                    _FormData.EchoInputDataToOutputFile = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -106,24 +87,24 @@ namespace RFEM_Software.Forms
 
         public bool ReportRunProgress
         {
-            get { return _ReportRunProgress; }
+            get { return _FormData.ReportRunProgress; }
             set
             {
-                if(_ReportRunProgress != value)
+                if(_FormData.ReportRunProgress != value)
                 {
-                    _ReportRunProgress = value;
+                    _FormData.ReportRunProgress = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool WriteDebugDataToOutputFile
         {
-            get { return _WriteDebugDataToOutputFile; }
+            get { return _FormData.WriteDebugDataToOutputFile; }
             set
             {
-                if(_WriteDebugDataToOutputFile != value)
+                if(_FormData.WriteDebugDataToOutputFile != value)
                 {
-                    _WriteDebugDataToOutputFile = value;
+                    _FormData.WriteDebugDataToOutputFile = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -131,12 +112,12 @@ namespace RFEM_Software.Forms
 
         public bool PlotFirstRandomField
         {
-            get { return _PlotFirstRandomField; }
+            get { return _FormData.PlotFirstRandomField; }
             set
             {
-                if(_PlotFirstRandomField != value)
+                if(_FormData.PlotFirstRandomField != value)
                 {
-                    _PlotFirstRandomField = value;
+                    _FormData.PlotFirstRandomField  = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -146,13 +127,13 @@ namespace RFEM_Software.Forms
         {
             get
             {
-                return _FirstRandomFieldProperty;
+                return _FormData.FirstRandomFieldProperty;
             }
             set
             {
-                if(_FirstRandomFieldProperty != value)
+                if(_FormData.FirstRandomFieldProperty != value)
                 {
-                    _FirstRandomFieldProperty = value;
+                    _FormData.FirstRandomFieldProperty = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -160,12 +141,12 @@ namespace RFEM_Software.Forms
 
         public bool ProducePSPLOTOfFirstFEM
         {
-            get { return _ProducePSPLOTOfFirstFEM; }
+            get { return _FormData.ProducePSPLOTOfFirstFEM; }
             set
             {
-                if(_ProducePSPLOTOfFirstFEM != value)
+                if(_FormData.ProducePSPLOTOfFirstFEM != value)
                 {
-                    _ProducePSPLOTOfFirstFEM = value;
+                    _FormData.ProducePSPLOTOfFirstFEM = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("DisplacedMeshPlotWidth");
                 }
@@ -173,48 +154,48 @@ namespace RFEM_Software.Forms
         }
         public bool ShowMeshOnDisplacedPlot
         {
-            get { return _ShowMeshOnDisplacedPlot; }
+            get { return _FormData.ShowMeshOnDisplacedPlot; }
             set
             {
-                if(_ShowMeshOnDisplacedPlot != value)
+                if(_FormData.ShowMeshOnDisplacedPlot != value)
                 {
-                    _ShowMeshOnDisplacedPlot = value;
+                    _FormData.ShowMeshOnDisplacedPlot = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowRFOnPSPLOT
         {
-            get { return _ShowRFOnPSPLOT; }
+            get { return _FormData.ShowRFOnPSPLOT; }
             set
             {
-                if(_ShowRFOnPSPLOT != value)
+                if(_FormData.ShowRFOnPSPLOT != value)
                 {
-                    _ShowRFOnPSPLOT = value;
+                    _FormData.ShowRFOnPSPLOT = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowLogRandomField
         {
-            get { return _ShowLogRandomField; }
+            get { return _FormData.ShowLogRandomField; }
             set
             {
-                if(_ShowLogRandomField != value)
+                if(_FormData.ShowLogRandomField != value)
                 {
-                    _ShowLogRandomField = value;
+                    _FormData.ShowLogRandomField = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public PlotableProperty PSPLOTProperty
         {
-            get { return _PSPLOTProperty; }
+            get { return _FormData.PSPLOTProperty; }
             set
             {
-                if(_PSPLOTProperty != value)
+                if(_FormData.PSPLOTProperty != value)
                 {
-                    _PSPLOTProperty = value;
+                    _FormData.PSPLOTProperty = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -222,12 +203,12 @@ namespace RFEM_Software.Forms
 
         public double? DisplacedMeshPlotWidth
         {
-            get { return _DisplacedMeshPlotWidth; }
+            get { return _FormData.DisplacedMeshPlotWidth; }
             set
             {
-                if(_DisplacedMeshPlotWidth != value)
+                if(_FormData.DisplacedMeshPlotWidth != value)
                 {
-                    _DisplacedMeshPlotWidth = value;
+                    _FormData.DisplacedMeshPlotWidth = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -235,12 +216,12 @@ namespace RFEM_Software.Forms
 
         public bool NormalizeBearingCapacitySamples
         {
-            get { return _NormalizeBearingCapacitySamples; }
+            get { return _FormData.NormalizeBearingCapacitySamples; }
             set
             {
-                if(_NormalizeBearingCapacitySamples != value)
+                if(_FormData.NormalizeBearingCapacitySamples != value)
                 {
-                    _NormalizeBearingCapacitySamples = value;
+                    _FormData.NormalizeBearingCapacitySamples = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -248,12 +229,12 @@ namespace RFEM_Software.Forms
 
         public bool OutputBearingCapacitySamples
         {
-            get { return _OutputBearingCapacitySamples; }
+            get { return _FormData.OutputBearingCapacitySamples; }
             set
             {
-                if(_OutputBearingCapacitySamples != value)
+                if(_FormData.OutputBearingCapacitySamples != value)
                 {
-                    _OutputBearingCapacitySamples = value;
+                    _FormData.OutputBearingCapacitySamples = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -261,12 +242,12 @@ namespace RFEM_Software.Forms
 
         public int? NElementsInXDir
         {
-            get { return _NElementsInXDir; }
+            get { return _FormData.NElementsInXDir; }
             set
             {
-                if(_NElementsInXDir != value)
+                if(_FormData.NElementsInXDir != value)
                 {
-                    _NElementsInXDir = value;
+                    _FormData.NElementsInXDir = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -274,12 +255,12 @@ namespace RFEM_Software.Forms
 
         public int? NElementsInYDir
         {
-            get { return _NElementsInYDir; }
+            get { return _FormData.NElementsInYDir; }
             set
             {
-                if(_NElementsInYDir != value)
+                if(_FormData.NElementsInYDir != value)
                 {
-                    _NElementsInYDir = value;
+                    _FormData.NElementsInYDir = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -287,12 +268,12 @@ namespace RFEM_Software.Forms
 
         public double? ElementSizeInXDir
         {
-            get { return _ElementSizeInXDir; }
+            get { return _FormData.ElementSizeInXDir; }
             set
             {
-                if(_ElementSizeInXDir != value)
+                if(_FormData.ElementSizeInXDir != value)
                 {
-                    _ElementSizeInXDir = value;
+                    _FormData.ElementSizeInXDir = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -300,12 +281,12 @@ namespace RFEM_Software.Forms
 
         public double? ElementSizeInYDir
         {
-            get { return _ElementSizeInYDir; }
+            get { return _FormData.ElementSizeInYDir; }
             set
             {
-                if(_ElementSizeInYDir != value)
+                if(_FormData.ElementSizeInYDir != value)
                 {
-                    _ElementSizeInYDir = value;
+                    _FormData.ElementSizeInYDir = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -313,12 +294,12 @@ namespace RFEM_Software.Forms
 
         public int NumberOfFootings
         {
-            get { return _NumberOfFootings; }
+            get { return _FormData.NumberOfFootings; }
             set
             {
-                if(_NumberOfFootings !=value)
+                if(_FormData.NumberOfFootings !=value)
                 {
-                    _NumberOfFootings = value;
+                    _FormData.NumberOfFootings = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("FootingGap");
                 }
@@ -327,60 +308,60 @@ namespace RFEM_Software.Forms
 
         public double? FootingWidth
         {
-            get { return _FootingWidth; }
+            get { return _FormData.FootingWidth; }
             set
             {
-                if(_FootingWidth != value)
+                if(_FormData.FootingWidth != value)
                 {
-                    _FootingWidth = value;
+                    _FormData.FootingWidth = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double? FootingGap
         {
-            get { return _FootingGap; }
+            get { return _FormData.FootingGap; }
             set
             {
-                if(_FootingGap != value)
+                if(_FormData.FootingGap != value)
                 {
-                    _FootingGap = value;
+                    _FormData.FootingGap = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double? DisplacementInc
         {
-            get { return _DisplacementInc; }
+            get { return _FormData.DisplacementInc; }
             set
             {
-                if(_DisplacementInc != value)
+                if(_FormData.DisplacementInc != value)
                 {
-                    _DisplacementInc = value;
+                    _FormData.DisplacementInc = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double? PlasticTol
         {
-            get { return _PlasticTol; }
+            get { return _FormData.PlasticTol; }
             set
             {
-                if(_PlasticTol != value)
+                if(_FormData.PlasticTol != value)
                 {
-                    _PlasticTol = value;
+                    _FormData.PlasticTol = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double? BearingTol
         {
-            get { return _BearingTol; }
+            get { return _FormData.BearingTol; }
             set
             {
-                if(_BearingTol != value)
+                if(_FormData.BearingTol != value)
                 {
-                    _BearingTol = value;
+                    _FormData.BearingTol = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -388,48 +369,48 @@ namespace RFEM_Software.Forms
 
         public int? MaxNumSteps
         {
-            get { return _MaxNumSteps; }
+            get { return _FormData.MaxNumSteps; }
             set
             {
-                if(_MaxNumSteps != value)
+                if(_FormData.MaxNumSteps != value)
                 {
-                    _MaxNumSteps = value;
+                    _FormData.MaxNumSteps = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int? MaxNumIterations
         {
-            get { return _MaxNumIterations; }
+            get { return _FormData.MaxNumIterations; }
             set
             {
-                if(_MaxNumIterations != value)
+                if(_FormData.MaxNumIterations != value)
                 {
-                    _MaxNumIterations = value;
+                    _FormData.MaxNumIterations = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int? NSimulations
         {
-            get { return _NSimulations; }
+            get { return _FormData.NSimulations; }
             set
             {
-                if(_NSimulations != value)
+                if(_FormData.NSimulations != value)
                 {
-                    _NSimulations = value;
+                    _FormData.NSimulations = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int? GeneratorSeed
         {
-            get { return _GeneratorSeed; }
+            get { return _FormData.GeneratorSeed; }
             set
             {
-                if(_GeneratorSeed != value)
+                if(_FormData.GeneratorSeed != value)
                 {
-                    _GeneratorSeed = value;
+                    _FormData.GeneratorSeed = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -437,63 +418,243 @@ namespace RFEM_Software.Forms
         }
         public int? CorLengthInXDir
         {
-            get { return _CorLengthInXDir; }
+            get { return _FormData.CorLengthInXDir; }
             set
             {
-                if(_CorLengthInXDir != value)
+                if(_FormData.CorLengthInXDir != value)
                 {
-                    _CorLengthInXDir = value;
+                    _FormData.CorLengthInXDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int? CorLengthInYDir
         {
-            get { return _CorLengthInYDir; }
+            get { return _FormData.CorLengthInYDir; }
             set
             {
-                if(_CorLengthInYDir != value)
+                if(_FormData.CorLengthInYDir != value)
                 {
-                    _CorLengthInYDir = value;
+                    _FormData.CorLengthInYDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public CovarianceFunction  CovFunction
         {
-            get { return _CovFunction; }
+            get { return _FormData.CovFunction; }
             set
             {
-                if(_CovFunction != value)
+                if(_FormData.CovFunction != value)
                 {
-                    _CovFunction = value;
+                    _FormData.CovFunction = value;
                     NotifyPropertyChanged();
                 }
             }
         }
+        public DistributionInfo CohesionDist
+        {
+            get { return _FormData.CohesionDist; }
+        }
+        public DistributionInfo FrictionAngleDist
+        {
+            get { return _FormData.FrictionAngleDist; }
+        }
+        public string FrictionAnglePrefix
+        {
+            get { return _FormData.FrictionAnglePrefix; }
+            set
+            {
+                _FormData.FrictionAnglePrefix = value;
+            }
+        }
+        public DistributionInfo DilationAngleDist
+        {
+            get { return _FormData.DilationAngleDist; }
+        }
+        public DistributionInfo ElasticModulusDist
+        {
+            get { return _FormData.ElasticModulusDist; }
+        }
+        public DistributionInfo PoissonsRatioDist
+        {
+            get { return _FormData.PoissonsRatioDist; }
+        }
+
+        public double? CorrCohesionFriction
+        {
+            get { return _FormData.CorMatrix[0, 1]; }
+            set
+            {
+                if (_FormData.CorMatrix[0, 1] != value)
+                {
+                    _FormData.CorMatrix[0, 1] = value;
+                    _FormData.CorMatrix[1, 0] = value;
+                    NotifyPropertyChanged(); 
+                }
+            }
+        }
+        public double? CorrCohesionDilation
+        {
+            get { return _FormData.CorMatrix[0, 2]; }
+            set
+            {
+                if(_FormData.CorMatrix[0,2] != value)
+                {
+                    _FormData.CorMatrix[0, 2] = value;
+                    _FormData.CorMatrix[2, 0] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrCohesionElasMod
+        {
+            get { return _FormData.CorMatrix[0, 3]; }
+            set
+            {
+                if(_FormData.CorMatrix[0,3] != value)
+                {
+                    _FormData.CorMatrix[0, 3] = value;
+                    _FormData.CorMatrix[3, 0] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrCohesionPoissonRT
+        {
+            get { return _FormData.CorMatrix[0, 4]; }
+            set
+            {
+                if (_FormData.CorMatrix[0, 4] != value)
+                {
+                    _FormData.CorMatrix[0, 4] = value;
+                    _FormData.CorMatrix[4, 0] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrFrictionDilation
+        {
+            get { return _FormData.CorMatrix[1, 2]; }
+            set
+            {
+                if (_FormData.CorMatrix[1, 2] != value)
+                {
+                    _FormData.CorMatrix[1, 2] = value;
+                    _FormData.CorMatrix[2, 1] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrFrictionElasMod
+        {
+            get { return _FormData.CorMatrix[1, 3]; }
+            set
+            {
+                if(_FormData.CorMatrix[1,3] != value)
+                {
+                    _FormData.CorMatrix[1, 3] = value;
+                    _FormData.CorMatrix[3, 1] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrFrictionPoissonRT
+        {
+            get { return _FormData.CorMatrix[1, 4]; }
+            set
+            {
+                if(_FormData.CorMatrix[1,4]!= value)
+                {
+                    _FormData.CorMatrix[1, 4] = value;
+                    _FormData.CorMatrix[4, 1] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrDilationElasMod
+        {
+            get { return _FormData.CorMatrix[2, 3]; }
+            set
+            {
+                if(_FormData.CorMatrix[2,3] != value)
+                {
+                    _FormData.CorMatrix[2, 3] = value;
+                    _FormData.CorMatrix[3, 2] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrDilationPoissionRT
+        {
+            get { return _FormData.CorMatrix[2, 4]; }
+            set
+            {
+                if(_FormData.CorMatrix[2, 4] != value)
+                {
+                    _FormData.CorMatrix[2, 4] = value;
+                    _FormData.CorMatrix[4, 2] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double? CorrElasModPoissonRT
+        {
+            get { return _FormData.CorMatrix[3, 4]; }
+            set
+            {
+                if(_FormData.CorMatrix[3, 4] != value)
+                {
+                    _FormData.CorMatrix[3, 4] = value;
+                    _FormData.CorMatrix[4, 3] = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool HasErrors
+        {
+            get
+            {
+                return (_Errors.Count > 0);
+            }
+        }
         public RBear2dViewModel()
         {
-            _CohesionDist = new DistributionInfo();
-            _FrictionAngleDist = new DistributionInfo();
-            _DilationAngleDist = new DistributionInfo();
-            _ElasticModulusDist = new DistributionInfo();
-            _PoissonsRatioDist = new DistributionInfo();
+            _FormData = new RBear2D();
 
-            _CovMatrix = new double[,] { { 1, 0, 0, 0, 0 },
-                                         { 0, 1, 0, 0, 0 },
-                                         { 0, 0, 1, 0, 0 },
-                                         { 0, 0, 0, 1, 0 },
-                                         { 0, 0, 0, 0, 1 }};
-            _NumberOfFootings = 1;
+            _FormData.CohesionDist.AddValidationDelegate(Validate);
+            _FormData.FrictionAngleDist.AddValidationDelegate(Validate);
+            _FormData.DilationAngleDist.AddValidationDelegate(Validate);
+            _FormData.ElasticModulusDist.AddValidationDelegate(Validate);
+            _FormData.PoissonsRatioDist.AddValidationDelegate(Validate);
+
+            //_FormData.CohesionDist.PropertyChanged += this.PropertyChanged;
+           
+
+
+            _FormData.CorMatrix = new double?[,] { { 1, 0, 0, 0, 0 },
+                                                   { 0, 1, 0, 0, 0 },
+                                                   { 0, 0, 1, 0, 0 },
+                                                   { 0, 0, 0, 1, 0 },
+                                                   { 0, 0, 0, 0, 1 }};
+            _FormData.NumberOfFootings = 1;
 
             _ChangesHaveBeenMade = false;
+
+            _Errors = new List<string>();
+            
         }
 
         public string Error
         {
             get
             {
-                return ".....";
+                string result = this[string.Empty];
+                if (result != null && result.Trim().Length == 0)
+                {
+                    result = null;
+                }
+                return result;
             }
         }
 
@@ -501,143 +662,352 @@ namespace RFEM_Software.Forms
         {
             get
             {
-                return Validate(columnName);
+                return Validate(this, columnName);
             }
         }
 
-        public string Validate(string propertyName)
+        public string Validate(object sender, string propertyName)
         {
             string validationMessage = string.Empty;
 
             switch (propertyName)
             {
                 case "JobTitle":
-                    if(_JobTitle == null)
+                    if(_FormData.JobTitle == null)
                     {
                         validationMessage = "Job title can not be null.";
                     }
                     break;
                 case "BaseName":
-                    if(_BaseName == null)
+                    if(_FormData.BaseName == null)
                     {
                         validationMessage = "Base name can not be null.";
                     }
                     break;
                 case "FirstRandomFieldProperty":
-                    if(_PlotFirstRandomField == true && !Enum.IsDefined(typeof(PlotableProperty), _FirstRandomFieldProperty))
+                    if(_FormData.PlotFirstRandomField == true && 
+                        !Enum.IsDefined(typeof(PlotableProperty), _FormData.FirstRandomFieldProperty))
                     {
                         validationMessage = "Invalid property type.";
                     }
                     break;
                 case "PSPLOTProperty":
-                    if(_ProducePSPLOTOfFirstFEM == true &&
-                        _ShowRFOnPSPLOT == true &&  
-                        Enum.IsDefined(typeof(PlotableProperty), _PSPLOTProperty))
+                    if(_FormData.ProducePSPLOTOfFirstFEM == true &&
+                        _FormData.ShowRFOnPSPLOT == true &&  
+                        !Enum.IsDefined(typeof(PlotableProperty), _FormData.PSPLOTProperty))
                     {
                         validationMessage = "Invalid property type.";
                     }
                     break;
                 case "DisplacedMeshPlotWidth":
-                    if(_ProducePSPLOTOfFirstFEM == true)
+                    if(_FormData.ProducePSPLOTOfFirstFEM == true)
                     {
-                        if(_DisplacedMeshPlotWidth == null || _DisplacedMeshPlotWidth < 0)
+                        if(_FormData.DisplacedMeshPlotWidth == null || _FormData.DisplacedMeshPlotWidth < 0)
                         {
                             validationMessage = "Invalid property value.";
                         }
                     }
                     break;
                 case "NElementsInXDir":
-                    if(_NElementsInXDir == null || _NElementsInXDir < 0 )
+                    if(_FormData.NElementsInXDir == null || _FormData.NElementsInXDir < 0 )
                     {
                         validationMessage = "Number of elements must be a positive integer.";
                     }
                     break;
                 case "NElementsInYDir":
-                    if(_NElementsInYDir == null || _NElementsInYDir < 0 )
+                    if(_FormData.NElementsInYDir == null || _FormData.NElementsInYDir < 0 )
                     {
                         validationMessage = "Number of elements must be a positive integer.";
                     }
                     break;
                 case "ElementSizeInXDir":
-                    if(_ElementSizeInXDir == null || _ElementSizeInXDir < 0)
+                    if(_FormData.ElementSizeInXDir == null || _FormData.ElementSizeInXDir < 0)
                     {
                         validationMessage = "Element size must be a positive number.";
                     }
                     break;
                 case "ElementSizeInYDir":
-                    if(_ElementSizeInYDir == null || _ElementSizeInYDir < 0)
+                    if(_FormData.ElementSizeInYDir == null || _FormData.ElementSizeInYDir < 0)
                     {
                         validationMessage = "Element size must be a positive number.";
                     }
                     break;
                 case "FootingWidth":
-                    if(_FootingWidth == null || _FootingWidth < 0)
+                    if(_FormData.FootingWidth == null || _FormData.FootingWidth < 0)
                     {
                         validationMessage = "Footing width must be a positive number.";
                     }
                     break;
                 case "FootingGap":
-                    if(_NumberOfFootings ==2 &&(_FootingGap == null || _FootingGap < 0))
+                    if(_FormData.NumberOfFootings ==2 &&(_FormData.FootingGap == null || _FormData.FootingGap < 0))
                     {
                         validationMessage = "Footing gap must be a positive number.";
                     }
                     break;
                 case "DisplacementInc":
-                    if(_DisplacementInc == null || _DisplacementInc < 0)
+                    if(_FormData.DisplacementInc == null || _FormData.DisplacementInc < 0)
                     {
                         validationMessage = "Displacement increment must be a positive number.";
                     }
                     break;
                 case "PlasticTol":
-                    if(_PlasticTol == null || _PlasticTol < 0)
+                    if(_FormData.PlasticTol == null || _FormData.PlasticTol < 0)
                     {
                         validationMessage = "Plastic tol must be a positive number.";
                     }
                     break;
                 case "BearingTol":
-                    if(_BearingTol == null || _BearingTol < 0)
+                    if(_FormData.BearingTol == null || _FormData.BearingTol < 0)
                     {
                         validationMessage = "Bearing tol must be a positive number.";
                     }
                     break;
                 case "MaxNumSteps":
-                    if(_MaxNumSteps == null || _MaxNumSteps < 0)
+                    if(_FormData.MaxNumSteps == null || _FormData.MaxNumSteps < 0)
                     {
                         validationMessage = "Max number of steps must be a positive integer.";
                     }
                     break;
                 case "MaxNumIterations":
-                    if(_MaxNumIterations == null || _MaxNumIterations <0)
+                    if(_FormData.MaxNumIterations == null || _FormData.MaxNumIterations <0)
                     {
                         validationMessage = "Max number of iterations must be a positive integer.";
                     }
                     break;
                 case "NSimulations":
-                    if(_NSimulations == null || _NSimulations < 0)
+                    if(_FormData.NSimulations == null || _FormData.NSimulations < 0)
                     {
                         validationMessage = "Number of simulations must be a positive integer.";
                     }
                     break;
                 case "GeneratorSeed":
-                    if(_GeneratorSeed == null )
+                    if(_FormData.GeneratorSeed == null )
                     {
                         validationMessage = "Generator seed must be a number";
                     }
                     break;
                 case "CorLengthInXDir":
-                    if(_CorLengthInXDir == null || _CorLengthInXDir < 0)
+                    if(_FormData.CorLengthInXDir == null || _FormData.CorLengthInXDir < 0)
                     {
                         validationMessage = "Correlation length in x direction must be a positive number";
                     }
                     break;
                 case "CorLengthInYDir":
-                    if(_CorLengthInYDir == null || _CorLengthInYDir < 0)
+                    if(_FormData.CorLengthInYDir == null || _FormData.CorLengthInYDir < 0)
                     {
                         validationMessage = "Correlation length in y direction must be a positive number";
                     }
                     break;
+                case "Mean":
+                    if(sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if((((DistributionInfo)sender).Type == DistributionType.Deterministic ||
+                            ((DistributionInfo)sender).Type == DistributionType.Normal ||
+                            ((DistributionInfo)sender).Type == DistributionType.LogNormal)&&
+                            ((DistributionInfo)sender).Mean == null)
+                        {
+                            validationMessage = "Mean must be specified for " +
+                                Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                " distribution.";
+                        }
+                    }
+                    break;
+                case "StandardDev":
+                    if (sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if ((((DistributionInfo)sender).Type == DistributionType.Normal ||
+                            ((DistributionInfo)sender).Type == DistributionType.LogNormal))
+                        {
+                            if (((DistributionInfo)sender).StandardDev == null)
+                            {
+                                validationMessage = "Standard deviation must be specified for " +
+                                    Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                    " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                    " distribution.";
+                            }else if (((DistributionInfo)sender).StandardDev < 0)
+                            {
+                                validationMessage = "Standard deviation must be a positive value for " +
+                                    Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp);
+                            }
+                        }
+                          
+                    }
+                    break;
+                case "LowerBound":
+                    if(sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if(((DistributionInfo)sender).Type == DistributionType.Bounded)
+                        {
+                            if(((DistributionInfo)sender).LowerBound == null)
+                            {
+                                validationMessage = "Lower bound must be specified for " +
+                                Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                " distribution.";
+                            }
+                        }
+                    }
+                    break;
+                case "UpperBound":
+                    if (sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if (((DistributionInfo)sender).Type == DistributionType.Bounded)
+                        {
+                            if (((DistributionInfo)sender).UpperBound == null)
+                            {
+                                validationMessage = "Upper bound must be specified for " +
+                                Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                " distribution.";
+                            }
+                        }
+                    }
+                    break;
+                case "Location":
+                    if (sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if (((DistributionInfo)sender).Type == DistributionType.Bounded)
+                        {
+                            if (((DistributionInfo)sender).Location == null)
+                            {
+                                validationMessage = "Location must be specified for " +
+                                Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                " distribution.";
+                            }
+                        }
+                    }
+                    break;
+                case "Scale":
+                    if (sender.GetType() == typeof(DistributionInfo))
+                    {
+                        if (((DistributionInfo)sender).Type == DistributionType.Bounded)
+                        {
+                            if (((DistributionInfo)sender).Scale == null)
+                            {
+                                validationMessage = "Scale must be specified for " +
+                                Enum.GetName(typeof(SoilProperty), ((DistributionInfo)sender).SoilProp) +
+                                " " + Enum.GetName(typeof(DistributionType), ((DistributionInfo)sender).Type) +
+                                " distribution.";
+                            }
+                        }
+                    }
+                    break;
+                case "CorrCohesionFriction":
+                    if(_FormData.CorMatrix[0,1] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if(_FormData.CorMatrix[0,1] > 1 || _FormData.CorMatrix[0,1] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrCohesionDilation":
+                    if (_FormData.CorMatrix[0, 2] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[0, 2] > 1 || _FormData.CorMatrix[0, 2] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrCohesionElasMod":
+                    if (_FormData.CorMatrix[0, 3] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[0, 3] > 1 || _FormData.CorMatrix[0, 3] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrCohesionPoissonRT":
+                    if (_FormData.CorMatrix[0, 4] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[0, 4] > 1 || _FormData.CorMatrix[0, 4] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrFrictionDilation":
+                    if (_FormData.CorMatrix[1, 2] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[1, 2] > 1 || _FormData.CorMatrix[1, 2] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrFrictionElasMod":
+                    if (_FormData.CorMatrix[1, 3] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[1, 3] > 1 || _FormData.CorMatrix[1, 3] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrFrictionPoissonRT":
+                    if (_FormData.CorMatrix[1, 4] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[1, 4] > 1 || _FormData.CorMatrix[1, 4] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrDilationElasMod":
+                    if (_FormData.CorMatrix[2, 3] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[2, 3] > 1 || _FormData.CorMatrix[2, 3] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrDilationPoissionRT":
+                    if (_FormData.CorMatrix[2, 4] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[2, 4] > 1 || _FormData.CorMatrix[2, 4] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
+                case "CorrElasModPoissonRT":
+                    if (_FormData.CorMatrix[3, 4] == null)
+                    {
+                        validationMessage = "Correlation matrix elements must be specified";
+                    }
+                    else if (_FormData.CorMatrix[3, 4] > 1 || _FormData.CorMatrix[3, 4] < -1)
+                    {
+                        validationMessage = "Correlation matrix elements must be >-1 and <1";
+                    }
+                    break;
             }
 
+            if(validationMessage == string.Empty || validationMessage == null)
+            {
+                if (_Errors.Contains(propertyName))
+                    _Errors.Remove(propertyName);
+            }
+            else
+            {
+                if(!_Errors.Contains(propertyName))
+                {
+                    _Errors.Add(propertyName);
+                }
+            }
             return validationMessage;
         }
 
@@ -651,6 +1021,93 @@ namespace RFEM_Software.Forms
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }     
+        }
+        public async void RunSimAsync()
+        {
+
+        }
+        public bool RunSim()
+        {
+            if (HasErrors)
+                MessageBox.Show("Please correct erros in form before running the simulation.");
+            else
+            {
+
+                FileWriter.Write(_FormData);
+                
+
+
+                var worker = new BackgroundWorker();
+                worker.WorkerReportsProgress = true;
+                worker.DoWork += _FormData.ExecuteSim;
+                worker.ProgressChanged += worker_ProgressChanged;
+                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+                worker.RunWorkerAsync();
+
+                
+
+            }
+            return true;
+        }
+        public async Task<string> RunSimTest(CancellationToken token)
+        {
+            if (HasErrors)
+            {
+                MessageBox.Show("Please correct erros in form before running the simulation.");
+                return "";
+            }
+            else
+            {
+
+                FileWriter.Write(_FormData);
+                var tsk = await _FormData.RunSimAsync(new Progress<int>(p =>
+                                               {
+                                                   ProgressPercentage = p * 100 / (int)NSimulations;
+                                               }), new Progress<string>(ps =>
+                                               {
+                                                   CurrentOperation = ps;
+                                               }), token);
+
+                return tsk;
+            }
+        }
+        public Task<string> RunSimTest2(CancellationToken token)
+        {
+            if (HasErrors)
+            {
+                MessageBox.Show("Please correct erros in form before running the simulation.");
+                return Task.FromResult("");
+            }
+            else
+            {
+
+                FileWriter.Write(_FormData);
+                var tsk = Task<string>.Run(() => _FormData.RunSimTest2(new Progress<int>(p =>
+                {
+                    ProgressPercentage = p * 100 / (int)NSimulations;
+                }), new Progress<string>(ps =>
+                {
+                    CurrentOperation = ps;
+                }), token));
+
+                return tsk;
+            }
+        }
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            ProgressPercentage = e.ProgressPercentage;
+        }
+        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show(e.Result.ToString());
+        }
+        void TestProgressBar(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                System.Threading.Thread.Sleep(100);
+            }
         }
     }
    

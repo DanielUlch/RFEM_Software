@@ -98,10 +98,11 @@
 
         <StatusBar Grid.Row="2">
             <Label Content="Status:"/>
-            <Label x:Name="lblStatus" Content="Ready" />
+            <Label x:Name="lblStatus" Content="{Binding Path=CurrentOperation}" />
             <ProgressBar  x:Name="progressBar" 
                           Width="100"
-                          Visibility="hidden"/>
+                          Visibility="Hidden"
+                          Value="{Binding Path=ProgressPercentage}"/>
         </StatusBar>
         
         

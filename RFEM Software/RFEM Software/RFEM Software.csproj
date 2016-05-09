@@ -77,8 +77,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Forms\IHelpFiled.cs" />
-    <Compile Include="Forms\Rbear2d.xaml.cs">
-      <DependentUpon>Rbear2d.xaml</DependentUpon>
+    <Compile Include="Forms\Rbear2dForm.xaml.cs">
+      <DependentUpon>Rbear2dForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\RBear2dViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -220,7 +220,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\Rbear2d.xaml">
+    <Page Include="Forms\Rbear2dForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -287,7 +287,12 @@
   <ItemGroup>
     <SplashScreen Include="RFEMSplashScreen.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RFEM Infrastructure\RFEM Infrastructure.csproj">
+      <Project>{efefad51-0aa4-44f1-9efd-8520bf35ce07}</Project>
+      <Name>RFEM Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

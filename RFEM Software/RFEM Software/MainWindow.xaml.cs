@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,6 +56,8 @@ namespace RFEM_Software
             //Initialize dummy column to link layer 1 and 2 for the help pane
             column1CloneForLayer1 = new ColumnDefinition();
             column1CloneForLayer1.SharedSizeGroup = "column1";
+
+            this.mainRibbon.btn_RunSim.Click += RunSimTestAsync;
 
         }
         /// <summary>
@@ -162,6 +165,7 @@ namespace RFEM_Software
             {
                 if (((RFEMTabItem)this.tabControl.SelectedItem).TabType == RFEMTabType.DataInput){
                     this.mainRibbon.RunTools.Visibility = Visibility.Visible;
+                    this.DataContext = ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).DataContext;
                 }
                 else
                 {
@@ -395,6 +399,28 @@ namespace RFEM_Software
             LoadReader(ApplicationHelpLocation);
         }
 
+        private async void RunSimAsync(object sender, RoutedEventArgs e)
+        {
+            this.progressBar.Visibility = Visibility.Visible;
+            this.lblStatus.Content = "Running Simulation";
+            var b = await ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).RunSimAsync();
+            if(b == true)
+            {
+                this.lblStatus.Content = "Ready";
+                this.progressBar.Visibility = Visibility.Hidden;
+            }
+            
+        }
+        private async void RunSimTestAsync(object sender, RoutedEventArgs e)
+        {
+            this.progressBar.Visibility = Visibility.Visible;
+            var token = new CancellationToken();
+            var tsk = await ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).RunSimTest2Async(token);
+            
+            MessageBox.Show(tsk);
+            this.progressBar.Visibility = Visibility.Hidden;
+        }
+
     }
 
     /// <summary>
@@ -467,7 +493,7 @@ namespace RFEM_Software
                 switch (ButtonName)
                 {
                     case "btnMRBear2d":
-                        myWindow.AddNewDataInput(new Rbear2d(), "RBear2d");
+                        myWindow.AddNewDataInput(new Rbear2dForm(), "RBear2d");
                         break;
                     case "btnMRDam2d":
                         MessageBox.Show("MRDamn2d Stub");
@@ -512,6 +538,7 @@ namespace RFEM_Software
                 MessageBox.Show(exp.Message);
             }
         }
+        
     }
 }
 
