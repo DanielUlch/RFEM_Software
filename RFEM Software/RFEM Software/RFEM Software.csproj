@@ -76,11 +76,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Forms\IHelpFiled.cs" />
+    <Compile Include="Dialogs\ReadDataFileDialog.xaml.cs">
+      <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FormBuilder.cs" />
     <Compile Include="Forms\Rbear2dForm.xaml.cs">
       <DependentUpon>Rbear2dForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\RBear2dViewModel.cs" />
+    <Compile Include="ISimView.cs" />
+    <Compile Include="ISimViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,6 +213,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <Page Include="Dialogs\ReadDataFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -292,6 +301,33 @@
       <Project>{efefad51-0aa4-44f1-9efd-8520bf35ce07}</Project>
       <Name>RFEM Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing_cap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing_cap2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pile_setl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bearing4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Open_Folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

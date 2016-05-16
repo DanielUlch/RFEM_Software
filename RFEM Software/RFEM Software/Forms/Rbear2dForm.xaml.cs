@@ -22,7 +22,7 @@ namespace RFEM_Software
     /// This form is created by the main window and placed in the tab control. This
     /// form is used for data input for the RBear2d.exe application.
     /// </summary>
-    public partial class Rbear2dForm : UserControl, IHelpFiled
+    public partial class Rbear2dForm : UserControl, ISimView
     {
 
         private RBear2dViewModel _ViewModel;
@@ -55,6 +55,14 @@ namespace RFEM_Software
         /// </summary>
         private string DefaultHelp;
 
+        public ISimViewModel ViewModel
+        {
+            get
+            {
+                return _ViewModel;
+            }
+        }
+
         /// <summary>
         /// Contsructor for the form
         /// </summary>
@@ -78,6 +86,34 @@ namespace RFEM_Software
             SetItemsSourceForComboBoxes();
 
             
+
+        }
+        public Rbear2dForm(RBear2D formData)
+        {
+            _ViewModel = new RBear2dViewModel(formData);
+
+            this.DataContext = _ViewModel;
+
+            //Required by framework
+            InitializeComponent();
+
+            //Load the locations of the help files into memory
+            HelpLocations = InitializeHelpLocations();
+
+            //Initialize the various enumerations bound to ComboBoxes in the form
+            InitializeEnumStructs();
+
+            //Set the ItemsSource for each ComboBox to the appropriate List of enumerations
+            SetItemsSourceForComboBoxes();
+
+            if(_ViewModel.PlotFirstRandomField)
+                chkPlotFirstRF_Checked(null, null);
+            if (_ViewModel.ProducePSPLOTOfFirstFEM)
+                chkProducePSPLOTOfFirstFEM_Checked(null, null);
+            if (_ViewModel.FrictionAnglePrefix == "t")
+                this.rbFrictionAngleTanPhi.IsChecked = true;
+            if (_ViewModel.ShowRFOnPSPLOT)
+                chkShowRFOnPlot_Checked(null, null);
         }
 
         /// <summary>
@@ -315,8 +351,12 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void chkPlotFirstRF_Checked(object sender, RoutedEventArgs e)
         {
-            cboPlotFirstRF.Visibility = Visibility.Visible;
-            lbPlotFirstRF.Visibility = Visibility.Visible;
+            if(cboPlotFirstRF != null && lbPlotFirstRF != null)
+            {
+                cboPlotFirstRF.Visibility = Visibility.Visible;
+                lbPlotFirstRF.Visibility = Visibility.Visible;
+            }
+                      
         }
         /// <summary>
         /// Disable and collapse ComboBox(and its label) to select which property to plot 
@@ -338,7 +378,8 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void chkProducePSPLOTOfFirstFEM_Checked(object sender, RoutedEventArgs e)
         {
-            spProducePSPLOTOfFirstFEM.Visibility = Visibility.Visible;
+            if(spProducePSPLOTOfFirstFEM!= null)
+                spProducePSPLOTOfFirstFEM.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -354,9 +395,13 @@ namespace RFEM_Software
 
         private void chkShowRFOnPlot_Checked(object sender, RoutedEventArgs e)
         {
-            chkShowLogRF.Visibility = Visibility.Visible;
-            lbPropertyToPlot.Visibility = Visibility.Visible;
-            cboPropertyToPlot.Visibility = Visibility.Visible;
+            if(chkShowLogRF != null && lbPropertyToPlot != null & cboPropertyToPlot != null)
+            {
+                chkShowLogRF.Visibility = Visibility.Visible;
+                lbPropertyToPlot.Visibility = Visibility.Visible;
+                cboPropertyToPlot.Visibility = Visibility.Visible;
+            }
+            
         }
         private void chkShowRFOnPlot_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -850,29 +895,9 @@ namespace RFEM_Software
                     break;
             }
         }
-
-        private void ReviseFormData()
-        {
-
-        }
-
-        public async Task<bool> RunSimAsync()
-        {
-           
-            
-            return _ViewModel.RunSim();
-        }
-        public async Task<string> RunSimTestAsync(CancellationToken token)
-        {
-            return await  _ViewModel.RunSimTest(token);
-        }
-        public async Task<string> RunSimTest2Async(CancellationToken token)
-        {
-            return await _ViewModel.RunSimTest2(token);
-        }
         private void rbFrictionAnglePhi_Checked(object sender, RoutedEventArgs e)
         {
-            _ViewModel.FrictionAnglePrefix = "";
+                _ViewModel.FrictionAnglePrefix = "";
         }
         private void rbFrictionAngleTanPhi_Checked(object sender, RoutedEventArgs e)
         {

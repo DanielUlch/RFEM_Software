@@ -10,14 +10,15 @@ using System.Threading;
 
 namespace RFEM_Software.Forms
 {
-    class RBear2dViewModel: INotifyPropertyChanged, IDataErrorInfo
+    class RBear2dViewModel: INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private RBear2D _FormData;
          
         private bool _ChangesHaveBeenMade;
 
-        private double _ProgressPercentage;
+        private int _ProgressPercentage;
         private string _CurrentOperation = "Ready";
+        private string _ProgressDetails;
 
         private List<string> _Errors;
 
@@ -33,19 +34,36 @@ namespace RFEM_Software.Forms
                 }
             }
         }
-        public double ProgressPercentage
+
+        public string ProgressDetails
+        {
+            get
+            {
+                return _ProgressDetails;
+            }
+
+            set
+            {
+                if(_ProgressDetails != value)
+                {
+                    _ProgressDetails = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int ProgressPercentage
         {
             get { return _ProgressPercentage; }
             set
             {
-                if(_ProgressPercentage != value)
+                if (_ProgressPercentage != value)
                 {
                     _ProgressPercentage = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-
         public string CurrentOperation
         {
             get { return _CurrentOperation; }
@@ -622,6 +640,16 @@ namespace RFEM_Software.Forms
         {
             _FormData = new RBear2D();
 
+            InitializeLists();
+            
+        }
+        public RBear2dViewModel(RBear2D formData)
+        {
+            _FormData = formData;
+            InitializeLists();
+        }
+        private void InitializeLists()
+        {
             _FormData.CohesionDist.AddValidationDelegate(Validate);
             _FormData.FrictionAngleDist.AddValidationDelegate(Validate);
             _FormData.DilationAngleDist.AddValidationDelegate(Validate);
@@ -629,20 +657,12 @@ namespace RFEM_Software.Forms
             _FormData.PoissonsRatioDist.AddValidationDelegate(Validate);
 
             //_FormData.CohesionDist.PropertyChanged += this.PropertyChanged;
-           
 
-
-            _FormData.CorMatrix = new double?[,] { { 1, 0, 0, 0, 0 },
-                                                   { 0, 1, 0, 0, 0 },
-                                                   { 0, 0, 1, 0, 0 },
-                                                   { 0, 0, 0, 1, 0 },
-                                                   { 0, 0, 0, 0, 1 }};
             _FormData.NumberOfFootings = 1;
 
             _ChangesHaveBeenMade = false;
 
             _Errors = new List<string>();
-            
         }
 
         public string Error
@@ -1022,56 +1042,8 @@ namespace RFEM_Software.Forms
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }     
         }
-        public async void RunSimAsync()
-        {
 
-        }
-        public bool RunSim()
-        {
-            if (HasErrors)
-                MessageBox.Show("Please correct erros in form before running the simulation.");
-            else
-            {
-
-                FileWriter.Write(_FormData);
-                
-
-
-                var worker = new BackgroundWorker();
-                worker.WorkerReportsProgress = true;
-                worker.DoWork += _FormData.ExecuteSim;
-                worker.ProgressChanged += worker_ProgressChanged;
-                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-                worker.RunWorkerAsync();
-
-                
-
-            }
-            return true;
-        }
-        public async Task<string> RunSimTest(CancellationToken token)
-        {
-            if (HasErrors)
-            {
-                MessageBox.Show("Please correct erros in form before running the simulation.");
-                return "";
-            }
-            else
-            {
-
-                FileWriter.Write(_FormData);
-                var tsk = await _FormData.RunSimAsync(new Progress<int>(p =>
-                                               {
-                                                   ProgressPercentage = p * 100 / (int)NSimulations;
-                                               }), new Progress<string>(ps =>
-                                               {
-                                                   CurrentOperation = ps;
-                                               }), token);
-
-                return tsk;
-            }
-        }
-        public Task<string> RunSimTest2(CancellationToken token)
+        public Task<string> RunSimAsync(CancellationToken token)
         {
             if (HasErrors)
             {
@@ -1082,31 +1054,16 @@ namespace RFEM_Software.Forms
             {
 
                 FileWriter.Write(_FormData);
-                var tsk = Task<string>.Run(() => _FormData.RunSimTest2(new Progress<int>(p =>
-                {
-                    ProgressPercentage = p * 100 / (int)NSimulations;
-                }), new Progress<string>(ps =>
-                {
-                    CurrentOperation = ps;
-                }), token));
+                var tsk = Task<string>.Run(() => _FormData.RunSim(new Progress<int>(p =>
+                    {
+                        ProgressPercentage = p * 100 / (int)_FormData.NSimulations;
+                        ProgressDetails = string.Format("Iteration {0}/{1}", p, _FormData.NSimulations);
+                    }), new Progress<string>(ps =>
+                    {
+                        CurrentOperation = ps;
+                    }), token));
 
                 return tsk;
-            }
-        }
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            ProgressPercentage = e.ProgressPercentage;
-        }
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            MessageBox.Show(e.Result.ToString());
-        }
-        void TestProgressBar(object sender, DoWorkEventArgs e)
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                (sender as BackgroundWorker).ReportProgress(i);
-                System.Threading.Thread.Sleep(100);
             }
         }
     }

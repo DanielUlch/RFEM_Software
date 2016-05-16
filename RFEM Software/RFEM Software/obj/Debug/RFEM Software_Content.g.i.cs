@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/unpin.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/open%20folder-50.png")]
 
 

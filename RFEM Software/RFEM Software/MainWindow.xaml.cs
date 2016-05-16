@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RFEM_Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -41,6 +43,9 @@ namespace RFEM_Software
         /// </summary>
         private string ApplicationHelpLocation = "RFEM_Software.Help_Files.AppHelp.xaml";
 
+        private CancellationTokenSource _TokenSource;
+        private bool _CurrentlyRunningSim;
+
         /// <summary>
         /// Constructor for the window
         /// </summary>
@@ -57,7 +62,8 @@ namespace RFEM_Software
             column1CloneForLayer1 = new ColumnDefinition();
             column1CloneForLayer1.SharedSizeGroup = "column1";
 
-            this.mainRibbon.btn_RunSim.Click += RunSimTestAsync;
+            this.mainRibbon.btn_RunSim.Click += btnRunSim_Click;
+            this.mainRibbon.btnOpenExisting.Click += OpenExistingFile;
 
         }
         /// <summary>
@@ -165,7 +171,8 @@ namespace RFEM_Software
             {
                 if (((RFEMTabItem)this.tabControl.SelectedItem).TabType == RFEMTabType.DataInput){
                     this.mainRibbon.RunTools.Visibility = Visibility.Visible;
-                    this.DataContext = ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).DataContext;
+                    this.mainRibbon.tabRunControl.IsSelected = true;
+                    this.DataContext = ((UserControl)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).DataContext;
                 }
                 else
                 {
@@ -298,7 +305,7 @@ namespace RFEM_Software
         private void HelpClick_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             //Get the form from the selected tab
-            var tabContent = (Forms.IHelpFiled)((ScrollViewer)((RFEMTabItem)tabControl.SelectedItem).Content).Content;
+            var tabContent = (ISimView)((ScrollViewer)((RFEMTabItem)tabControl.SelectedItem).Content).Content;
 
             //Ask the form for the location of the help file
             string helpLocation = tabContent.HelpLocation((FrameworkElement)e.Parameter);
@@ -341,7 +348,7 @@ namespace RFEM_Software
                 if (tab.TabType == RFEMTabType.DataInput)
                 {
                     //Get the selected form
-                    var helpTab = ((RFEM_Software.Forms.IHelpFiled)((ScrollViewer)tab.Content).Content);
+                    var helpTab = ((ISimView)((ScrollViewer)tab.Content).Content);
 
                     //Ask the selected form for the help file associated with a hovered control
                     string helpLocation = helpTab.hoveredHelpDocLocation();
@@ -399,28 +406,129 @@ namespace RFEM_Software
             LoadReader(ApplicationHelpLocation);
         }
 
-        private async void RunSimAsync(object sender, RoutedEventArgs e)
+        private async Task RunSimAsync()
         {
+            string uriSource;
+
             this.progressBar.Visibility = Visibility.Visible;
-            this.lblStatus.Content = "Running Simulation";
-            var b = await ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).RunSimAsync();
-            if(b == true)
+            this.lblSimDetails.Visibility = Visibility.Visible;
+            _TokenSource = new CancellationTokenSource();
+            var token = _TokenSource.Token;
+            _CurrentlyRunningSim = true;
+
+            this.mainRibbon.btn_RunSim.Label = "Cancel Run";
+            uriSource = "pack://application:,,,/RFEM Software;component/Images/Cancel.png";
+            this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+
+
+            try
             {
-                this.lblStatus.Content = "Ready";
+                var tsk = await ((ISimView)((ScrollViewer)((
+                                RFEMTabItem)this.tabControl.SelectedItem).Content).Content).ViewModel.RunSimAsync(token);
+                if (!token.IsCancellationRequested)
+                {
+                    MessageBox.Show(tsk);
+                }
+                
+            }catch(OperationCanceledException oex)
+            {
+                this.lblStatus.Content = "Run Canelled";
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                this.mainRibbon.btn_RunSim.Label = "Run Simulation";
+                uriSource = "pack://application:,,,/RFEM Software;component/Images/BrokenFactoryBlue.png";
+                this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+
+                _TokenSource = null;
+                _CurrentlyRunningSim = false;
                 this.progressBar.Visibility = Visibility.Hidden;
+                this.lblSimDetails.Visibility = Visibility.Hidden;
             }
             
-        }
-        private async void RunSimTestAsync(object sender, RoutedEventArgs e)
-        {
-            this.progressBar.Visibility = Visibility.Visible;
-            var token = new CancellationToken();
-            var tsk = await ((Rbear2dForm)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).RunSimTest2Async(token);
             
-            MessageBox.Show(tsk);
-            this.progressBar.Visibility = Visibility.Hidden;
         }
+        private async void btnRunSim_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_CurrentlyRunningSim)
+            {
+                await RunSimAsync();
+            }
+            else
+            {
+                try
+                {
+                    _TokenSource.Cancel();
+                }
+                catch (OperationCanceledException oex)
+                {
+                    this.lblStatus.Content = "Run Canelled";
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    this.mainRibbon.btn_RunSim.Label = "Run Simulation";
+                    string uriSource = "pack://application:,,,/RFEM Software;component/Images/BrokenFactoryBlue.png";
+                    this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
 
+                    _TokenSource = null;
+                    _CurrentlyRunningSim = false;
+                    this.progressBar.Visibility = Visibility.Hidden;
+                    this.lblSimDetails.Visibility = Visibility.Hidden;
+                }
+                
+            }
+        }
+        private void OpenExistingFile(object sender, RoutedEventArgs e)
+        {
+            //var fileDialog = new System.Windows.Forms.OpenFileDialog();
+
+            //fileDialog.Filter = "Data Files|*.dat";
+
+            //if(fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            //{
+            //    MessageBox.Show(fileDialog.FileName);
+            //}
+            string filePath="";
+            bool result = false;
+            Program fileType=Program.RBear2D;
+            var Diag = new Dialogs.ReadDataFileDialog((a,b,c) =>
+            {
+                filePath = a;
+                fileType = b;
+                result = c;
+            });
+
+
+            Diag.ShowDialog();
+
+            if (result == true)
+            {
+                try
+                {
+                    IHasDataFile formData = FileReader.Read(fileType, filePath);
+                    UserControl form = FormBuilder.Build(formData, fileType);
+                    AddNewDataInput(form, formData.BaseName);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error Processing Data File", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+                
+
+            }
+            else
+            {
+                MessageBox.Show("False");
+            }
+        }
     }
 
     /// <summary>
@@ -429,6 +537,7 @@ namespace RFEM_Software
     /// </summary>
     public partial class RFEMRibbon
     {
+        
         ///NOT IMPLEMENTED YET////////////////////////////////////
         /// <summary>
         /// This button will allow the user to change various application settings. It may

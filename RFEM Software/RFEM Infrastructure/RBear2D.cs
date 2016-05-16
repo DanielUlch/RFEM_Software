@@ -215,7 +215,7 @@ namespace RFEM_Infrastructure
                                                 PoissonsRatioDist.Dist.Name.ToLower()));
             }
 
-            str.AppendLine("Poisson's ratio mean, SD, dist . . . . . . . . .  " + NSimulations);
+            str.AppendLine("Number of realizations . . . . . . . . . . . . .  " + NSimulations);
             str.AppendLine("Generator seed (0 for random seed) . . . . . . .  " + GeneratorSeed);
             str.AppendLine(string.Format("Correlation length in X [and Y] directions . . .  {0} {1}", CorLengthInXDir,
                                             CorLengthInYDir));
@@ -278,78 +278,19 @@ namespace RFEM_Infrastructure
 
 
             FrictionAnglePrefix = "";
+
+            CorMatrix = new double?[,] { { 1, 0, 0, 0, 0 },
+                                         { 0, 1, 0, 0, 0 },
+                                         { 0, 0, 1, 0, 0 },
+                                         { 0, 0, 0, 1, 0 },
+                                         { 0, 0, 0, 0, 1 }};
         }
-        public void ExecuteSim(object sender, DoWorkEventArgs e)
+        
+
+        public string RunSim(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token)
         {
-            var pInfo = new ProcessStartInfo();
-            Process p;
-            string Line = "";
-            string ProgramOutput = "";
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-            char ch;
-            int progress = 0;
-            string partialLine = "";
-
-            directory += "\\Executables\\rbear2d.exe";
-
-            directory = "\"" + directory + "\"";
-
-            pInfo.FileName =directory;
-            pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + DataFileLocation() + "\"";
-            pInfo.UseShellExecute = false;
-            p = new Process() { StartInfo = pInfo };
-
-            p.Start();
-
-            using (var reader = p.StandardOutput)
-            {
-                while (!reader.EndOfStream)
-                {
-                    Line = reader.ReadLine();
-
-                    if (Line == "Analyzing realization:")
-                    {
-                        while(progress < (int)NSimulations)
-                        {
-                            ch = (char)reader.Read();
-                            if (ch == ' ' || ch == '\r')
-                            {
-                                if(partialLine.Length != 0)
-                                {
-                                    bool result = Int32.TryParse(partialLine, out progress);
-                                    if (result)
-                                    {
-                                        ((BackgroundWorker)sender).ReportProgress(progress * 100 / (int)NSimulations);
-                                    }
-                                }
-                                partialLine = "";
-                            }
-                            else
-                            {
-                                partialLine += ch;
-                            }
-                            ProgramOutput += ch;
-                        }
-                        
-                    }
-                    
-
-                    
-
-                    ProgramOutput += Line + Environment.NewLine;
-                }
-            }
-
-            e.Result = ProgramOutput;
-        }
-        public async Task<string> RunSimAsync(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token)
-        {
-
             currentOp.Report("Initializing");
 
-            var tcs = new TaskCompletionSource<string>();
             var ctr = default(CancellationTokenRegistration);
 
             if (token.CanBeCanceled)
@@ -357,7 +298,7 @@ namespace RFEM_Infrastructure
                 ctr = token.Register(() =>
                 {
                     currentOp.Report("Canceled");
-                    tcs.TrySetCanceled();
+                    //throw new OperationCanceledException();
                 });
             }
 
@@ -379,134 +320,99 @@ namespace RFEM_Infrastructure
             pInfo.RedirectStandardOutput = true;
             pInfo.Arguments = "\"" + DataFileLocation() + "\"";
             pInfo.UseShellExecute = false;
+            pInfo.CreateNoWindow = true;
+            pInfo.WorkingDirectory = Environment.CurrentDirectory;
             p = new Process() { StartInfo = pInfo };
 
             p.Start();
 
             currentOp.Report("Running Simulation");
 
-            using (var reader = p.StandardOutput)
+
+            if (WriteDebugDataToOutputFile)
             {
-                while (!reader.EndOfStream)
+                using(var reader = p.StandardOutput)
                 {
-                    Line = reader.ReadLine();
-
-                    if (Line == "Analyzing realization:")
+                    while(!reader.EndOfStream && !token.IsCancellationRequested)
                     {
-                        while (progress < (int)NSimulations)
+                        Line = reader.ReadLine();
+
+                        if(Line == "Analyzing realization:")
                         {
-                            ch = (char)reader.Read();
-                            if (ch == ' ' || ch == '\r')
+
+                            while (progress < (int)NSimulations && !token.IsCancellationRequested)
                             {
-                                if (partialLine.Length != 0)
+                                Line = reader.ReadLine();
+                                foreach(char c in Line.ToCharArray())
                                 {
-                                    bool result = Int32.TryParse(partialLine, out progress);
-                                    if (result)
+                                    if (c == 'P' || c == '\r')
                                     {
-                                        simIteration.Report(progress);
+                                        if (partialLine.Length != 0)
+                                        {
+                                            bool result = Int32.TryParse(partialLine, out progress);
+                                            if (result)
+                                            {
+                                                simIteration.Report(progress);
+                                            }
+                                        }
+                                        partialLine = "";
+                                        break;
                                     }
+                                    else
+                                    {
+                                        partialLine += c;
+                                    }
+                                    ProgramOutput += c;
                                 }
-                                partialLine = "";
+                                
                             }
-                            else
-                            {
-                                partialLine += ch;
-                            }
-                            ProgramOutput += ch;
                         }
-
+                        ProgramOutput += Line + Environment.NewLine;
                     }
-
-
-
-
-                    ProgramOutput += Line + Environment.NewLine;
                 }
             }
-
-            currentOp.Report("Finished");
-
-            tcs.TrySetResult(ProgramOutput);
-
-            return await tcs.Task;
-        }
-        public string RunSimTest2(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token)
-        {
-            currentOp.Report("Initializing");
-
-            var ctr = default(CancellationTokenRegistration);
-
-            if (token.CanBeCanceled)
+            else
             {
-                ctr = token.Register(() =>
+                using (var reader = p.StandardOutput)
                 {
-                    currentOp.Report("Canceled");
-                    throw new OperationCanceledException();
-                });
-            }
-
-            var pInfo = new ProcessStartInfo();
-            Process p;
-            string Line = "";
-            string ProgramOutput = "";
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-            char ch;
-            int progress = 0;
-            string partialLine = "";
-
-            directory += "\\Executables\\rbear2d.exe";
-
-            directory = "\"" + directory + "\"";
-
-            pInfo.FileName = directory;
-            pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + DataFileLocation() + "\"";
-            pInfo.UseShellExecute = false;
-            p = new Process() { StartInfo = pInfo };
-
-            p.Start();
-
-            currentOp.Report("Running Simulation");
-
-            using (var reader = p.StandardOutput)
-            {
-                while (!reader.EndOfStream)
-                {
-                    Line = reader.ReadLine();
-
-                    if (Line == "Analyzing realization:")
+                    while (!reader.EndOfStream && !token.IsCancellationRequested)
                     {
-                        while (progress < (int)NSimulations)
+                        Line = reader.ReadLine();
+
+                        if (Line == "Analyzing realization:")
                         {
-                            ch = (char)reader.Read();
-                            if (ch == ' ' || ch == '\r')
+                            while (progress < (int)NSimulations && !token.IsCancellationRequested)
                             {
-                                if (partialLine.Length != 0)
+                                ch = (char)reader.Read();
+                                if (ch == ' ' || ch == '\r')
                                 {
-                                    bool result = Int32.TryParse(partialLine, out progress);
-                                    if (result)
+                                    if (partialLine.Length != 0)
                                     {
-                                        simIteration.Report(progress);
+                                        bool result = Int32.TryParse(partialLine, out progress);
+                                        if (result)
+                                        {
+                                            simIteration.Report(progress);
+                                        }
                                     }
+                                    partialLine = "";
                                 }
-                                partialLine = "";
+                                else
+                                {
+                                    partialLine += ch;
+                                }
+                                ProgramOutput += ch;
                             }
-                            else
-                            {
-                                partialLine += ch;
-                            }
-                            ProgramOutput += ch;
+
                         }
 
+
+
+
+                        ProgramOutput += Line + Environment.NewLine;
                     }
-
-
-
-
-                    ProgramOutput += Line + Environment.NewLine;
                 }
             }
+            
 
             currentOp.Report("Finished");
 

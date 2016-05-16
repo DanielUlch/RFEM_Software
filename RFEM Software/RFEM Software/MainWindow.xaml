@@ -103,6 +103,7 @@
                           Width="100"
                           Visibility="Hidden"
                           Value="{Binding Path=ProgressPercentage}"/>
+            <Label Name="lblSimDetails" Content="{Binding Path=ProgressDetails}" Visibility="Hidden"/>
         </StatusBar>
         
         

@@ -60,12 +60,17 @@
             
             
             <RibbonTab Header="Home">
+                <RibbonGroup Header="Existing Files">
+                    <RibbonButton Name="btnOpenExisting"
+                                  Label="Open Existing Data File"
+                                  LargeImageSource="Images/Open_Folder.png" />
+                </RibbonGroup>
 
                 <RibbonGroup Header="Create New Data File">
                     
                     <RibbonButton Label="mrbear2d"
                             Name="btnMRBear2d" 
-                            LargeImageSource="Images/BrokenFactoryBlue.png"
+                            LargeImageSource="Images/bearing4.png"
                             Click="NewDataFile"
                             />
                     
@@ -97,7 +102,7 @@
                     </RibbonSplitButton>
                     
                     <RibbonSplitButton Label="mrpill"
-                                       LargeImageSource="Images/BrokenFactoryBlue.png"
+                                       LargeImageSource="Images/pile_setl.png"
                                        >
                         
                         <RibbonMenuItem Header="mrpill2d"
@@ -143,9 +148,9 @@
             <RibbonTab Header="Visualization">
                 
             </RibbonTab>
-            <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools">
+            <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="tabRunControl">
                 <RibbonGroup Header="Simulation">
-                    <RibbonButton Content="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
+                    <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
                 </RibbonGroup>
                 
             </RibbonTab>
