@@ -1,0 +1,31 @@
+This is RBEAR2D (Version 2.31): Wed May 18 11:36:44 2016
+Bearing capacity of a single rigid footing
+n_e = (25 x 10), D = (5 x 2), seed = 15922
+One footing of physical width 1
+13 system parameters to follow:
+Output bearing stress capacities (t/f)?  . . . .   T
+Number of footings . . . . . . . . . . . . . . .       1
+Number of elements in the X-dir  . . . . . . . .   25 5
+Number of elements in the Y-dir  . . . . . . . .   10
+Element dimensions, X-dir, Y-dir . . . . . . . .   0.2 0.2
+Number of realizations . . . . . . . . . . . . .   10
+Generator seed . . . . . . . . . . . . . . . . .   15922
+Scale of fluctuation, X-dir, Y-dir . . . . . . .   1 1
+Cohesion mean  . . . . . . . . . . . . . . . . .   100
+Cohesion standard deviation  . . . . . . . . . .   10
+Friction angle mean  . . . . . . . . . . . . . .   30
+Friction angle standard deviation  . . . . . . .   0
+Name of Variance function used by LAS generator.  dlavx2
+
+1 columns of data:
+Bearing Stress Capacity
+  0.1026E+01
+  0.8476E+00
+  0.7377E+00
+  0.8763E+00
+  0.7953E+00
+  0.1054E+01
+  0.9312E+00
+  0.8703E+00
+  0.1019E+01
+  0.1000E+01

@@ -41,6 +41,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Custom Controls\RFEMToolTip.cs" />
     <Compile Include="Dialogs\ReadDataFileDialog.xaml.cs">
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
@@ -83,7 +86,17 @@
     <Compile Include="Forms\Rbear2dForm.xaml.cs">
       <DependentUpon>Rbear2dForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RBear2DHistForm.xaml.cs">
+      <DependentUpon>RBear2DHistForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RBear2dViewModel.cs" />
+    <Compile Include="Forms\Rdam2dForm.xaml.cs">
+      <DependentUpon>Rdam2dForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Rdam2dViewModel.cs" />
+    <Compile Include="Forms\SettingsForm.xaml.cs">
+      <DependentUpon>SettingsForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ISimView.cs" />
     <Compile Include="ISimViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -98,12 +111,10 @@
     <EmbeddedResource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Help Files\RBear Help Files\EchoInputToOutputFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Help Files\RBear Help Files\ShowLogRF.xaml">
       <SubType>Designer</SubType>
@@ -122,10 +133,6 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Help Files\RBear Help Files\DisplacedMeshWidth.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ReportProgress.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -217,6 +224,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\RBear2DHistForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Rdam2dForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\SettingsForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -236,6 +255,10 @@
     <Page Include="RFEMRibbon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +351,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Open_Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolTipHelp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolTipHelp_Error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

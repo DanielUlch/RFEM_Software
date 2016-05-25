@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml
-4-1801174955
+81989487665
 
-17587984847
+22-872255100
 17581787841
-Dialogs\ReadDataFileDialog.xaml;MainWindow.xaml;Forms\Rbear2dForm.xaml;RFEMRibbon.xaml;
+Dialogs\ReadDataFileDialog.xaml;Forms\RBear2DHistForm.xaml;Forms\Rdam2dForm.xaml;Forms\SettingsForm.xaml;MainWindow.xaml;Forms\Rbear2dForm.xaml;RFEMRibbon.xaml;Themes\Generic.xaml;
 rfemsplashscreen.png
-True
+False
 

@@ -22,6 +22,8 @@ namespace RFEM_Software.Forms
 
         private List<string> _Errors;
 
+        
+
         public string JobTitle
         {
             get { return _FormData.JobTitle; }
@@ -636,12 +638,88 @@ namespace RFEM_Software.Forms
                 return (_Errors.Count > 0);
             }
         }
+
+        public string Error
+        {
+            get
+            {
+                string result = this[string.Empty];
+                if (result != null && result.Trim().Length == 0)
+                {
+                    result = null;
+                }
+                return result;
+            }
+        }
+
+        public bool CanDisplaySummaryStats
+        {
+            get
+            {
+                return _FormData.CanDisplaySummaryStats;
+            }
+        }
+
+        public bool CanDisplayMesh
+        {
+            get
+            {
+                return _FormData.CanDisplayMesh;
+            }
+        }
+
+        public bool CanDisplayField
+        {
+            get
+            {
+                return _FormData.CanDisplayField;
+            }
+        }
+
+        public bool CanDisplayBearingHist
+        {
+            get
+            {
+                return _FormData.CanDisplayBearingHist;
+            }
+        }
+
+        public string MeshFilePath
+        {
+            get
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                        "\\RFEM_Software\\" + _FormData.BaseName + ".dis";
+            }
+        }
+        public string FieldFilePath
+        {
+            get
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                            _FormData.BaseName + ".fld";
+            }
+        }
+        public string SummaryFilePath
+        {
+            get
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".stt";
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                return Validate(this, columnName);
+            }
+        }
         public RBear2dViewModel()
         {
             _FormData = new RBear2D();
-
             InitializeLists();
-            
+
         }
         public RBear2dViewModel(RBear2D formData)
         {
@@ -663,29 +741,9 @@ namespace RFEM_Software.Forms
             _ChangesHaveBeenMade = false;
 
             _Errors = new List<string>();
-        }
 
-        public string Error
-        {
-            get
-            {
-                string result = this[string.Empty];
-                if (result != null && result.Trim().Length == 0)
-                {
-                    result = null;
-                }
-                return result;
-            }
+            _FormData.PropertyChanged += NotifyFormDataPropertyChanged;
         }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                return Validate(this, columnName);
-            }
-        }
-
         public string Validate(object sender, string propertyName)
         {
             string validationMessage = string.Empty;
@@ -693,13 +751,13 @@ namespace RFEM_Software.Forms
             switch (propertyName)
             {
                 case "JobTitle":
-                    if(_FormData.JobTitle == null)
+                    if (_FormData.JobTitle == null | _FormData.JobTitle == string.Empty)
                     {
                         validationMessage = "Job title can not be null.";
                     }
                     break;
                 case "BaseName":
-                    if(_FormData.BaseName == null)
+                    if (_FormData.BaseName == null | _FormData.BaseName== string.Empty)
                     {
                         validationMessage = "Base name can not be null.";
                     }
@@ -1041,6 +1099,10 @@ namespace RFEM_Software.Forms
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }     
+        }
+        protected void NotifyFormDataPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(e.PropertyName));
         }
 
         public Task<string> RunSimAsync(CancellationToken token)

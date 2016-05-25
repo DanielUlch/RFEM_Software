@@ -22,5 +22,17 @@ namespace RFEM_Software.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\gs\\gs9.19\\bin\\gswin32c.exe")]
+        public string GhostViewPath {
+            get {
+                return ((string)(this["GhostViewPath"]));
+            }
+            set {
+                this["GhostViewPath"] = value;
+            }
+        }
     }
 }

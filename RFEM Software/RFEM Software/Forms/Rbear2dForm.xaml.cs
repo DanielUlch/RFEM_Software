@@ -186,7 +186,7 @@ namespace RFEM_Software
             dict.Add(chkShowLogRF, Base + "ShowLogRF.xaml");
             dict.Add(cboPropertyToPlot, Base + "PropertyToPlot.xaml");
             dict.Add(txtDisplacedMeshWidth, Base + "DisplacedMeshWidth.xaml");
-            dict.Add(chkReportProgress, Base + "ReportProgress.xaml");
+            //dict.Add(chkReportProgress, Base + "ReportProgress.xaml");
             dict.Add(chkOutputDebugData, Base + "OutputDebugData.xaml");
             dict.Add(chkPlotFirstRF, Base + "PlotFirstRF.xaml");
             dict.Add(chkProducePSPLOTOfFirstFEM, Base + "ProducePSPLOTOfFirstFEM.xaml");

@@ -11,10 +11,19 @@ using System.Threading.Tasks;
 
 namespace RFEM_Infrastructure
 {
-    public class RBear2D : IHasDataFile
+    public class RBear2D : IHasDataFile, INotifyPropertyChanged
     {
+
         private PlotProperty _FirstRandomFieldProperty;
         private PlotProperty _PSPLotProperty;
+
+        private bool _CanDisplaySummaryStats;
+        private bool _CanDisplayMesh;
+        private bool _CanDisplayField;
+        private bool _CanDisplayBearingHist;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string JobTitle { get; set; }
         public string BaseName { get; set; }
 
@@ -22,6 +31,55 @@ namespace RFEM_Infrastructure
         public bool ReportRunProgress { get; set; }
         public bool WriteDebugDataToOutputFile { get; set; }
         public bool PlotFirstRandomField { get; set; }
+
+        public bool CanDisplaySummaryStats
+        {
+            get { return _CanDisplaySummaryStats; }
+            set
+            {
+                if (_CanDisplaySummaryStats != value)
+                {
+                    _CanDisplaySummaryStats = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayMesh
+        {
+            get { return _CanDisplayMesh; }
+            set
+            {
+                if (_CanDisplayMesh != value)
+                {
+                    _CanDisplayMesh = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayField
+        {
+            get { return _CanDisplayField; }
+            set
+            {
+                if (_CanDisplayField != value)
+                {
+                    _CanDisplayField = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayBearingHist
+        {
+            get { return _CanDisplayBearingHist; }
+            set
+            {
+                if(_CanDisplayBearingHist != value)
+                {
+                    _CanDisplayBearingHist = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public PlotableProperty FirstRandomFieldProperty
         {
@@ -109,7 +167,7 @@ namespace RFEM_Infrastructure
 
             str.AppendLine(JobTitle);
             str.AppendLine("Echo input data to stats file (t/f)? . . . . . .  " + TFConversion(EchoInputDataToOutputFile));
-            str.AppendLine("Report progress to standard output (t/f)?. . . .  " + TFConversion(ReportRunProgress));
+            str.AppendLine("Report progress to standard output (t/f)?. . . .  " + TFConversion(true));
             str.AppendLine("Dump debug data to *.stt file (t/f)? . . . . . .  " + TFConversion(WriteDebugDataToOutputFile));
             str.AppendLine(String.Format("Display a random field (t/f)?  . . . . . . . . .  {0} {1} {2}", 
                                             TFConversion(PlotFirstRandomField),"1", _FirstRandomFieldProperty.CharacterCode));
@@ -318,10 +376,9 @@ namespace RFEM_Infrastructure
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + DataFileLocation() + "\"";
+            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
-            pInfo.WorkingDirectory = Environment.CurrentDirectory;
             p = new Process() { StartInfo = pInfo };
 
             p.Start();
@@ -404,20 +461,33 @@ namespace RFEM_Infrastructure
                             }
 
                         }
-
-
-
-
                         ProgramOutput += Line + Environment.NewLine;
                     }
                 }
             }
-            
+
+
+            CanDisplaySummaryStats = true;
+            CanDisplayField = this.PlotFirstRandomField;
+            CanDisplayMesh = this.ProducePSPLOTOfFirstFEM & this.ShowMeshOnDisplacedPlot;
+            CanDisplayBearingHist = this.OutputBearingCapacitySamples;
 
             currentOp.Report("Finished");
 
 
             return ProgramOutput;
+        }
+        protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+        {
+
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        public string AppDataFileLocation
+        {
+            get { return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat"; }
         }
     }
 }

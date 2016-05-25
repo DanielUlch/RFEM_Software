@@ -1,0 +1,457 @@
+This is RBEAR2D (Version 2.31): Wed May 18 11:36:44 2016
+Bearing capacity of a single rigid footing
+n_e = (25 x 10), D = (5 x 2), seed = 15922
+One footing of physical width 1
+
+                                INPUT DATA
+                              ==============
+
+Report progress to user (t/f)? . . . . .  T
+Output debug data (t/f)? . . . . . . . .  T
+Output random field (t/f)? . . . . . . .  T
+    realization number . . . . . . . . .    1
+    random property field  . . . . . . . cohesion
+Output displaced mesh (t/f)? . . . . . .  T
+    realization number . . . . . . . . .    1
+Normalise bearing capacities (t/f)?. . .  T
+Output bearing cap samples (t/f)?  . . .  T
+Number of elements in X-direction  . . .   25
+Number of elements in Y-direction  . . .   10
+Size of random field (X x Y) . . . . . .  25 x 10
+Size of each element in X-direction  . .   0.200000E+00
+Size of each element in Y-direction  . .   0.200000E+00
+Number of footings . . . . . . . . . . .    1
+    number of elements under footing . .    5
+Displacement increment (pos downwards) .   0.100000E-02
+Plasticity iterations tolerance  . . . .   0.100000E-02
+Bearing capacity iterations tolerance  .   0.100000E-02
+Maximum number of displacement steps . .   50
+Maximum number of iterations . . . . . .  300
+Cohesion Statistics:
+    Cohesion distribution  . . . . . . . lognormal       
+    Cohesion mean  . . . . . . . . . . .   0.100000E+03
+    Cohesion standard deviation  . . . .   0.100000E+02
+    Log-Cohesion mean  . . . . . . . . .   0.460019E+01
+    Log-Cohesion standard deviation  . .   0.997513E-01
+Friction Angle Statistics:
+    Friction angle distribution  . . . . bounded         
+    Friction angle lower bound . . . . .   0.200000E+02
+    Friction angle upper bound . . . . .   0.400000E+02
+    Friction angle location parameter  .   0.000000E+00
+    Friction angle scale parameter . . .   0.100000E+01
+Dilation Angle Statistics:
+    Dilation angle distribution  . . . . deterministic   
+    Dilation angle mean  . . . . . . . .   0.000000E+00
+    Dilation angle standard deviation  .   0.000000E+00
+Elastic Modulus Statistics:
+    Elastic modulus distribution . . . . bounded         
+    Elastic modulus lower bound  . . . .   0.500000E+05
+    Elastic modulus upper bound  . . . .   0.300000E+06
+    Elastic modulus location parameter .   0.000000E+00
+    Elastic modulus scale parameter  . .   0.100000E+01
+Poisson's ratio Statistics:
+    Poisson's ratio distribution . . . . deterministic   
+    Poisson's ratio mean . . . . . . . .   0.300000E+00
+    Poisson's ratio standard deviation .   0.000000E+00
+Number of realisations  . . . . . . . . .       10
+Generator seed used . . . . . . . . . . .    15922
+Scale of fluctuation in X-direction . . .   0.100000E+01
+Scale of fluctuation in Y-direction . . .   0.100000E+01
+Variance function used  . . . . . . . . . dlavx2
+
+Material Property Correlation Matrix Data
+=========================================
+
+  1.000  0.200  0.000  0.200  0.000
+  0.200  1.000  0.000  0.000  0.000
+  0.000  0.000  1.000  0.000  0.000
+  0.200  0.000  0.000  1.000  0.000
+  0.000  0.000  0.000  0.000  1.000
+
+Infinite scale in X-direction (t/f)?  . .  F
+Unit weight . . . . . . . . . . . . . . .   0.000000E+00
+Surcharge . . . . . . . . . . . . . . . .   0.000000E+00
+Earth pressure coefficient at rest  . . .   0.500000E+00
+Plotting Information:
+=====================
+
+Show element boundaries (t/f)?  . . . . .  T
+Show random field (t/f)?  . . . . . . . .  T
+    show log(random field) (t/f)? . . . .  F
+    random property field . . . . . . . . cohesion
+Plot size in the x-direction  . . . . . .   0.400000E+01
+Plot size in the y-direciton  . . . . . .   0.160000E+01
+X-direction offset  . . . . . . . . . . .   0.150000E+01
+Y-direction offset  . . . . . . . . . . .   0.150000E+01
+===============================================================
+
+
+                           General Information
+                           ===================
+
+Number of elements       = 250
+Number of nodes          = 1500
+Size of stiffness matrix = 80180
+
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  165.2 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  332.4 iters =     7
+fem2bc: Displacement =   0.3000E-02 Pressure =  506.5 iters =    15
+fem2bc: Displacement =   0.4000E-02 Pressure =  653.9 iters =    26
+fem2bc: Displacement =   0.5000E-02 Pressure =  766.2 iters =    34
+fem2bc: Displacement =   0.6000E-02 Pressure =  868.2 iters =    41
+fem2bc: Displacement =   0.7000E-02 Pressure =  966.3 iters =    45
+fem2bc: Displacement =   0.8000E-02 Pressure = 1064.7 iters =    48
+fem2bc: Displacement =   0.9000E-02 Pressure = 1163.5 iters =    50
+fem2bc: Displacement =   0.1000E-01 Pressure = 1263.7 iters =    52
+fem2bc: Displacement =   0.1100E-01 Pressure = 1364.7 iters =    53
+fem2bc: Displacement =   0.1200E-01 Pressure = 1465.9 iters =    54
+fem2bc: Displacement =   0.1300E-01 Pressure = 1564.5 iters =    52
+fem2bc: Displacement =   0.1400E-01 Pressure = 1658.3 iters =    49
+fem2bc: Displacement =   0.1500E-01 Pressure = 1750.2 iters =    44
+fem2bc: Displacement =   0.1600E-01 Pressure = 1840.7 iters =    37
+fem2bc: Displacement =   0.1700E-01 Pressure = 1926.4 iters =    37
+fem2bc: Displacement =   0.1800E-01 Pressure = 2009.4 iters =    38
+fem2bc: Displacement =   0.1900E-01 Pressure = 2089.8 iters =    39
+fem2bc: Displacement =   0.2000E-01 Pressure = 2168.8 iters =    42
+fem2bc: Displacement =   0.2100E-01 Pressure = 2245.8 iters =    43
+fem2bc: Displacement =   0.2200E-01 Pressure = 2319.8 iters =    45
+fem2bc: Displacement =   0.2300E-01 Pressure = 2390.9 iters =    46
+fem2bc: Displacement =   0.2400E-01 Pressure = 2458.9 iters =    46
+fem2bc: Displacement =   0.2500E-01 Pressure = 2523.1 iters =    45
+fem2bc: Displacement =   0.2600E-01 Pressure = 2583.6 iters =    45
+fem2bc: Displacement =   0.2700E-01 Pressure = 2639.1 iters =    45
+fem2bc: Displacement =   0.2800E-01 Pressure = 2686.4 iters =    46
+fem2bc: Displacement =   0.2900E-01 Pressure = 2725.8 iters =    47
+fem2bc: Displacement =   0.3000E-01 Pressure = 2753.5 iters =    54
+fem2bc: Displacement =   0.3100E-01 Pressure = 2670.1 iters =   300
+    0   31 disps,   300 iters, fmax = 1.752704, q = 2670.
+Initial generator seed: 15922
+SIM2BC: setting field parameters...
+Phi field mean = 30.15768, sd = 1.230065, for realization 1
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  179.8 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  362.1 iters =     8
+fem2bc: Displacement =   0.3000E-02 Pressure =  550.5 iters =    18
+fem2bc: Displacement =   0.4000E-02 Pressure =  696.3 iters =    35
+fem2bc: Displacement =   0.5000E-02 Pressure =  812.3 iters =    44
+fem2bc: Displacement =   0.6000E-02 Pressure =  918.3 iters =    54
+fem2bc: Displacement =   0.7000E-02 Pressure = 1020.9 iters =    60
+fem2bc: Displacement =   0.8000E-02 Pressure = 1123.8 iters =    64
+fem2bc: Displacement =   0.9000E-02 Pressure = 1227.7 iters =    66
+fem2bc: Displacement =   0.1000E-01 Pressure = 1333.8 iters =    66
+fem2bc: Displacement =   0.1100E-01 Pressure = 1437.3 iters =    68
+fem2bc: Displacement =   0.1200E-01 Pressure = 1539.1 iters =    68
+fem2bc: Displacement =   0.1300E-01 Pressure = 1638.3 iters =    64
+fem2bc: Displacement =   0.1400E-01 Pressure = 1734.4 iters =    61
+fem2bc: Displacement =   0.1500E-01 Pressure = 1826.9 iters =    54
+fem2bc: Displacement =   0.1600E-01 Pressure = 1916.5 iters =    47
+fem2bc: Displacement =   0.1700E-01 Pressure = 2003.0 iters =    46
+fem2bc: Displacement =   0.1800E-01 Pressure = 2087.6 iters =    47
+fem2bc: Displacement =   0.1900E-01 Pressure = 2169.8 iters =    48
+fem2bc: Displacement =   0.2000E-01 Pressure = 2249.1 iters =    50
+fem2bc: Displacement =   0.2100E-01 Pressure = 2325.8 iters =    52
+fem2bc: Displacement =   0.2200E-01 Pressure = 2399.0 iters =    55
+fem2bc: Displacement =   0.2300E-01 Pressure = 2468.7 iters =    57
+fem2bc: Displacement =   0.2400E-01 Pressure = 2535.1 iters =    62
+fem2bc: Displacement =   0.2500E-01 Pressure = 2598.5 iters =    70
+fem2bc: Displacement =   0.2600E-01 Pressure = 2656.6 iters =    75
+fem2bc: Displacement =   0.2700E-01 Pressure = 2706.9 iters =    81
+fem2bc: Displacement =   0.2800E-01 Pressure = 2750.7 iters =    89
+fem2bc: Displacement =   0.2900E-01 Pressure = 2783.2 iters =   111
+fem2bc: Displacement =   0.3000E-01 Pressure = 2804.5 iters =   127
+fem2bc: Displacement =   0.3100E-01 Pressure = 2822.8 iters =   139
+fem2bc: Displacement =   0.3200E-01 Pressure = 2823.8 iters =   157
+    1   32 disps,   157 iters, fmax = 1.460231, q = 2824.
+Phi field mean = 29.70966, sd = 1.516399, for realization 2
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  175.0 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  354.7 iters =    12
+fem2bc: Displacement =   0.3000E-02 Pressure =  524.4 iters =    28
+fem2bc: Displacement =   0.4000E-02 Pressure =  656.9 iters =    38
+fem2bc: Displacement =   0.5000E-02 Pressure =  768.5 iters =    46
+fem2bc: Displacement =   0.6000E-02 Pressure =  874.0 iters =    50
+fem2bc: Displacement =   0.7000E-02 Pressure =  977.3 iters =    53
+fem2bc: Displacement =   0.8000E-02 Pressure = 1079.7 iters =    56
+fem2bc: Displacement =   0.9000E-02 Pressure = 1182.3 iters =    57
+fem2bc: Displacement =   0.1000E-01 Pressure = 1282.6 iters =    58
+fem2bc: Displacement =   0.1100E-01 Pressure = 1382.3 iters =    55
+fem2bc: Displacement =   0.1200E-01 Pressure = 1479.5 iters =    47
+fem2bc: Displacement =   0.1300E-01 Pressure = 1571.4 iters =    46
+fem2bc: Displacement =   0.1400E-01 Pressure = 1657.1 iters =    49
+fem2bc: Displacement =   0.1500E-01 Pressure = 1739.9 iters =    50
+fem2bc: Displacement =   0.1600E-01 Pressure = 1820.9 iters =    49
+fem2bc: Displacement =   0.1700E-01 Pressure = 1900.7 iters =    48
+fem2bc: Displacement =   0.1800E-01 Pressure = 1978.4 iters =    49
+fem2bc: Displacement =   0.1900E-01 Pressure = 2054.0 iters =    51
+fem2bc: Displacement =   0.2000E-01 Pressure = 2126.6 iters =    52
+fem2bc: Displacement =   0.2100E-01 Pressure = 2194.5 iters =    55
+fem2bc: Displacement =   0.2200E-01 Pressure = 2254.1 iters =    60
+fem2bc: Displacement =   0.2300E-01 Pressure = 2302.7 iters =    79
+fem2bc: Displacement =   0.2400E-01 Pressure = 2331.9 iters =   129
+fem2bc: Displacement =   0.2500E-01 Pressure = 2333.8 iters =   180
+    2   25 disps,   180 iters, fmax = 1.277922, q = 2334.
+Phi field mean = 28.91446, sd = 1.727439, for realization 3
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  158.5 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  318.0 iters =     6
+fem2bc: Displacement =   0.3000E-02 Pressure =  483.4 iters =    18
+fem2bc: Displacement =   0.4000E-02 Pressure =  605.9 iters =    33
+fem2bc: Displacement =   0.5000E-02 Pressure =  707.5 iters =    40
+fem2bc: Displacement =   0.6000E-02 Pressure =  801.2 iters =    47
+fem2bc: Displacement =   0.7000E-02 Pressure =  891.3 iters =    52
+fem2bc: Displacement =   0.8000E-02 Pressure =  981.1 iters =    55
+fem2bc: Displacement =   0.9000E-02 Pressure = 1071.0 iters =    57
+fem2bc: Displacement =   0.1000E-01 Pressure = 1160.0 iters =    57
+fem2bc: Displacement =   0.1100E-01 Pressure = 1247.8 iters =    58
+fem2bc: Displacement =   0.1200E-01 Pressure = 1332.9 iters =    57
+fem2bc: Displacement =   0.1300E-01 Pressure = 1415.0 iters =    51
+fem2bc: Displacement =   0.1400E-01 Pressure = 1494.7 iters =    44
+fem2bc: Displacement =   0.1500E-01 Pressure = 1569.6 iters =    47
+fem2bc: Displacement =   0.1600E-01 Pressure = 1642.5 iters =    48
+fem2bc: Displacement =   0.1700E-01 Pressure = 1714.1 iters =    49
+fem2bc: Displacement =   0.1800E-01 Pressure = 1784.6 iters =    49
+fem2bc: Displacement =   0.1900E-01 Pressure = 1853.2 iters =    48
+fem2bc: Displacement =   0.2000E-01 Pressure = 1918.6 iters =    49
+fem2bc: Displacement =   0.2100E-01 Pressure = 1980.3 iters =    52
+fem2bc: Displacement =   0.2200E-01 Pressure = 2031.4 iters =    62
+fem2bc: Displacement =   0.2300E-01 Pressure = 1956.5 iters =   300
+    3   23 disps,   300 iters, fmax = 1.642474, q = 1956.
+Phi field mean = 29.64286, sd = 1.278172, for realization 4
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  173.2 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  349.1 iters =    10
+fem2bc: Displacement =   0.3000E-02 Pressure =  531.2 iters =    20
+fem2bc: Displacement =   0.4000E-02 Pressure =  671.7 iters =    36
+fem2bc: Displacement =   0.5000E-02 Pressure =  784.1 iters =    46
+fem2bc: Displacement =   0.6000E-02 Pressure =  888.8 iters =    52
+fem2bc: Displacement =   0.7000E-02 Pressure =  989.8 iters =    55
+fem2bc: Displacement =   0.8000E-02 Pressure = 1091.2 iters =    57
+fem2bc: Displacement =   0.9000E-02 Pressure = 1192.7 iters =    59
+fem2bc: Displacement =   0.1000E-01 Pressure = 1295.5 iters =    61
+fem2bc: Displacement =   0.1100E-01 Pressure = 1399.3 iters =    62
+fem2bc: Displacement =   0.1200E-01 Pressure = 1502.2 iters =    61
+fem2bc: Displacement =   0.1300E-01 Pressure = 1603.5 iters =    57
+fem2bc: Displacement =   0.1400E-01 Pressure = 1699.8 iters =    47
+fem2bc: Displacement =   0.1500E-01 Pressure = 1790.8 iters =    48
+fem2bc: Displacement =   0.1600E-01 Pressure = 1878.6 iters =    49
+fem2bc: Displacement =   0.1700E-01 Pressure = 1963.9 iters =    49
+fem2bc: Displacement =   0.1800E-01 Pressure = 2047.3 iters =    50
+fem2bc: Displacement =   0.1900E-01 Pressure = 2128.9 iters =    52
+fem2bc: Displacement =   0.2000E-01 Pressure = 2208.8 iters =    52
+fem2bc: Displacement =   0.2100E-01 Pressure = 2285.4 iters =    52
+fem2bc: Displacement =   0.2200E-01 Pressure = 2357.1 iters =    53
+fem2bc: Displacement =   0.2300E-01 Pressure = 2413.0 iters =    84
+fem2bc: Displacement =   0.2400E-01 Pressure = 2324.4 iters =   300
+    4   24 disps,   300 iters, fmax = 2.623464, q = 2324.
+Phi field mean = 28.88807, sd = 1.346011, for realization 5
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  166.7 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  339.3 iters =    12
+fem2bc: Displacement =   0.3000E-02 Pressure =  509.9 iters =    24
+fem2bc: Displacement =   0.4000E-02 Pressure =  639.7 iters =    35
+fem2bc: Displacement =   0.5000E-02 Pressure =  746.7 iters =    39
+fem2bc: Displacement =   0.6000E-02 Pressure =  846.5 iters =    42
+fem2bc: Displacement =   0.7000E-02 Pressure =  942.1 iters =    49
+fem2bc: Displacement =   0.8000E-02 Pressure = 1036.3 iters =    53
+fem2bc: Displacement =   0.9000E-02 Pressure = 1130.1 iters =    56
+fem2bc: Displacement =   0.1000E-01 Pressure = 1221.8 iters =    55
+fem2bc: Displacement =   0.1100E-01 Pressure = 1311.4 iters =    52
+fem2bc: Displacement =   0.1200E-01 Pressure = 1398.4 iters =    49
+fem2bc: Displacement =   0.1300E-01 Pressure = 1482.1 iters =    46
+fem2bc: Displacement =   0.1400E-01 Pressure = 1563.8 iters =    42
+fem2bc: Displacement =   0.1500E-01 Pressure = 1641.6 iters =    46
+fem2bc: Displacement =   0.1600E-01 Pressure = 1717.5 iters =    49
+fem2bc: Displacement =   0.1700E-01 Pressure = 1791.6 iters =    51
+fem2bc: Displacement =   0.1800E-01 Pressure = 1863.9 iters =    50
+fem2bc: Displacement =   0.1900E-01 Pressure = 1933.8 iters =    50
+fem2bc: Displacement =   0.2000E-01 Pressure = 1999.5 iters =    52
+fem2bc: Displacement =   0.2100E-01 Pressure = 2059.1 iters =    61
+fem2bc: Displacement =   0.2200E-01 Pressure = 2110.5 iters =    72
+fem2bc: Displacement =   0.2300E-01 Pressure = 2154.6 iters =    77
+fem2bc: Displacement =   0.2400E-01 Pressure = 2189.9 iters =    79
+fem2bc: Displacement =   0.2500E-01 Pressure = 2168.4 iters =   300
+    5   25 disps,   300 iters, fmax = 1.267385, q = 2168.
+Phi field mean = 30.48361, sd = 1.276046, for realization 6
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  164.8 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  331.7 iters =    10
+fem2bc: Displacement =   0.3000E-02 Pressure =  505.0 iters =    19
+fem2bc: Displacement =   0.4000E-02 Pressure =  658.5 iters =    33
+fem2bc: Displacement =   0.5000E-02 Pressure =  776.3 iters =    43
+fem2bc: Displacement =   0.6000E-02 Pressure =  877.6 iters =    54
+fem2bc: Displacement =   0.7000E-02 Pressure =  974.3 iters =    61
+fem2bc: Displacement =   0.8000E-02 Pressure = 1071.9 iters =    64
+fem2bc: Displacement =   0.9000E-02 Pressure = 1172.5 iters =    65
+fem2bc: Displacement =   0.1000E-01 Pressure = 1274.2 iters =    67
+fem2bc: Displacement =   0.1100E-01 Pressure = 1376.5 iters =    67
+fem2bc: Displacement =   0.1200E-01 Pressure = 1477.1 iters =    68
+fem2bc: Displacement =   0.1300E-01 Pressure = 1576.0 iters =    68
+fem2bc: Displacement =   0.1400E-01 Pressure = 1673.3 iters =    67
+fem2bc: Displacement =   0.1500E-01 Pressure = 1767.5 iters =    65
+fem2bc: Displacement =   0.1600E-01 Pressure = 1858.8 iters =    61
+fem2bc: Displacement =   0.1700E-01 Pressure = 1945.8 iters =    52
+fem2bc: Displacement =   0.1800E-01 Pressure = 2030.4 iters =    50
+fem2bc: Displacement =   0.1900E-01 Pressure = 2112.5 iters =    50
+fem2bc: Displacement =   0.2000E-01 Pressure = 2192.9 iters =    53
+fem2bc: Displacement =   0.2100E-01 Pressure = 2271.7 iters =    54
+fem2bc: Displacement =   0.2200E-01 Pressure = 2347.8 iters =    56
+fem2bc: Displacement =   0.2300E-01 Pressure = 2422.3 iters =    58
+fem2bc: Displacement =   0.2400E-01 Pressure = 2495.2 iters =    58
+fem2bc: Displacement =   0.2500E-01 Pressure = 2564.8 iters =    63
+fem2bc: Displacement =   0.2600E-01 Pressure = 2631.2 iters =    65
+fem2bc: Displacement =   0.2700E-01 Pressure = 2694.8 iters =    66
+fem2bc: Displacement =   0.2800E-01 Pressure = 2755.9 iters =    67
+fem2bc: Displacement =   0.2900E-01 Pressure = 2812.4 iters =    69
+fem2bc: Displacement =   0.3000E-01 Pressure = 2862.9 iters =    69
+fem2bc: Displacement =   0.3100E-01 Pressure = 2903.2 iters =    69
+fem2bc: Displacement =   0.3200E-01 Pressure = 2872.3 iters =   300
+    6   32 disps,   300 iters, fmax = 2.285277, q = 2872.
+Phi field mean = 29.91437, sd = 1.067332, for realization 7
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  164.4 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  330.5 iters =     9
+fem2bc: Displacement =   0.3000E-02 Pressure =  502.6 iters =    19
+fem2bc: Displacement =   0.4000E-02 Pressure =  648.3 iters =    34
+fem2bc: Displacement =   0.5000E-02 Pressure =  764.9 iters =    42
+fem2bc: Displacement =   0.6000E-02 Pressure =  869.7 iters =    46
+fem2bc: Displacement =   0.7000E-02 Pressure =  969.9 iters =    52
+fem2bc: Displacement =   0.8000E-02 Pressure = 1068.0 iters =    57
+fem2bc: Displacement =   0.9000E-02 Pressure = 1166.6 iters =    60
+fem2bc: Displacement =   0.1000E-01 Pressure = 1265.9 iters =    62
+fem2bc: Displacement =   0.1100E-01 Pressure = 1365.8 iters =    63
+fem2bc: Displacement =   0.1200E-01 Pressure = 1465.5 iters =    63
+fem2bc: Displacement =   0.1300E-01 Pressure = 1564.0 iters =    63
+fem2bc: Displacement =   0.1400E-01 Pressure = 1658.0 iters =    58
+fem2bc: Displacement =   0.1500E-01 Pressure = 1749.3 iters =    55
+fem2bc: Displacement =   0.1600E-01 Pressure = 1837.4 iters =    52
+fem2bc: Displacement =   0.1700E-01 Pressure = 1923.5 iters =    49
+fem2bc: Displacement =   0.1800E-01 Pressure = 2007.5 iters =    46
+fem2bc: Displacement =   0.1900E-01 Pressure = 2089.3 iters =    46
+fem2bc: Displacement =   0.2000E-01 Pressure = 2168.6 iters =    48
+fem2bc: Displacement =   0.2100E-01 Pressure = 2245.5 iters =    49
+fem2bc: Displacement =   0.2200E-01 Pressure = 2320.0 iters =    49
+fem2bc: Displacement =   0.2300E-01 Pressure = 2391.2 iters =    49
+fem2bc: Displacement =   0.2400E-01 Pressure = 2458.7 iters =    52
+fem2bc: Displacement =   0.2500E-01 Pressure = 2520.2 iters =    54
+fem2bc: Displacement =   0.2600E-01 Pressure = 2564.0 iters =    75
+fem2bc: Displacement =   0.2700E-01 Pressure = 2395.2 iters =   300
+    7   27 disps,   300 iters, fmax = 1.865481, q = 2395.
+Phi field mean = 29.01085, sd = 1.176324, for realization 8
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  165.4 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  332.9 iters =     9
+fem2bc: Displacement =   0.3000E-02 Pressure =  507.4 iters =    16
+fem2bc: Displacement =   0.4000E-02 Pressure =  641.8 iters =    30
+fem2bc: Displacement =   0.5000E-02 Pressure =  749.5 iters =    38
+fem2bc: Displacement =   0.6000E-02 Pressure =  849.7 iters =    44
+fem2bc: Displacement =   0.7000E-02 Pressure =  946.4 iters =    48
+fem2bc: Displacement =   0.8000E-02 Pressure = 1042.2 iters =    52
+fem2bc: Displacement =   0.9000E-02 Pressure = 1138.4 iters =    54
+fem2bc: Displacement =   0.1000E-01 Pressure = 1235.5 iters =    57
+fem2bc: Displacement =   0.1100E-01 Pressure = 1332.7 iters =    58
+fem2bc: Displacement =   0.1200E-01 Pressure = 1428.3 iters =    58
+fem2bc: Displacement =   0.1300E-01 Pressure = 1522.7 iters =    56
+fem2bc: Displacement =   0.1400E-01 Pressure = 1614.1 iters =    53
+fem2bc: Displacement =   0.1500E-01 Pressure = 1701.6 iters =    49
+fem2bc: Displacement =   0.1600E-01 Pressure = 1786.5 iters =    44
+fem2bc: Displacement =   0.1700E-01 Pressure = 1868.0 iters =    46
+fem2bc: Displacement =   0.1800E-01 Pressure = 1947.1 iters =    47
+fem2bc: Displacement =   0.1900E-01 Pressure = 2023.4 iters =    47
+fem2bc: Displacement =   0.2000E-01 Pressure = 2096.8 iters =    47
+fem2bc: Displacement =   0.2100E-01 Pressure = 2167.1 iters =    49
+fem2bc: Displacement =   0.2200E-01 Pressure = 2232.2 iters =    49
+fem2bc: Displacement =   0.2300E-01 Pressure = 2290.2 iters =    48
+fem2bc: Displacement =   0.2400E-01 Pressure = 2339.1 iters =    49
+fem2bc: Displacement =   0.2500E-01 Pressure = 2377.7 iters =    50
+fem2bc: Displacement =   0.2600E-01 Pressure = 2396.3 iters =    90
+fem2bc: Displacement =   0.2700E-01 Pressure = 2304.6 iters =   300
+    8   27 disps,   300 iters, fmax = 1.893735, q = 2305.
+Phi field mean = 31.0658, sd = 1.281105, for realization 9
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  161.3 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  324.9 iters =    10
+fem2bc: Displacement =   0.3000E-02 Pressure =  495.8 iters =    18
+fem2bc: Displacement =   0.4000E-02 Pressure =  656.1 iters =    30
+fem2bc: Displacement =   0.5000E-02 Pressure =  788.9 iters =    41
+fem2bc: Displacement =   0.6000E-02 Pressure =  900.5 iters =    50
+fem2bc: Displacement =   0.7000E-02 Pressure = 1003.2 iters =    60
+fem2bc: Displacement =   0.8000E-02 Pressure = 1104.1 iters =    65
+fem2bc: Displacement =   0.9000E-02 Pressure = 1206.4 iters =    67
+fem2bc: Displacement =   0.1000E-01 Pressure = 1310.9 iters =    68
+fem2bc: Displacement =   0.1100E-01 Pressure = 1416.8 iters =    69
+fem2bc: Displacement =   0.1200E-01 Pressure = 1523.3 iters =    70
+fem2bc: Displacement =   0.1300E-01 Pressure = 1628.4 iters =    71
+fem2bc: Displacement =   0.1400E-01 Pressure = 1732.3 iters =    72
+fem2bc: Displacement =   0.1500E-01 Pressure = 1835.6 iters =    72
+fem2bc: Displacement =   0.1600E-01 Pressure = 1937.4 iters =    72
+fem2bc: Displacement =   0.1700E-01 Pressure = 2033.7 iters =    67
+fem2bc: Displacement =   0.1800E-01 Pressure = 2126.2 iters =    64
+fem2bc: Displacement =   0.1900E-01 Pressure = 2217.1 iters =    58
+fem2bc: Displacement =   0.2000E-01 Pressure = 2305.7 iters =    51
+fem2bc: Displacement =   0.2100E-01 Pressure = 2390.3 iters =    52
+fem2bc: Displacement =   0.2200E-01 Pressure = 2470.9 iters =    54
+fem2bc: Displacement =   0.2300E-01 Pressure = 2548.2 iters =    54
+fem2bc: Displacement =   0.2400E-01 Pressure = 2622.4 iters =    53
+fem2bc: Displacement =   0.2500E-01 Pressure = 2691.6 iters =    54
+fem2bc: Displacement =   0.2600E-01 Pressure = 2754.4 iters =    55
+fem2bc: Displacement =   0.2700E-01 Pressure = 2804.6 iters =    88
+fem2bc: Displacement =   0.2800E-01 Pressure = 2717.0 iters =   300
+    9   28 disps,   300 iters, fmax = 4.222412, q = 2717.
+Phi field mean = 30.28032, sd = 0.9351442, for realization 10
+ 
+fem2bc: Displacement =   0.1000E-02 Pressure =  164.8 iters =     2
+fem2bc: Displacement =   0.2000E-02 Pressure =  331.9 iters =     9
+fem2bc: Displacement =   0.3000E-02 Pressure =  504.2 iters =    18
+fem2bc: Displacement =   0.4000E-02 Pressure =  656.8 iters =    32
+fem2bc: Displacement =   0.5000E-02 Pressure =  776.3 iters =    40
+fem2bc: Displacement =   0.6000E-02 Pressure =  880.3 iters =    46
+fem2bc: Displacement =   0.7000E-02 Pressure =  977.9 iters =    52
+fem2bc: Displacement =   0.8000E-02 Pressure = 1074.6 iters =    57
+fem2bc: Displacement =   0.9000E-02 Pressure = 1172.0 iters =    59
+fem2bc: Displacement =   0.1000E-01 Pressure = 1269.5 iters =    62
+fem2bc: Displacement =   0.1100E-01 Pressure = 1367.4 iters =    63
+fem2bc: Displacement =   0.1200E-01 Pressure = 1465.5 iters =    64
+fem2bc: Displacement =   0.1300E-01 Pressure = 1562.5 iters =    64
+fem2bc: Displacement =   0.1400E-01 Pressure = 1657.6 iters =    64
+fem2bc: Displacement =   0.1500E-01 Pressure = 1748.6 iters =    63
+fem2bc: Displacement =   0.1600E-01 Pressure = 1837.7 iters =    58
+fem2bc: Displacement =   0.1700E-01 Pressure = 1924.2 iters =    51
+fem2bc: Displacement =   0.1800E-01 Pressure = 2008.2 iters =    47
+fem2bc: Displacement =   0.1900E-01 Pressure = 2088.5 iters =    52
+fem2bc: Displacement =   0.2000E-01 Pressure = 2167.5 iters =    53
+fem2bc: Displacement =   0.2100E-01 Pressure = 2244.4 iters =    53
+fem2bc: Displacement =   0.2200E-01 Pressure = 2319.2 iters =    53
+fem2bc: Displacement =   0.2300E-01 Pressure = 2391.5 iters =    53
+fem2bc: Displacement =   0.2400E-01 Pressure = 2461.6 iters =    52
+fem2bc: Displacement =   0.2500E-01 Pressure = 2528.5 iters =    52
+fem2bc: Displacement =   0.2600E-01 Pressure = 2591.1 iters =    56
+fem2bc: Displacement =   0.2700E-01 Pressure = 2649.8 iters =    60
+fem2bc: Displacement =   0.2800E-01 Pressure = 2705.2 iters =    64
+fem2bc: Displacement =   0.2900E-01 Pressure = 2753.8 iters =    67
+fem2bc: Displacement =   0.3000E-01 Pressure = 2639.0 iters =   300
+   10   30 disps,   300 iters, fmax = 4.339416, q = 2639.
+Statistics based on           10 realizations.
+
+Deterministic Ult Bearing Stress:    0.275352E+04
+    Achieved in 31 displacement steps (ideally near 10).
+Bearing stress capacities normalized.
+
+Realization 3 gave minimum bearing capacity of   0.7 using seed 15924
+Realization 6 gave maximum bearing capacity of   1.1 using seed 15927
+
+                                STOCHASTIC ANALYSIS RESULTS
+                                ===========================
+
+                           Average             Standard Deviation
+                         ============         ====================
+
+Bearing Stats:           0.915692E+00             0.107314E+00
+Log-Bearing Stats:      -0.944235E-01             0.119609E+00
+
+                                           TIME LOG
+                                           ========
+
+               RF generator setup took             0.02 seconds.
+                   RF simulations took             0.00 seconds.
+                      FE analysis took            17.89 seconds.

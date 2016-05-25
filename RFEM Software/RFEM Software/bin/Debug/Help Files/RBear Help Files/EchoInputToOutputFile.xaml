@@ -1,9 +1,0 @@
-﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBear_Help_Files"
-              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
-    <Paragraph>
-        Enabling this option causes the input data provided on this form to be
-echoed to the output *.stt file. This is useful both to check the data
-and to associate the run parameters with the output files.
-    </Paragraph>
-</FlowDocument>

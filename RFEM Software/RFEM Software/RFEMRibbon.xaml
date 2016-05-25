@@ -40,7 +40,7 @@
                     
                     <RibbonApplicationMenuItem Header="Settings"
                                                ImageSource="Images/Settings.png"
-                                               Click="Settings_Click"/>
+                                               Name="btnSettings"/>
                 </RibbonApplicationMenu>
                     
                     
@@ -151,6 +151,11 @@
             <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="tabRunControl">
                 <RibbonGroup Header="Simulation">
                     <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
+                    <RibbonButton Name="btnShowSummaryStats" Label="Display Summary Stats" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowMesh" Label="Display Mesh" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowField" Label="Display Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowBearingHist" Label="Display Bearing Histogram" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False" />
+                    
                 </RibbonGroup>
                 
             </RibbonTab>

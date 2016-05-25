@@ -52,6 +52,7 @@
                     </Grid.ColumnDefinitions>
                     <UniformGrid Grid.Column="0">
                         <TabControl x:Name="tabControl" 
+                                    Padding="10 0 0 0"
                         
                         
                         ItemsSource="{Binding}" 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -65,6 +66,13 @@ namespace RFEM_Software
             this.mainRibbon.btn_RunSim.Click += btnRunSim_Click;
             this.mainRibbon.btnOpenExisting.Click += OpenExistingFile;
 
+            this.mainRibbon.btnShowSummaryStats.Click += btnShowSummaryStats_Click;
+            this.mainRibbon.btnShowMesh.Click += btnShowMesh_Click;
+            this.mainRibbon.btnShowField.Click += btnShowField_Click;
+
+            this.mainRibbon.btnSettings.Click += btnSettings_Click;
+
+
         }
         /// <summary>
         /// This method is called by the ribbon. The ribbon passes the input form that the
@@ -91,6 +99,7 @@ namespace RFEM_Software
 
             //Build context menu for the header
             headerMenu = new ContextMenu();
+            headerMenu.Tag = NewTab;
 
             //Add a close-tab menu item and bind it to this window's handler
             menuItem = new MenuItem();
@@ -132,6 +141,62 @@ namespace RFEM_Software
 
         }
 
+        public void AddNewResultsTab(string tabContent, string tabName)
+        {
+            var scrollViewer = new ScrollViewer();
+            RFEMTabItem NewTab = new RFEMTabItem();
+            ContextMenu headerMenu;
+            MenuItem menuItem;
+            
+            //Build context menu for the header
+            headerMenu = new ContextMenu();
+            headerMenu.Tag = NewTab;
+
+
+            //Add a close-tab menu item and bind it to this window's handler
+            menuItem = new MenuItem();
+            menuItem.Header = "Close";
+            menuItem.Click += CloseTab;
+            headerMenu.Items.Add(menuItem);
+
+            //Add a close-all-tabs menu item and bind it to this window's handler
+            menuItem = new MenuItem();
+            menuItem.Header = "Close All";
+            menuItem.Click += CloseAllTabs;
+            headerMenu.Items.Add(menuItem);
+
+            //Build the header
+            NewTab.Header = new ContentControl
+            {
+                Content = tabName,
+                ContextMenu = headerMenu
+            };
+
+            //Signal that the new tab is a results tab
+            NewTab.TabType = RFEMTabType.Results;
+
+            //Place the string into a textblock in a scrollviewer
+            var tb = new TextBlock();
+            tb.Text = tabContent;
+            scrollViewer.Content = tb;
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+            //Place the scrollviewer in the new tab
+            NewTab.Content = scrollViewer;
+
+            //Add the tab to this window's list of tabs
+            tabItems.Add(NewTab);
+
+            //Reset the tab controls data context so it recognizes the new tab
+            tabControl.DataContext = null;
+            tabControl.DataContext = tabItems;
+
+            //Select the new tab and set focus. The set focus is required to enable
+            //the help command of the context menus
+            tabControl.SelectedItem = NewTab;
+            tabControl.Focus();
+        }
+
 
         ///NOT IMPLEMENTED YET////////////////////////////////////
         /// <summary>
@@ -143,7 +208,26 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void CloseTab(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Close Tab Stub");
+            MenuItem x = sender as MenuItem;
+            RFEMTabItem owner = null;
+            RFEMTabItem tempSelectedItem = tabControl.SelectedItem as RFEMTabItem;
+            if(x != null)
+            {
+                owner = ((ContextMenu)x.Parent).Tag as RFEMTabItem;
+                if(owner!= null)
+                {
+                  
+                    ((List<RFEMTabItem>)tabControl.ItemsSource).Remove(owner);
+                    
+                    tabControl.DataContext = null;
+                    tabControl.DataContext = tabItems;
+                    if(tempSelectedItem != null && tempSelectedItem != owner)
+                    {
+                        tabControl.SelectedItem = tempSelectedItem;
+                    }
+                }
+            }
+
         }
 
         ///NOT IMPLEMENTED YET///////////////////////////////////////////
@@ -155,7 +239,9 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void CloseAllTabs(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Close all tabs stub");
+            tabItems.Clear();
+            tabControl.DataContext = null;
+            tabControl.DataContext = tabItems;
         }
 
         /// <summary>
@@ -173,6 +259,22 @@ namespace RFEM_Software
                     this.mainRibbon.RunTools.Visibility = Visibility.Visible;
                     this.mainRibbon.tabRunControl.IsSelected = true;
                     this.DataContext = ((UserControl)((ScrollViewer)((RFEMTabItem)this.tabControl.SelectedItem).Content).Content).DataContext;
+                    
+                    var Binding = new Binding("CanDisplaySummaryStats");
+                    Binding.Source = this.DataContext;
+                    this.mainRibbon.btnShowSummaryStats.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                    Binding = new Binding("CanDisplayMesh");
+                    Binding.Source = this.DataContext;
+                    this.mainRibbon.btnShowMesh.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                    Binding = new Binding("CanDisplayField");
+                    Binding.Source = this.DataContext;
+                    this.mainRibbon.btnShowField.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                    Binding = new Binding("CanDisplayBearingHist");
+                    Binding.Source = this.DataContext;
+                    this.mainRibbon.btnShowBearingHist.SetBinding(RibbonButton.IsEnabledProperty, Binding);
                 }
                 else
                 {
@@ -263,6 +365,7 @@ namespace RFEM_Software
         /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            Properties.Settings.Default.Save();
             base.OnClosing(e);
             //Store data files in isolated storage
             MessageBox.Show("Conditional ask for save stub");
@@ -485,6 +588,89 @@ namespace RFEM_Software
                 
             }
         }
+        private void btnShowSummaryStats_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string SummaryFilePath = ((ISimViewModel)this.DataContext).SummaryFilePath;
+                string SummaryStats;
+
+                using(var reader = new System.IO.StreamReader(SummaryFilePath))
+                {
+                    SummaryStats = reader.ReadToEnd();
+                }
+
+                AddNewResultsTab(SummaryStats, "Results");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void btnShowMesh_Click(object sender, RoutedEventArgs e)
+        {
+            try {
+                var pInfo = new ProcessStartInfo();
+                pInfo.UseShellExecute = false;
+                pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
+                pInfo.Arguments = "-dSAFER -dBATCH " + "\"" + ((ISimViewModel)this.DataContext).MeshFilePath + "\"";
+                pInfo.CreateNoWindow = true;
+
+                var p = new Process { StartInfo = pInfo };
+                p.Start();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void btnShowField_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var pInfo = new ProcessStartInfo();
+                pInfo.UseShellExecute = false;
+                pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                            "\\RFEM_Software";
+                string appFileDir = Environment.GetCommandLineArgs()[0];
+                string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
+                displayFilePath += "\\Executables\\display.exe";
+                pInfo.FileName = displayFilePath;
+                pInfo.CreateNoWindow = true;
+                pInfo.Arguments = ((ISimViewModel)this.DataContext).FieldFilePath;
+
+                var p = new Process { StartInfo = pInfo };
+                p.Start();
+                p.WaitForExit();
+
+                pInfo = new ProcessStartInfo();
+                pInfo.UseShellExecute = false;
+                pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
+                pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                            "\\RFEM_Software";
+                pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
+                pInfo.CreateNoWindow = true;
+
+                p = new Process { StartInfo = pInfo };
+                p.Start();
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void btnShowBearingHist_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+       
         private void OpenExistingFile(object sender, RoutedEventArgs e)
         {
             //var fileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -528,6 +714,67 @@ namespace RFEM_Software
             {
                 MessageBox.Show("False");
             }
+        }
+    
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if(!tabControl.Items.OfType<RFEMTabItem>().Any(p=> ((RFEMTabItem)p).TabType == RFEMTabType.Settings))
+            {
+                var scrollViewer = new ScrollViewer();
+                RFEMTabItem NewTab = new RFEMTabItem();
+                ContextMenu headerMenu;
+                MenuItem menuItem;
+
+                //Build context menu for the header
+                headerMenu = new ContextMenu();
+                headerMenu.Tag = NewTab;
+
+                //Add a close-tab menu item and bind it to this window's handler
+                menuItem = new MenuItem();
+                menuItem.Header = "Close";
+                menuItem.Click += CloseTab;
+                headerMenu.Items.Add(menuItem);
+
+                //Add a close-all-tabs menu item and bind it to this window's handler
+                menuItem = new MenuItem();
+                menuItem.Header = "Close All";
+                menuItem.Click += CloseAllTabs;
+                headerMenu.Items.Add(menuItem);
+
+                //Build the header
+                NewTab.Header = new ContentControl
+                {
+                    Content = "Settings",
+                    ContextMenu = headerMenu
+                };
+
+                //Signal that the new tab is a settings tab
+                NewTab.TabType = RFEMTabType.Settings;
+
+                //Place the form into a scrollviewer
+                scrollViewer.Content = new Forms.SettingsForm();
+                scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+                //Place the scrollviewer in the new tab
+                NewTab.Content = scrollViewer;
+
+                //Add the tab to this window's list of tabs
+                tabItems.Add(NewTab);
+
+                //Reset the tab controls data context so it recognizes the new tab
+                tabControl.DataContext = null;
+                tabControl.DataContext = tabItems;
+
+                //Select the new tab and set focus. The set focus is required to enable
+                //the help command of the context menus
+                tabControl.SelectedItem = NewTab;
+                tabControl.Focus();
+            }
+            else
+            {
+                tabControl.Items.OfType<RFEMTabItem>().Where(p => ((RFEMTabItem)p).TabType == RFEMTabType.Settings).First().IsSelected = true;
+            }
+            
         }
     }
 

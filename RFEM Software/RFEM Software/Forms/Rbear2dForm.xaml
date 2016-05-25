@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RFEM_Software"
         xmlns:self="clr-namespace:RFEM_Software.Commands"
+        xmlns:cc="clr-namespace:RFEM_Software.Custom_Controls"
         mc:Ignorable="d"
         Height="auto" Width="700"
         x:Name="rbearForm" Loaded="Form_Loaded" >
@@ -79,80 +80,79 @@
                 
             </Style.Triggers>
         </Style>
+        
 
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <CommandBinding Command="self:CustomCommands.HelpClick" CanExecute="HelpClickStub"
                         Executed="HelpClickExeStub"/>
-        
     </UserControl.CommandBindings>
+        
+        
+        
     <StackPanel Orientation="Vertical" Name="MainPanel">
         
-
         <StackPanel Orientation="Horizontal">
-        <Label Content="Job Title:"
-               ToolTip="{StaticResource DefaultToolTip}"/>
+            <Label Content="Job Title:">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Job Title" ToolTipMessage="Title for charts and files." />
+                </Label.ToolTip>
+            </Label>
             <TextBox x:Name="txtJobTitle" 
-                 Width="200"
-                 Text="{Binding Path=JobTitle, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                 Style="{StaticResource ToolTipEnabled}"
-                 Tag="Test5"
-                 >
+                     Width="200"
+                     Text="{Binding Path=JobTitle, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Job Title" ToolTipMessage="Title for charts and files." />
+                </TextBox.ToolTip>
             </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
-            <Label Content="Basename:" 
-                   ToolTip="{StaticResource DefaultToolTip}"/>
+            <Label Content="Basename:">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Base Name" ToolTipMessage="Root name for data and result files." />
+                </Label.ToolTip>
+            </Label>
             <TextBox x:Name="txtBaseName"
                      Width="100" 
-                     ToolTip="{StaticResource DefaultToolTip}"
-                     Text="{Binding Path=BaseName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                     Text="{Binding Path=BaseName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Base Name" ToolTipMessage="Root name for data and result files." />
+                </TextBox.ToolTip>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" >
             <CheckBox x:Name="chkEchoInput"
                       Content="Echo input data to output *.stt file?" 
                       VerticalAlignment="center"
-                      ToolTip="{StaticResource DefaultToolTip}"
                       IsChecked="{Binding Path=EchoInputDataToOutputFile, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Echo Input" 
+                                    ToolTipMessage="Display input data in the output statistics file."/>
+                </CheckBox.ToolTip>
+
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu1"  >
                         <MenuItem Header="Help" 
-                      
                                   Command="self:CustomCommands.HelpClick"
                                   CommandParameter="{Binding ElementName=chkEchoInput}"
-                                  
                                   />
                     </ContextMenu>
                 </CheckBox.ContextMenu>
             </CheckBox>
-
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" >
-            <CheckBox x:Name="chkReportProgress"
-                      Content="Report Progress of the run to the screen?"
-                      VerticalAlignment="center" 
-                      ToolTip="{StaticResource DefaultToolTip}"
-                      IsChecked="{Binding Path=ReportRunProgress, UpdateSourceTrigger=PropertyChanged}">
-                <CheckBox.ContextMenu>
-                    <ContextMenu Name="contextMenu8"  >
-                        <MenuItem Header="Help" 
-                                  Command="self:CustomCommands.HelpClick"
-                                  CommandParameter="{Binding ElementName=chkReportProgress}"
-                                  />
-                    </ContextMenu>
-                </CheckBox.ContextMenu>
-            </CheckBox>
-
-        </StackPanel>
+        
         <StackPanel Orientation="Horizontal" >
             <CheckBox x:Name="chkOutputDebugData"
                       Content="Write debug data to the *.stt file?"
                       VerticalAlignment="center"
-                      ToolTip="{StaticResource DefaultToolTip}"
                       IsChecked="{Binding Path=WriteDebugDataToOutputFile, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Output Debug Data"
+                                    ToolTipMessage="Writes debug information to the output statistics file." />
+                </CheckBox.ToolTip>
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu9"  >
                         <MenuItem Header="Help" 
@@ -167,10 +167,14 @@
             <CheckBox x:Name="chkPlotFirstRF"
                       Content="Plot first random field?"
                       VerticalAlignment="center"
-                      ToolTip="{StaticResource DefaultToolTip}" 
                       Checked="chkPlotFirstRF_Checked"
                       Unchecked="chkPlotFirstRF_UnChecked"
                       IsChecked="{Binding Path=PlotFirstRandomField, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Plot First Random Field"
+                                    ToolTipMessage="Enabling this option will cause the first random field (ie. the first
+                                                    realization) to be plotted as a DISPLAY format file." />
+                </CheckBox.ToolTip>
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu10"  >
                         <MenuItem Header="Help" 
@@ -182,8 +186,11 @@
             </CheckBox>
             <Label Name="lbPlotFirstRF" 
                    Content="Property to plot:"
-                   ToolTip="{StaticResource DefaultToolTip}"
                    Visibility="Collapsed">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Property to Plot"
+                                    ToolTipMessage="Select property to plot." />
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu Name="contextMenu11"  >
                         <MenuItem Header="Help" 
@@ -195,12 +202,15 @@
             </Label>
             <ComboBox x:Name="cboPlotFirstRF"
                       Width="75"
-                      ToolTip="{StaticResource DefaultToolTip}"
                       Visibility="Collapsed"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Value"
                       SelectedValue="{Binding Path=FirstRandomFieldProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                       >
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Property to Plot"
+                                    ToolTipMessage="Select property to plot." />
+                </ComboBox.ToolTip>
                 <ComboBox.ContextMenu>
                     <ContextMenu Name="contextMenu12"  >
                         <MenuItem Header="Help" 
@@ -214,17 +224,20 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" >
             <CheckBox x:Name="chkProducePSPLOTOfFirstFEM"
-                      Content="Produce a PostScript format file of first displayed finite element mesh"
+                      Content="Produce a PostScript format file of first displaced finite element mesh"
                       VerticalAlignment="center" 
-                      ToolTip="{StaticResource DefaultToolTip}" 
                       Checked="chkProducePSPLOTOfFirstFEM_Checked" 
                       Unchecked="chkProducePSPLOTOfFirstFEM_Unchecked"
-                      IsChecked="{Binding Path=ProducePSPLOTOfFirstFEM}">
+                      IsChecked="{Binding ProducePSPLOTOfFirstFEM}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Produce PostScript File"
+                                    ToolTipMessage="Enabling this option causes the first random displaced bearing failure mesh to be shown as a PostScript plot." />
+                </CheckBox.ToolTip>
                 <CheckBox.ContextMenu>
-                    <ContextMenu Name="contextMenu13"  >
+                    <ContextMenu x:Name="contextMenu13"  >
                         <MenuItem Header="Help" 
-                                  Command="self:CustomCommands.HelpClick"
-                                  CommandParameter="{Binding ElementName=chkProducePSPLOTOfFirstFEM}"
+                    		Command="self:CustomCommands.HelpClick"
+                    		CommandParameter="{Binding ElementName=chkProducePSPLOTOfFirstFEM}"
                                   />
                     </ContextMenu>
                 </CheckBox.ContextMenu>
@@ -238,8 +251,12 @@
                     <CheckBox x:Name="chkShowMeshOnDisplacedPlot"
                               Content="Show mesh on displaced mesh plot?"
                               VerticalAlignment="center" 
-                              ToolTip="{StaticResource DefaultToolTip}"
                               IsChecked="{Binding Path=ShowMeshOnDisplacedPlot}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Mesh on Displaced Plot"
+                                        ToolTipMessage="Enabling this option causes the displaced finite element mesh to
+                                                            be shown on the bearing failure plot."/>
+                    </CheckBox.ToolTip>
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu14"  >
                                 <MenuItem Header="Help" 
@@ -255,10 +272,14 @@
                     <CheckBox x:Name="chkShowRFOnPlot"
                               Content="Show random field on plot?"
                               VerticalAlignment="center"
-                              ToolTip="{StaticResource DefaultToolTip}"
                               IsChecked="{Binding Path=ShowRFOnPSPLOT}"
                               Checked="chkShowRFOnPlot_Checked"
                               Unchecked="chkShowRFOnPlot_Unchecked">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Random Field on Plot"
+                                        ToolTipMessage="Enabling this option results in one of the random soil property
+                                                        fields to be shown as a greyscale image on the bearing failure plot." />
+                    </CheckBox.ToolTip>
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu"  >
                                 <MenuItem Header="Help" 
@@ -274,9 +295,12 @@
                     <CheckBox x:Name="chkShowLogRF"
                               Content="Show log-random field"
                               VerticalAlignment="Center"
-                              ToolTip="{StaticResource DefaultToolTip}"
                               IsChecked="{Binding Path=ShowLogRandomField}"
                               Visibility="Collapsed">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Log Random Field"
+                                        ToolTipMessage="Controls whether the logarithm of the soil property field should be displayed." />
+                    </CheckBox.ToolTip>
                         <CheckBox.ContextMenu>
                             <ContextMenu Name="contextMenu2"  >
                                 <MenuItem Header="Help" 
@@ -290,8 +314,11 @@
                     </CheckBox>
                     <Label Name="lbPropertyToPlot"
                            Content="Property to plot:"
-                           ToolTip="{StaticResource DefaultToolTip}"
                            Visibility="Collapsed">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Property to Plot"
+                                        ToolTipMessage="The soil property type to show on the bearing failure plot."/>
+                    </Label.ToolTip>
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu3"  >
                                 <MenuItem Header="Help" 
@@ -305,11 +332,14 @@
                     </Label>
                     <ComboBox x:Name="cboPropertyToPlot"
                               Width="75"
-                              ToolTip="{StaticResource DefaultToolTip}"
                               DisplayMemberPath="Name"
                               SelectedValuePath="Value"
                               Visibility="Collapsed"
                               SelectedValue="{Binding PSPLOTProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                    <ComboBox.ToolTip>
+                        <cc:RFEMToolTip Title="Property to Plot"
+                                        ToolTipMessage="The soil property type to show on the bearing failure plot."/>
+                    </ComboBox.ToolTip>
                         <ComboBox.ContextMenu>
                             <ContextMenu Name="contextMenu4"  >
                                 <MenuItem Header="Help" 
@@ -323,8 +353,11 @@
             </StackPanel>
                 <StackPanel Orientation="Horizontal" >
                     <Label Name="lbDisplacedMeshWidth" 
-                           Content="Displaced mesh plot width:" 
-                           ToolTip="{StaticResource DefaultToolTip}">
+                           Content="Displaced mesh plot width:">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </Label.ToolTip>
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu5"  >
                                 <MenuItem Header="Help" 
@@ -335,11 +368,14 @@
                         </Label.ContextMenu>
                     </Label>
                 <TextBox Name="txtDisplacedMeshWidth"
-                             ToolTip="{StaticResource DefaultToolTip}"
                              Width="50"
                              Text="{Binding Path=DisplacedMeshPlotWidth, Mode=TwoWay, 
                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true,
                                     Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </TextBox.ToolTip>
                     <TextBox.ContextMenu>
                             <ContextMenu Name="contextMenu6"  >
                                 <MenuItem Header="Help" 
@@ -350,8 +386,11 @@
                         </TextBox.ContextMenu>
                     </TextBox>
                     <Label Name="lbDisplacedMeshWidthUnits" 
-                           Content="inches"
-                           ToolTip="{StaticResource DefaultToolTip}">
+                           Content="inches">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </Label.ToolTip>
                         <Label.ContextMenu>
                             <ContextMenu Name="contextMenu7"  >
                                 <MenuItem Header="Help" 
@@ -368,8 +407,11 @@
             <CheckBox x:Name="chkNormalizeCapacitySamples"
                       Content="Normalize bearing capacity samples?"
                       VerticalAlignment="center"
-                      ToolTip="{StaticResource DefaultToolTip }"
                       IsChecked="{Binding Path=NormalizeBearingCapacitySamples}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Normalize Bearing Capacity Samples"
+                                    ToolTipMessage="Causes the individual bearing capacity realizations to be divided by the deterministic (at the mean) bearing capacity." />
+                </CheckBox.ToolTip>
                 <CheckBox.ContextMenu>
                     <ContextMenu Name="contextMenu15">
                         <MenuItem Header="Help"
@@ -383,8 +425,11 @@
         <CheckBox Name="chkOutputCapacitySamples"
                   Content="Output bearing capacity samples?"
                   VerticalAlignment="Center" 
-                  ToolTip="{StaticResource DefaultToolTip}"
                   IsChecked="{Binding Path=OutputBearingCapacitySamples}">
+            <CheckBox.ToolTip>
+                <cc:RFEMToolTip Title="Output Bearing Capacity Samples"
+                                ToolTipMessage="Results in the output of a sequence of (nsim) computed bearing capacity realizations to the output file *.cap"/>
+            </CheckBox.ToolTip>
             <CheckBox.ContextMenu>
                 <ContextMenu Name="contextMenu16">
                     <MenuItem Header="Help"
@@ -394,8 +439,12 @@
             </CheckBox.ContextMenu>
         </CheckBox>
         <StackPanel Orientation="Horizontal">
-            <Label Content="Number of elements: "
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Content="Number of elements: ">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. These values specify the number of elements in each direction." />
+                    
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu Name="contextMenu17">
                         <MenuItem Header="Help"
@@ -405,9 +454,12 @@
                 </Label.ContextMenu>
             </Label>
             <TextBox Name="txtNElementsInXDir"
-                     ToolTip="{StaticResource DefaultToolTip}"
                      Width="50"
                      Text="{Binding Path=NElementsInXDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in X-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the x-direction."/>
+                </TextBox.ToolTip>
                 <TextBox.ContextMenu>
                     <ContextMenu Name="contextMenu18">
                         <MenuItem Header="Help"
@@ -416,8 +468,11 @@
                     </ContextMenu>
                 </TextBox.ContextMenu>
             </TextBox>
-            <Label Content="in x-direction"
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Content="in x-direction">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in X-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the x-direction."/>
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu Name="contextMenu19">
                         <MenuItem Header="Help"
@@ -427,9 +482,12 @@
                 </Label.ContextMenu>
             </Label>
             <TextBox x:Name="txtNElementsInYDir"
-                     ToolTip="{StaticResource DefaultToolTip}"
                      Width="50"
                      Text="{Binding Path=NElementsInYDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in Y-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the y-direction."/>
+                </TextBox.ToolTip>
                 <TextBox.ContextMenu>
                     <ContextMenu Name="contextMenu20">
                         <MenuItem Header="Help"
@@ -439,8 +497,11 @@
                 </TextBox.ContextMenu>
             </TextBox>
             <Label Content="in y-direction"
-                   Name="TestLabel"
-                   ToolTip="{StaticResource DefaultToolTip}">
+                   Name="TestLabel">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in Y-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the y-direction."/>
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu Name="contextMenu21">
                         <MenuItem Header="Help"
@@ -452,8 +513,11 @@
                    
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Content="Element Size:"
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Content="Element Size:">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the dimensions of each element."/>
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -463,10 +527,13 @@
                 </Label.ContextMenu>
             </Label>
             <TextBox Name="txtElementSizeInXDir"
-                     ToolTip="{StaticResource DefaultToolTip}"
                      Width="50"
                      Text="{Binding Path=ElementSizeInXDir, UpdateSourceTrigger=PropertyChanged, 
                             ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in X-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the x-direction."/>
+                </TextBox.ToolTip>
                 <TextBox.ContextMenu>
                     <ContextMenu >
                         <MenuItem Header="Help"
@@ -475,8 +542,11 @@
                     </ContextMenu>
                 </TextBox.ContextMenu>
             </TextBox>
-            <Label Content="in x-direction"
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Content="in x-direction">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in X-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the x-direction."/>
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu >
                         <MenuItem Header="Help"
@@ -486,10 +556,13 @@
                 </Label.ContextMenu>
             </Label>
             <TextBox Name="txtElementSizeInYDir"
-                     ToolTip="{StaticResource DefaultToolTip}"
                      Width="50"
                      Text="{Binding Path=ElementSizeInYDir, UpdateSourceTrigger=PropertyChanged, 
                             ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in Y-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the y-direction."/>
+                </TextBox.ToolTip>
                 <TextBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -498,8 +571,11 @@
                     </ContextMenu>
                 </TextBox.ContextMenu>
             </TextBox>
-            <Label Content="in y-direction"
-                   ToolTip="{StaticResource DefaultToolTip}">
+            <Label Content="in y-direction">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in Y-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the y-direction."/>
+                </Label.ToolTip>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -511,16 +587,14 @@
                    
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Content="Number of footings:"
-                   ToolTip="{StaticResource DefaultToolTip}">
-                
-            </Label>
 
-            <GroupBox Name="gbNFootings"
-                        ToolTip="{StaticResource DefaultToolTip}">
+            <GroupBox Name="gbNFootings">
                 <GroupBox.Header>
-                    <Label Content="Number of footings"
-                                ToolTip="{StaticResource DefaultToolTip}">
+                    <Label Content="Number of footings">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Number of Footings"
+                                    ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                        </Label.ToolTip>
                         <Label.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Help"
@@ -530,6 +604,10 @@
                         </Label.ContextMenu>
                     </Label>
                 </GroupBox.Header>
+                <GroupBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Footings"
+                                    ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                </GroupBox.ToolTip>
                 <GroupBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Help"
@@ -541,8 +619,11 @@
                     <RadioButton Name="rbOneFooting"
                                  GroupName="gpNFootings"
                                  IsChecked="true"
-                                 Content="1"
-                                 ToolTip="{StaticResource DefaultToolTip}">
+                                 Content="1">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Number of Footings"
+                                            ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                        </RadioButton.ToolTip>
                         <RadioButton.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Help"
@@ -553,10 +634,13 @@
                     </RadioButton>
                     <RadioButton Name="rbTwoFootings"
                                     GroupName="gpNFootings"
-                                    Content="2"
-                                    ToolTip="{StaticResource DefaultToolTip}" 
+                                    Content="2" 
                                     Checked="rbTwoFootings_Checked" 
                                     Unchecked="rbTwoFootings_Unchecked">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Number of Footings"
+                                            ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                        </RadioButton.ToolTip>
                         <RadioButton.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Help"

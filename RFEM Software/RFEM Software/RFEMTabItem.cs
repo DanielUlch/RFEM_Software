@@ -22,6 +22,8 @@ namespace RFEM_Software
     {
         DataInput,
         Help,
+        Settings,
+        Results
     }
 
 

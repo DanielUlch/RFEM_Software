@@ -14,5 +14,14 @@ namespace RFEM_Software
         string ProgressDetails { get; set; }
 
         Task<string> RunSimAsync(CancellationToken token);
+
+        bool CanDisplaySummaryStats { get; }
+        bool CanDisplayMesh { get; }
+        bool CanDisplayField { get; }
+        bool CanDisplayBearingHist { get; }
+
+        string MeshFilePath { get; }
+        string FieldFilePath { get; }
+        string SummaryFilePath { get; }
     }
 }
