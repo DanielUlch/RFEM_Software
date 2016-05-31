@@ -67,4 +67,5 @@
         <Setter Property="DataContext" Value="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}" />
         <Setter Property="HasErrors" Value="{Binding Path=(Validation.HasError)}" />
     </Style>
+    
 </ResourceDictionary>

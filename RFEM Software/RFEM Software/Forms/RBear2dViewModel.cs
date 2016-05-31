@@ -1119,7 +1119,7 @@ namespace RFEM_Software.Forms
                 var tsk = Task<string>.Run(() => _FormData.RunSim(new Progress<int>(p =>
                     {
                         ProgressPercentage = p * 100 / (int)_FormData.NSimulations;
-                        ProgressDetails = string.Format("Iteration {0}/{1}", p, _FormData.NSimulations);
+                        ProgressDetails = string.Format("Realization {0}/{1}", p, _FormData.NSimulations);
                     }), new Progress<string>(ps =>
                     {
                         CurrentOperation = ps;

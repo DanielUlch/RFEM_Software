@@ -329,7 +329,7 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void HelpClickStub(object sender, CanExecuteRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            e.CanExecute = true;
         }
         /// <summary>
         /// This method is to appease the compiler. The help click command gets bound to
@@ -339,7 +339,7 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void HelpClickExeStub(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
         #endregion
 

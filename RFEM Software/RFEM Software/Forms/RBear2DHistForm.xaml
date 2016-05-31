@@ -4,9 +4,311 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RFEM_Software.Forms"
+             xmlns:cc="clr-namespace:RFEM_Software.Custom_Controls"
+             xmlns:com="clr-namespace:RFEM_Software.Commands"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="600" d:DesignWidth="500">
+    
+    <UserControl.Resources>
+        <Style x:Key="HelpEnabled" TargetType="{x:Type FrameworkElement}">
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Help" 
+                                  Command="com:CustomCommands.NewHelpClick"
+                                  CommandParameter="{Binding Path=Tag}"
+                                  />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Help" 
+                                  Command="com:CustomCommands.NewHelpClick"
+                                  CommandParameter="{Binding Path=Tag}"
+                                  />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <UserControl.CommandBindings>
+        <CommandBinding Command="com:CustomCommands.NewHelpClick" CanExecute="HelpClickStub"
+                        Executed="HelpClickExeStub"/>
+    </UserControl.CommandBindings>
+    
+    <StackPanel HorizontalAlignment="Left">
+        
+        <TextBlock Text="Bearing Capacity Histogram Options" 
+                   HorizontalAlignment="Center" 
+                   Tag="RBearHistHelp"
+                   Style="{StaticResource HelpEnabled}">
+            <TextBlock.ToolTip>
+                <cc:RFEMToolTip Title="Histogram Screen"
+                                ToolTipMessage="This program reads a sequence of input files, assumed to be composed of
+  individual realizations of various output quantities produced by RBEAR2D and
+  plots the data as a histogram, optionally superimposed by a plot of a fitted
+  distribution"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+        
+        <GroupBox Header="Plot bearing capacity for footing number:" 
+                  Width="250"
+                  Tag="FootingNumberHelp"
+                  Style="{StaticResource HelpEnabled}">
+            <GroupBox.ToolTip>
+                <cc:RFEMToolTip Title="Footing Number"
+                                ToolTipMessage="Choose the footing whose data will be used to construct the histogram."/>
+            </GroupBox.ToolTip>
+            <DockPanel Width="Auto">
+                <RadioButton Content="Footing 1"
+                             GroupName="FootingGroup"
+                             Name="rbFootingOne"
+                             DockPanel.Dock="Left"
+                             Tag="FootingNumberHelp"
+                             Style="{StaticResource HelpEnabled}">
+                    <RadioButton.ToolTip>
+                        <cc:RFEMToolTip Title="Footing Number"
+                                ToolTipMessage="Choose the footing whose data will be used to construct the histogram."/>
+                    </RadioButton.ToolTip>
+
+                </RadioButton>
+                <RadioButton Name="rbFootingTwo"
+                             GroupName="FootingGroup"
+                             Content="Footing 2"
+                             DockPanel.Dock="Right"
+                             Width="80"
+                             Tag="FootingNumberHelp"
+                             Style="{StaticResource HelpEnabled}">
+                    <RadioButton.ToolTip>
+                        <cc:RFEMToolTip Title="Footing Number"
+                                ToolTipMessage="Choose the footing whose data will be used to construct the histogram."/>
+                    </RadioButton.ToolTip>
+
+                </RadioButton>
+            </DockPanel>
             
-    </Grid>
+        </GroupBox>
+        
+        <StackPanel Orientation="Horizontal" >
+            <CheckBox Content="Show plot titles?" 
+                      VerticalAlignment="Center"
+                      Tag="ShowTitlesHelp"
+                      Style="{StaticResource HelpEnabled}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Show Plot Titles"
+                                    ToolTipMessage="Show titles on histogram plot?"/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <Label Content="Vertical offset: "
+                   Tag="ShowTitlesHelp"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtTitleVerticalOffset"
+                     Tag="ShowTitlesHelp" >
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="inches"
+                   Tag="ShowTitlesHelp"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                </Label.ToolTip>
+            </Label>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" >
+            <Label Content="Number of histogram intervals:"
+                   Tag="NumIntervalsHelp"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Intervals"
+                                    ToolTipMessage="A histogram counts number of outcomes from the simulation that fall
+into each of a series of intervals and then plots these frequency
+counts as a series of bars."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtNumInvervals"
+                     Tag="NumIntervalsHelp">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Intervals"
+                                    ToolTipMessage="A histogram counts number of outcomes from the simulation that fall
+into each of a series of intervals and then plots these frequency
+counts as a series of bars."/>
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+
+        <CheckBox Content="Set lengths and origin of plot axes"
+                  Tag="LengthOriginAxesHelp"
+                  Style="{StaticResource HelpEnabled}">
+            <CheckBox.ToolTip>
+                <cc:RFEMToolTip Title="Set Lengths and Origin of Axes"
+                                ToolTipMessage="This option allows the user to set the lengths of the x- and y-axes
+and the location of the axes' origin on the printed page."/>
+            </CheckBox.ToolTip>
+
+        </CheckBox>
+        
+        <StackPanel Orientation="Vertical" Margin="30 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="x-axis length:"
+                       Tag="LengthOriginAxesHelp"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtXAxisLength"
+                         Tag="LengthOriginAxesHelp">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Content="inches"
+                       Tag="LengthOriginAxesHelp"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                    </Label.ToolTip>
+                </Label>
+                <Label Content="Origin x position"
+                       Tag="LengthOriginAxesHelp"
+                       Style="{StaticResource HelpEnabled}">
+                    
+                </Label>
+                <TextBox>
+                    
+                </TextBox>
+                <Label Content="inches">
+                    
+                </Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="y-axis length:">
+                    
+                </Label>
+                <TextBox>
+                    
+                </TextBox>
+                <Label Content="inches">
+                    
+                </Label>
+                <Label Content="Origin y position:">
+                    
+                </Label>
+                <TextBox>
+                    
+                </TextBox>
+                <Label Content="inches">
+                    
+                </Label>
+            </StackPanel>
+            
+        </StackPanel>
+        <CheckBox Content="Set x-axis details?">
+            
+        </CheckBox>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Minimum:">
+                
+            </Label>
+            <TextBox>
+                
+            </TextBox>
+            <Label Content="Maximum:">
+                
+            </Label>
+            <TextBox>
+                
+            </TextBox>
+            <Label Content="Increment:">
+                
+            </Label>
+            <TextBox>
+                
+            </TextBox>
+        </StackPanel>
+        <CheckBox Content="Fit a distribution to simulated data histogram?">
+            
+        </CheckBox>
+        <GroupBox Header="Fitted Distribution Type">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Content="normal">
+
+                    </RadioButton>
+                    <RadioButton Content="exponential">
+
+                    </RadioButton>
+                    <RadioButton Content="gamma">
+
+                    </RadioButton>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Content="lognormal">
+
+                    </RadioButton>
+                    <RadioButton Content="beta">
+
+                    </RadioButton>
+                    <RadioButton Content="uniform"></RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <CheckBox Content="Show Anderson-Darling Goodness-of-Fit test statistic">
+                
+        </CheckBox>
+        <CheckBox Content="Show Chi-Square Goodness-of-Fit p-value?">
+            
+        </CheckBox>
+        <CheckBox Content="Show line key on histogram plot?">
+            
+        </CheckBox>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Line key x-offset:">
+
+            </Label>
+            <TextBox>
+                
+            </TextBox>
+            <Label Content="inches">
+                
+            </Label>
+            <Label Content="y-offset:">
+                
+            </Label>
+            <TextBox>
+                
+            </TextBox>
+            <Label Content="inches">
+                
+            </Label>
+        </StackPanel>
+        
+        
+        
+
+
+    </StackPanel>
 </UserControl>

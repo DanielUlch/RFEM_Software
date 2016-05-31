@@ -1,4 +1,5 @@
 ﻿using RFEM_Infrastructure;
+using RFEM_Software.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -69,6 +71,7 @@ namespace RFEM_Software
             this.mainRibbon.btnShowSummaryStats.Click += btnShowSummaryStats_Click;
             this.mainRibbon.btnShowMesh.Click += btnShowMesh_Click;
             this.mainRibbon.btnShowField.Click += btnShowField_Click;
+            this.mainRibbon.btnShowBearingHist.Click += btnShowBearingHist_Click;
 
             this.mainRibbon.btnSettings.Click += btnSettings_Click;
 
@@ -120,9 +123,13 @@ namespace RFEM_Software
             //Signal that the new tab is a data input tab
             NewTab.TabType = RFEMTabType.DataInput;
 
+            newTabContent.Width = this.Width - 10;
+
             //Place the form into a scrollviewer
             scrollViewer.Content = newTabContent;
+            scrollViewer.HorizontalAlignment = HorizontalAlignment.Left;
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            
 
             //Place the scrollviewer in the new tab
             NewTab.Content = scrollViewer;
@@ -180,6 +187,67 @@ namespace RFEM_Software
             tb.Text = tabContent;
             scrollViewer.Content = tb;
             scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+            //Place the scrollviewer in the new tab
+            NewTab.Content = scrollViewer;
+
+            //Add the tab to this window's list of tabs
+            tabItems.Add(NewTab);
+
+            //Reset the tab controls data context so it recognizes the new tab
+            tabControl.DataContext = null;
+            tabControl.DataContext = tabItems;
+
+            //Select the new tab and set focus. The set focus is required to enable
+            //the help command of the context menus
+            tabControl.SelectedItem = NewTab;
+            tabControl.Focus();
+        }
+        private void AddNewHistogramTab(UserControl tabContent, string tabName)
+        {
+            var scrollViewer = new ScrollViewer();
+            RFEMTabItem NewTab = new RFEMTabItem();
+            ContextMenu headerMenu;
+            MenuItem menuItem;
+
+            ////Deletes the command bindings used to trick the compiler
+            //newTabContent.CommandBindings.Clear();
+            ////Binds the form's commands to this window's handlers
+            //newTabContent.CommandBindings.AddRange(this.CommandBindings);
+
+            //Build context menu for the header
+            headerMenu = new ContextMenu();
+            headerMenu.Tag = NewTab;
+
+            //Add a close-tab menu item and bind it to this window's handler
+            menuItem = new MenuItem();
+            menuItem.Header = "Close";
+            menuItem.Click += CloseTab;
+            headerMenu.Items.Add(menuItem);
+
+            //Add a close-all-tabs menu item and bind it to this window's handler
+            menuItem = new MenuItem();
+            menuItem.Header = "Close All";
+            menuItem.Click += CloseAllTabs;
+            headerMenu.Items.Add(menuItem);
+
+            //Build the header
+            NewTab.Header = new ContentControl
+            {
+                Content = tabName,
+                ContextMenu = headerMenu
+            };
+
+            //Signal that the new tab is a data input tab
+            NewTab.TabType = RFEMTabType.DataInput;
+
+            tabContent.Width = this.Width - 10;
+
+            //Place the form into a scrollviewer
+            scrollViewer.Content = tabContent;
+            scrollViewer.HorizontalAlignment = HorizontalAlignment.Left;
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
 
             //Place the scrollviewer in the new tab
             NewTab.Content = scrollViewer;
@@ -611,10 +679,10 @@ namespace RFEM_Software
         {
             try {
                 var pInfo = new ProcessStartInfo();
-                pInfo.UseShellExecute = false;
+                pInfo.UseShellExecute = true;
                 pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-                pInfo.Arguments = "-dSAFER -dBATCH " + "\"" + ((ISimViewModel)this.DataContext).MeshFilePath + "\"";
-                pInfo.CreateNoWindow = true;
+                pInfo.Arguments = "\"" + ((ISimViewModel)this.DataContext).MeshFilePath + "\"";
+                pInfo.CreateNoWindow = false;
 
                 var p = new Process { StartInfo = pInfo };
                 p.Start();
@@ -664,7 +732,8 @@ namespace RFEM_Software
         {
             try
             {
-
+                var form = new RBear2DHistForm();
+                AddNewHistogramTab(form, "Test");
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -909,6 +978,7 @@ namespace RFEM_Software.Commands
     {
         public static readonly RoutedUICommand HelpClick = new RoutedUICommand("Help", "HelpClick",
                            typeof(CustomCommands));
+        public static readonly RoutedUICommand NewHelpClick = new RoutedUICommand("Help", "NewHelpClick", typeof(CustomCommands));
     }
 }
 

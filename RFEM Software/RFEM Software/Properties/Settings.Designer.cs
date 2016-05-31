@@ -25,7 +25,7 @@ namespace RFEM_Software.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\gs\\gs9.19\\bin\\gswin32c.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Ghostgum\\gsview\\gsview64.exe")]
         public string GhostViewPath {
             get {
                 return ((string)(this["GhostViewPath"]));

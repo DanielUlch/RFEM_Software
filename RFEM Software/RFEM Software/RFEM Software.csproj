@@ -317,9 +317,6 @@
     <Resource Include="Images\Unpin.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="RFEMSplashScreen.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\RFEM Infrastructure\RFEM Infrastructure.csproj">
       <Project>{efefad51-0aa4-44f1-9efd-8520bf35ce07}</Project>
       <Name>RFEM Infrastructure</Name>
@@ -332,7 +329,7 @@
     <Resource Include="Images\bearing_cap.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\bearing_cap2.png" />
+    <SplashScreen Include="Images\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\pile_setl.png" />

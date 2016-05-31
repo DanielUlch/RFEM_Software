@@ -24,5 +24,27 @@ namespace RFEM_Software.Forms
         {
             InitializeComponent();
         }
+        #region CompilerTricks
+        /// <summary>
+        /// This method is to appease the compiler. The help click command gets bound to
+        /// a method in the main window at runtime.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HelpClickStub(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        /// <summary>
+        /// This method is to appease the compiler. The help click command gets bound to
+        /// a method in the main window at runtime.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HelpClickExeStub(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(e.Parameter.ToString());
+        }
+        #endregion
     }
 }
