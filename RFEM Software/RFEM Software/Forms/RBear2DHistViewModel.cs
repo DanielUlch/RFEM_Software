@@ -441,7 +441,7 @@ namespace RFEM_Software.Forms
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        public void GenerateHistogram()
+        public HistogramHost GenerateHistogram()
         {
             string options = "";
             string appFileName = Environment.GetCommandLineArgs()[0];
@@ -507,14 +507,17 @@ namespace RFEM_Software.Forms
             p.Start();
             p.WaitForExit();
 
-            pInfo = new ProcessStartInfo();
-            pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-            pInfo.Arguments = System.IO.Path.GetDirectoryName(_InputFilePath) + "\\graph1.ps";
-            pInfo.CreateNoWindow = true;
-            pInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(_InputFilePath);
+            //pInfo = new ProcessStartInfo();
+            //pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
+            //pInfo.Arguments = System.IO.Path.GetDirectoryName(_InputFilePath) + "\\graph1.ps";
+            //pInfo.CreateNoWindow = true;
+            //pInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(_InputFilePath);
 
-            p = new Process() { StartInfo = pInfo };
-            p.Start();
+            //p = new Process() { StartInfo = pInfo };
+            //p.Start();
+            return new HistogramHost(System.IO.Path.GetDirectoryName(_InputFilePath) + "\\graph1.ps",
+                                                    "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"",
+                                                    System.IO.Path.GetDirectoryName(_InputFilePath));
         }
     }
 }

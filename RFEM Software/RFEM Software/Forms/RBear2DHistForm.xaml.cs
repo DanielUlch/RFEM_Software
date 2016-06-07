@@ -217,7 +217,8 @@ namespace RFEM_Software.Forms
         
         private void btnUpdateHistogram_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.GenerateHistogram();
+            HistElement.Child = viewModel.GenerateHistogram();
         }
+       
     }
 }
