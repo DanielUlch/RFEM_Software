@@ -1,0 +1,32 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        If this option is enabled, an Anderson-Darling goodness-of-fit test
+is performed to test to see if the fitted distribution is unacceptable.
+The test's null hypothesis is that the simulation data follows the
+prescribed distribution. The test result (rejected or not) is reported
+in the plot's line key (so the line key, below, should be enabled).
+
+At this time, Anderson-Darling critical test values are only known for
+a few distributions and so the test is only applied in this program to
+the normal, lognormal, and exponential distributions (this flag is
+otherwise ignored). The Anderson-Darling test is generally considered
+to be one of the more powerful statistical tests. The Chi-Square
+goodness-of-fit test may also be useful as an alternative test which
+has the advantage of yielding a p-value and which can be used for any
+distribution.
+
+Note that statistical rejection and `reasonableness' of the
+distribution are two different things. Statistical rejection
+basically means that the data says that the distribution is not
+EXACTLY as specified (eg, lognormal with parameters mu_lnx and
+sigma_lnx). It is at least SLIGHTLY different (for example mu_lnx
+is not 3.46, but is actually 3.47, etc). But this does not mean
+that the selected distribution is not REASONABLE. If the goodness-
+of-fit test results in the rejection of the null hypothesis that
+the distribution is as selected above, you should still have a
+look at the fit between the histogram and the fitted distribution.
+It may very well be a reasonable fit.
+    </Paragraph>
+</FlowDocument>

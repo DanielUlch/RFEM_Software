@@ -210,10 +210,10 @@ namespace RFEM_Software
             ContextMenu headerMenu;
             MenuItem menuItem;
 
-            ////Deletes the command bindings used to trick the compiler
-            //newTabContent.CommandBindings.Clear();
-            ////Binds the form's commands to this window's handlers
-            //newTabContent.CommandBindings.AddRange(this.CommandBindings);
+            //Deletes the command bindings used to trick the compiler
+            tabContent.CommandBindings.Clear();
+            //Binds the form's commands to this window's handlers
+            tabContent.CommandBindings.AddRange(this.CommandBindings);
 
             //Build context menu for the header
             headerMenu = new ContextMenu();
@@ -239,7 +239,7 @@ namespace RFEM_Software
             };
 
             //Signal that the new tab is a data input tab
-            NewTab.TabType = RFEMTabType.DataInput;
+            NewTab.TabType = RFEMTabType.Results;
 
             tabContent.Width = this.Width - 10;
 
@@ -540,6 +540,23 @@ namespace RFEM_Software
             }    
         }
 
+        private void NewHelpClickCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NewHelpClickExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            //Get the form from the selected tab
+            var tabContent = (IHistView)((ScrollViewer)((RFEMTabItem)tabControl.SelectedItem).Content).Content;
+
+            //Ask the form for the location of the help file
+            string helpLocation = tabContent.helpLocation((string)e.Parameter);
+
+            //Load the help file into the flowdocuement reader
+            LoadReaderNew(new Uri(helpLocation, UriKind.Relative));
+        }
+
         /// <summary>
         /// This method takes a help file location string and loads the help file into the
         /// flow document reader in the help pane. It is called by the Help and HelpClick
@@ -568,6 +585,23 @@ namespace RFEM_Software
             }
         }
 
+        private void LoadReaderNew(Uri path)
+        {
+            FlowDocument doc = Application.LoadComponent(path) as FlowDocument;
+
+            if(doc != null)
+            {
+                HelpReader.Document = doc;
+
+                //If the help pane is not pinned, pin it
+                if (helpPaneButton.Visibility == Visibility.Visible)
+                {
+                    layer2.Visibility = Visibility.Visible;
+                    layer2.ColumnDefinitions[1].Width = new GridLength(200);
+                    DockPane();
+                }
+            }
+        }
         /// <summary>
         /// External facing method to allow the ribbon to ask for the default help file to be loaded.
         /// This happens when the user presses the help button on the right side of the ribbon.
@@ -732,8 +766,16 @@ namespace RFEM_Software
         {
             try
             {
-                var form = new RBear2DHistForm();
-                AddNewHistogramTab(form, "Test");
+                if(this.DataContext.GetType() == typeof(RBear2dViewModel))
+                {
+                    var vm = (RBear2dViewModel)this.DataContext;
+                    var form = new RBear2DHistForm((int)vm.NSimulations, vm.NumberOfFootings, vm.BaseName, vm.HistFilePath);
+                    AddNewHistogramTab(form, vm.BaseName);
+                }
+                else
+                {
+                    throw new NotImplementedException("Histogram for this sim not found.");
+                }
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);

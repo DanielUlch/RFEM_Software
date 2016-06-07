@@ -38,6 +38,16 @@ namespace RFEM_Infrastructure
         Bounded
     }
 
+    public enum HistogramDistribution
+    {
+        Normal,
+        LogNormal,
+        Exponential,
+        Beta,
+        Gamma,
+        Uniform
+    }
+
     /// <summary>
     /// Enumerates all possible covariance functions. This enumeration is used in the data entry forms.
     /// </summary>

@@ -1,0 +1,186 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        hist_bear2d(1)
+
+NAME
+  hist_bear2d - reads sample output files produced by RBEAR2D and plots a
+                histogram of the realizations.
+
+SYNOPSIS
+  hist_bear2d [options] file1 [file2 ...]
+
+DESCRIPTION
+  This program reads a sequence of input files, assumed to be composed of
+  individual realizations of various output quantities produced by RBEAR2D and
+  plots the data as a histogram, optionally superimposed by a plot of a fitted
+  distribution. In the latter case, the option is provided to compute the
+  critical p-value of the Chi-Square goodness-of-fit test. This value is
+  placed in the line key for fitted distribution. The Anderson-Darling
+  goodness-of-fit statistic is also printed to standard output.
+
+  The output plot file is in PLOTPS format and is called `hist.plotps' (any
+  existing files of this name will be overwritten).
+
+  The input files are assumed to consist of the following data;
+
+    1) source name			(string)
+    2) job title			(string)
+    3) subtitle 1			(string)
+    4) subtitle 2			(string)
+    5) `?? system parameters to follow:' (?? = no. of strings to follow)
+	a) sequence of strings containing system parameters
+	b) .
+	.
+	.
+	??)
+    6) blank line
+    7) `?? columns of data:' (?? = no. of columns of data)
+	a) description for data column #1
+	b) description for data column #2
+	.
+	.
+	??) description for data column #??
+    8) ?? columns of data, all of equal length
+
+  Each line in the ?? columns of data corresponds to one realization and
+  the total number of lines is the total number of realizations, nsim.
+  This program can plot from one to 4 columns of data at once (see -p option)
+  on the same plot. Each input file will produce a separate plot on the
+  current page.
+
+OPTIONS
+  All of the following options must appear separately before any data
+  file names. Square brackets denote optional quantities - if the optional
+  quantity is provided, do not include the brackets (for example, -d1 would
+  imply that a lognormal distribution is to be fitted to the data).
+
+    -A      include the Anderson-Darling (AD) goodness-of-fit statistic
+            in the line key for a fitted distribution along with the
+            distribution parameters. This option is only effective in
+            conjunction with the -d option.
+
+    -a      plot a histogram of the absolute values of the data. This
+            is generally not very useful, since bearing capacity should
+            always be positive anyhow.
+
+    -b??    used to prescribed the number of buckets to be used for the
+            histograms (default is 50, maximum is 200).
+
+    -c      include the critical p-value in the line key for a fitted
+            distribution along with the distribution parameters. This
+            option is only effective in conjunction with the -d option.
+
+    -d[?]   fit a distribution to the data. The distribution type is
+            determined by the optional digit following the d according
+            to
+		? = 0 to fit a normal distribution to the data
+		? = 1 to fit a lognormal distribution to the data (default)
+		? = 2 to fit an exponential distribution to the data
+		? = 3 to fit a Beta distribution to the data
+		? = 4 to fit a Gamma distribution to the data
+		? = 5 to fit a uniform distribution to the data
+
+    -D      provide debugging output
+
+    -e??,??,??,??
+            specify the x axis length (inches), the y axis length (inches),
+            the x origin offset (inches from the left edge of the page),
+            and the y origin offset (inches from the bottom of the page).
+            All four values must be provided, and commas must separate
+            the values (no whitespace). If more than one plot is being
+            produced, the axis lengths and x origin offset will be the
+            same for all. The y origin offset is viewed as being that of
+            the uppermost (first) plot; subsequent plots are shifted down by
+            the y axis length plus 0.75 inches.
+
+    -E??    estimate the probability that the bearing capacity of the first
+            specified footing (first column of *.cap) exceeds the value given
+            by ??. For example -E0.04 would estimate the probability that
+            the bearing capacity of the first specified footing
+            exceeds 0.04 (number exceeding/total number of realizations).
+
+    -k??,??
+            specify the offset to the top left corner of the line key in
+            inches from the plot origin (xkey,ykey).
+
+    -K      do not show the line key.
+
+    -L      use a logarithmically scaled x axis. Note that in this case,
+            the values of x must all be positive.
+
+    -o??    prescribe an alternative offset to the plot titles (default is
+            0.0 inches).
+
+    -p?[,?[,?[,?]]]
+            specify the quantity(s) that you wish to plot. If this option is
+	     absent, then the first column of data in each input file is
+	     plotted. The ? character(s) are replaced by numbers denoting the
+            column of data to be plotted. For example, -p3,4 implies that
+            the 3rd and 4th columns of data are to be plotted. They will
+            appear as two lines in the plot. Up to 4 columns of data can
+            be plotted simultaneously. A warning is issued if you try to
+            plot a column which does not exist.
+
+    -q      run quietly. Don't write anything other than error messages to
+            standard output.
+
+    -s?     scale factor. This option causes the input data to be scaled by
+            the factor `?'. This is most often used if the histogram is to
+            be of the data normalized by the mean. For example, if a histogram
+            of the M_c bearing capacity factor (where M_c = bearing cap/mu_c)
+            is to be plotted, then `?' should be set equal to 1/mu_c. The
+            scale factor does not affect the -E option (that is, the threshold
+            provide by the -E option must be relative to the actual data).
+
+    -T      do not print plot titles.
+
+    -x??,??,??
+            used to specify the minimum, maximum, and increment on the x axis
+            The same values are used for all input files.
+
+    -y??,??,??
+            used to specify the minimum, maximum, and increment on the y axis
+            The same values are used for all input files.
+
+PARAMETERS
+
+  MF	maximum number of input files
+  MX	maximum number of realizations
+  MC	maximum number of columns of data in any input file
+  MB   maximum number of buckets to use in the frequency count
+  MP	maximum number of columns which can be plotted at once
+  MS	maximum number of system parameter lines in the file
+
+REVISION HISTORY:
+  2.1	standardized input file and simplified -p option (Sep 20/96)
+  2.11	corrected warning emitted by rdform re too many samples (Oct 14/96)
+  2.2	added -T option (which somehow got lost). (Nov 29/96)
+  2.3	eliminated unused args from call to histp (Dec 5, 1996)
+  2.4	added -H and -S options (Dec 11, 1996)
+  2.41	corrected declaration of ldash, lpnt, eliminated opt5, corrected
+	error regarding file names. (May 21/97)
+  2.42	moved some of the histogram stuff into GAFsim lib's hstblk and hstprd
+	(Aug 12/97)
+  2.43	corrected a `print6' which should have been a `print1'. (Sep 19/99)
+  2.5	allow for reading of `old' sample files. Also now output to a
+	plotps file rather than PostScript directly (Mar 9/00)
+  2.51	modified the Usage strings below, updated the man page (Apr 25/00)
+  2.6	specialized to rsetl2d, changed name from pdist, and added
+	Anderson-Darling statistic (Jun 7/01)
+  2.7	added option to plot absolute values (Jun 11/01)
+  2.8	added option -E to estimate exceedance probability (Dec 7/01)
+  2.81	added option -E to usage string (Dec 30/01)
+  2.82	eliminated \ escapes in print? routines, renamed fplot to psplot
+	(Dec 30, 2001)
+  2.83	copied hist_set2d to hist_bear2d and modified it for rbear2d
+	(Dec 30/01)
+  2.84	added -s? option (Jan 4/02)
+
+
+AUTHOR
+  Written by Gordon A. Fenton, TUNS, 1991
+
+    </Paragraph>
+</FlowDocument>

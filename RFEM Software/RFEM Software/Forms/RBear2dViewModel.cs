@@ -13,6 +13,7 @@ namespace RFEM_Software.Forms
     class RBear2dViewModel: INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private RBear2D _FormData;
+        
          
         private bool _ChangesHaveBeenMade;
 
@@ -708,6 +709,14 @@ namespace RFEM_Software.Forms
                     _FormData.BaseName + ".stt";
             }
         }
+        public string HistFilePath
+        {
+            get
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".cap";
+            }
+        }
         public string this[string columnName]
         {
             get
@@ -1129,5 +1138,6 @@ namespace RFEM_Software.Forms
             }
         }
     }
+
    
 }

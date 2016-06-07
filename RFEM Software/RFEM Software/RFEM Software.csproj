@@ -83,12 +83,14 @@
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FormBuilder.cs" />
+    <Compile Include="Forms\HistogramHost.cs" />
     <Compile Include="Forms\Rbear2dForm.xaml.cs">
       <DependentUpon>Rbear2dForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\RBear2DHistForm.xaml.cs">
       <DependentUpon>RBear2DHistForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RBear2DHistViewModel.cs" />
     <Compile Include="Forms\RBear2dViewModel.cs" />
     <Compile Include="Forms\Rdam2dForm.xaml.cs">
       <DependentUpon>Rdam2dForm.xaml</DependentUpon>
@@ -97,6 +99,8 @@
     <Compile Include="Forms\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IHistView.cs" />
+    <Compile Include="IHistViewModel.cs" />
     <Compile Include="ISimView.cs" />
     <Compile Include="ISimViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -236,6 +240,54 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Help Files\RBearHist Help Files\RBearHistHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\FootingNumberHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\ShowTitlesHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\NumIntervalsHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\LengthOriginAxesHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\LogScaleXAxisHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\XAxisDetailsHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\YAxisDetailsHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\DistributionHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBearHist Help Files\AndersonDarlingHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Page Include="Help Files\RBearHist Help Files\ChiSquareHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Resource Include="Help Files\RBearHist Help Files\LineKeyHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -355,6 +407,7 @@
   <ItemGroup>
     <Resource Include="Images\ToolTipHelp_Error.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

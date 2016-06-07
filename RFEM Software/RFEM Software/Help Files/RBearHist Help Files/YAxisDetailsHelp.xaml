@@ -1,0 +1,29 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This option allows the y-axis details to be specified. Basically
+an axis has several attributes. The length and position attributes
+are specified above (see `Set lengths and origin of plot axes').
+There are three other attributes;
+1) the minimum value to appear on the axis. This is the value used
+   to label the first tick mark on the axis, at the origin.
+2) the maximum value to appear on the axis. This is the value used
+   to label the last tick mark on the axis.
+3) the tick mark increment. Successive tick marks will be labeled
+   at this increment.
+
+So, for example if the minimum, maximum, and increment are set to
+1.5, 3.5, 0.5, respectively, then the axis labels will be
+
+	1.5  2.0  2.5  3.0  3.5
+
+The program reasonably well handles cases where the increment does
+not evenly divide the range between the minimum and the maximum, and
+cases where the labeling decreases (min > max, and increment is
+negative).
+
+Reasonable default values are computed internally from the data, so
+if in doubt turn this option off.
+    </Paragraph>
+</FlowDocument>

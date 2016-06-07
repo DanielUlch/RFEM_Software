@@ -17,6 +17,8 @@
                         />
         <CommandBinding Command="self:CustomCommands.HelpClick" CanExecute="HelpClick_CanExecute"
                         Executed="HelpClick_Executed" />
+        <CommandBinding Command="self:CustomCommands.NewHelpClick" CanExecute="NewHelpClickCanExecute"
+                        Executed="NewHelpClickExecuted"/>
     </RibbonWindow.CommandBindings>
    
     <Grid>

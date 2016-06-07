@@ -1,0 +1,14 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This option allows the user to set the lengths of the x- and y-axes
+and the location of the axes' origin on the printed page. All units
+are inches.
+The `Origin x-position' value is the distance from the left edge of the
+page to the axes' origin.
+The `Origin y-position' value is the distance from the bottom edge of the
+page to the axes' origin.
+
+    </Paragraph>
+</FlowDocument>

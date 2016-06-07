@@ -1,0 +1,23 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        If enabled this option causes a distribution to be fitted to the
+histogram. The user must select from one of the provided
+distribution types, in which case the parameters (mean, variance,
+bounds, etc) of the fitted distribution are estimated from the
+simulation results and the fitted distribution shown as a second
+plot over the histogram. The fitted distribution parameters are
+shown in the line key (if enabled).
+
+The most commonly selected distribution type is lognormal since
+this is a strictly non-negative distribution. For example, the
+lognormal distribution is at least physically reasonable for
+bearing capacity since bearing capacity is non-negative for all
+downwards directed loads. For such non-negative quantities, the
+normal distribution may be a viable alternative (and popular, due
+to its simplicity) if the coefficient of variation is reasonably
+small (less than about 0.3) where the probability of negative
+outcomes is reasonably small.
+    </Paragraph>
+</FlowDocument>

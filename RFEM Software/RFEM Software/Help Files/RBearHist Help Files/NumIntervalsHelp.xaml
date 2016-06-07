@@ -1,0 +1,25 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        A histogram counts number of outcomes from the simulation that fall
+into each of a series of intervals and then plots these frequency
+counts as a series of bars. This then is a graphical representation
+of the relative likelihood that the simulation outcomes will fall
+into each interval.
+
+Choosing the best number of intervals to use in the representation
+is an art. Too many and the histogram tends to appear as a lot of
+of small bumps along the horizontal axis. Too few, and the shape of
+the distribution cannot be seen. A rough rule of thumb is to use
+about 5% to 10% of the number of realizations used in the
+simulation, but generally at least about 10.
+
+Notes:
+   1) the histogram is plotted as a `frequency-density' plot, having
+      unit area.
+   2) the histogram appears as a bar plot unless a distribution is
+      also fitted, in which case the histogram is shown using straight
+      lines between the frequency counts.
+    </Paragraph>
+</FlowDocument>

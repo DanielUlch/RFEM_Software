@@ -1,0 +1,38 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RBearHist_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This option enables displaying a line key, which is only appropriate
+if more than one line is to be displayed (eg, the histogram and the
+fitted distribution). The line key consists of a line segment, of
+the same type as the corresponding plot curve, followed by a
+description. For example, if the plot has both a solid line and a
+dashed line, then the line key would contain a solid line segment
+followed by the description of that line and then below this a
+dashed line segment followed by the description of that line.
+For example
+
+ y-axis
+   ^
+   |
+   |
+        &lt;--- X-offset --->
+            |   ^              ------- Normalized Total Flow Rate
+   |   |              -  -  - fitted distribution parameters
+   |   |
+   |Y-offset
+   |   |
+   |   |
+   ----------------------------------------------> x axis
+
+The line key position is specified by two offsets (see above);
+
+1) X-offset: this is the distance, in inches, between the y-axis
+             and the left-most edge of the line key
+2) Y-offset: this is the distance, in inches, from the x-axis to
+             the top of the line key.
+
+If these two offsets are left as zero, reasonable values are
+estimated internally.
+    </Paragraph>
+</FlowDocument>

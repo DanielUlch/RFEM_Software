@@ -26,7 +26,6 @@ Material Property Correlation Matrix Data
 Property 1    Property 2    Correlation
 ----------    ----------    -----------
    c            phi           0.2
-   c            e           0.2
 
 Show element boundaries  . . . . . . . . . . . .  t
 Show random field as background [log?] [prop?] .  t f c

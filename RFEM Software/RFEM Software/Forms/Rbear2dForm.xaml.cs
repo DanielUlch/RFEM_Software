@@ -320,6 +320,7 @@ namespace RFEM_Software
                 }
             }
         }
+       
         #region CompilerTricks
         /// <summary>
         /// This method is to appease the compiler. The help click command gets bound to
