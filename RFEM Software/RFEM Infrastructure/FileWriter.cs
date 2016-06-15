@@ -27,5 +27,24 @@ namespace RFEM_Infrastructure
             }
 
         }
+        public static void Write(IHasDataFile formData, string filePath)
+        {
+            using (var fileWriter = new System.IO.StreamWriter(filePath, false))
+            {
+                fileWriter.Write(formData.DataFileString());
+            }
+
+            if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                            "\\RFEM_Software"))
+                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.
+                                                        LocalApplicationData) + "\\RFEM_Software");
+
+
+            using (var fileWriter = new System.IO.StreamWriter(formData.AppDataFileLocation, false))
+            {
+                fileWriter.Write(formData.DataFileString());
+            }
+        }
     }
+   
 }

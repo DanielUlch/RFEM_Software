@@ -5,5 +5,8 @@
     <Setting Name="GhostViewPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files\Ghostgum\gsview\gsview64.exe</Value>
     </Setting>
+    <Setting Name="TabsOpenOnClose" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -18,6 +18,16 @@ namespace RFEM_Infrastructure
                     throw new NotImplementedException("A read function has not been implemented for the selected data file.");
             }
         }
+        public static string Read(string filePath)
+        {
+            string content;
+
+            using (var reader = new System.IO.StreamReader(filePath))
+            {
+                content = reader.ReadToEnd();
+            }
+            return content;
+        }
         private static RBear2D ReadRBearFile(string filePath)
         {
             var formData = new RBear2D();

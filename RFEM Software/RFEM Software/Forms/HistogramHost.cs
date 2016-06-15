@@ -63,19 +63,6 @@ namespace RFEM_Software.Forms
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
-            //hwndControl = IntPtr.Zero;
-            //hwndHost = IntPtr.Zero;
-
-            //hwndHost = CreateWindowEx(0, "static", "",
-            //                WS_CHILD | WS_VISIBLE,
-            //                0, 0,
-            //                hostWidth, hostHeight,
-            //                hwndParent.Handle,
-            //                (IntPtr)HOST_ID,
-            //                IntPtr.Zero,
-            //                0);
-            //Add Histogram as child here
-
             var pInfo = new ProcessStartInfo()
             {
                 FileName = _ghostViewPath,

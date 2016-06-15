@@ -56,6 +56,7 @@ namespace RFEM_Infrastructure
                 }
             }
         }
+        
         public bool CanDisplayField
         {
             get { return _CanDisplayField; }
@@ -139,7 +140,7 @@ namespace RFEM_Infrastructure
         public DistributionInfo CohesionDist { get; set; }
 
         public DistributionInfo FrictionAngleDist { get; set; }
-        public string FrictionAnglePrefix { get; set; }
+        public string FrictionAnglePrefix { get; set; } = "";
         public DistributionInfo DilationAngleDist { get; set; }
         public DistributionInfo ElasticModulusDist { get; set; }
         public DistributionInfo PoissonsRatioDist { get; set; }
@@ -334,8 +335,7 @@ namespace RFEM_Infrastructure
             _FirstRandomFieldProperty = new PlotProperty(PlotableProperty.Cohesion);
             _PSPLotProperty = new PlotProperty(PlotableProperty.Cohesion);
 
-
-            FrictionAnglePrefix = "";
+            
 
             CorMatrix = new double?[,] { { 1, 0, 0, 0, 0 },
                                          { 0, 1, 0, 0, 0 },
@@ -397,31 +397,33 @@ namespace RFEM_Infrastructure
                         if(Line == "Analyzing realization:")
                         {
 
-                            while (progress < (int)NSimulations && !token.IsCancellationRequested)
+                            while (progress < (int)NSimulations && !token.IsCancellationRequested && !reader.EndOfStream)
                             {
                                 Line = reader.ReadLine();
-                                foreach(char c in Line.ToCharArray())
+                                if(Line != null)
                                 {
-                                    if (c == 'P' || c == '\r')
+                                    foreach (char c in Line.ToCharArray())
                                     {
-                                        if (partialLine.Length != 0)
+                                        if (c == 'P' || c == '\r')
                                         {
-                                            bool result = Int32.TryParse(partialLine, out progress);
-                                            if (result)
+                                            if (partialLine.Length != 0)
                                             {
-                                                simIteration.Report(progress);
+                                                bool result = Int32.TryParse(partialLine, out progress);
+                                                if (result)
+                                                {
+                                                    simIteration.Report(progress);
+                                                }
                                             }
+                                            partialLine = "";
+                                            break;
                                         }
-                                        partialLine = "";
-                                        break;
+                                        else
+                                        {
+                                            partialLine += c;
+                                        }
+                                        ProgramOutput += c;
                                     }
-                                    else
-                                    {
-                                        partialLine += c;
-                                    }
-                                    ProgramOutput += c;
                                 }
-                                
                             }
                         }
                         ProgramOutput += Line + Environment.NewLine;

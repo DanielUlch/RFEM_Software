@@ -14,5 +14,6 @@ namespace RFEM_Infrastructure
         string AppDataFileLocation { get; }
 
         string BaseName { get; }
+        
     }
 }

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         WindowState="maximized"
         x:Name="mainWin"
-        Title="RFEM Software" Height="350" Width="650"
+        Title="RFEM Software" Height="350" Width="650" Loaded="MainWindow_Loaded"
             >
     <RibbonWindow.CommandBindings>
         <CommandBinding Command="Help" CanExecute="HelpCanExecute"
@@ -99,11 +99,12 @@
         </DockPanel>
 
 
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="2" VerticalAlignment="Center">
             <Label Content="Status:"/>
             <Label x:Name="lblStatus" Content="{Binding Path=CurrentOperation}" />
             <ProgressBar  x:Name="progressBar" 
-                          Width="100"
+                          Width="160"
+                          Height="15"
                           Visibility="Hidden"
                           Value="{Binding Path=ProgressPercentage}"/>
             <Label Name="lblSimDetails" Content="{Binding Path=ProgressDetails}" Visibility="Hidden"/>

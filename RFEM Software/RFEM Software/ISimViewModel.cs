@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using RFEM_Infrastructure;
 
 namespace RFEM_Software
 {
@@ -20,8 +21,16 @@ namespace RFEM_Software
         bool CanDisplayField { get; }
         bool CanDisplayBearingHist { get; }
 
+        bool ChangesHaveBeenMade { get; }
+
+        string DataFilePath { get; }
         string MeshFilePath { get; }
         string FieldFilePath { get; }
         string SummaryFilePath { get; }
+        string BaseName { get; }
+        Program Type { get; }
+
+        void Save();
+        void SaveAs(string filePath);
     }
 }

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:RFEM_Software"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
+             
              BorderThickness="5 5 5 0"
              >
     <Grid>
@@ -38,6 +39,14 @@
                         </DrawingImage>
                     </RibbonApplicationMenu.SmallImageSource>
                     
+                    <RibbonApplicationMenuItem Header="Save"
+                                               ImageSource="Images/Save.png"
+                                               Name="btnSave"/>
+                    
+                    <RibbonApplicationMenuItem Header="Save As"
+                                               ImageSource="Images/SaveAs.png"
+                                               Name="btnSaveAs"/>
+                    
                     <RibbonApplicationMenuItem Header="Settings"
                                                ImageSource="Images/Settings.png"
                                                Name="btnSettings"/>
@@ -45,6 +54,13 @@
                     
                     
             </Ribbon.ApplicationMenu>
+
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton SmallImageSource="Images/Save.png" Name="qaBtnSave" />
+                    <RibbonButton SmallImageSource="Images/SaveAs.png" Name="qaBtnSaveAs" />
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
 
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="Images/Help.png"
@@ -76,22 +92,22 @@
                     
                     <RibbonButton Label="mrdam2d"
                                   Name="btnMRDam2d"
-                                  LargeImageSource="Images/BrokenFactoryBlue.png"
+                                  LargeImageSource="Images/AddFile.png"
                                   Click="NewDataFile"
                                   />
                     
                     <RibbonButton Label="mrearth2d"
                                   Name="btnMREarth2d"
-                                  LargeImageSource="Images/BrokenFactoryBlue.png"
+                                  LargeImageSource="Images/AddFile.png"
                                   Click="NewDataFile"
                                   />
                     
                     <RibbonSplitButton Label="mrflow"
                                   Name="btnMRFlow"
-                                  LargeImageSource="Images/BrokenFactoryBlue.png">
+                                  LargeImageSource="Images/AddFile.png">
                         
                         <RibbonMenuItem Header="2D" 
-                                        ImageSource="Images/BrokenFactoryBlue.png"
+                                        ImageSource="Images/AddFile.png"
                                         Name="btnMRFlow2d"
                                         Click="NewDataFile"/>
                         
@@ -106,7 +122,7 @@
                                        >
                         
                         <RibbonMenuItem Header="mrpill2d"
-                                        ImageSource="Images/BrokenFactoryBlue.png"
+                                        ImageSource="Images/AddFile.png"
                                         Name="btnMRPill2d"
                                         Click="NewDataFile"
                                         />
@@ -119,10 +135,10 @@
 
                     </RibbonSplitButton>
                     <RibbonSplitButton Label="mrsetl"
-                                       LargeImageSource="Images/BrokenFactoryBlue.png">
+                                       LargeImageSource="Images/AddFile.png">
                         
                         <RibbonMenuItem Header="mrsetl2d"
-                                        ImageSource="Images/BrokenFactoryBlue.png"
+                                        ImageSource="Images/AddFile.png"
                                         Name="btnMRSetl2d"
                                         Click="NewDataFile"
                                           />
@@ -134,7 +150,7 @@
 
                     </RibbonSplitButton>
                     <RibbonButton Label="mrslope2d"
-                                  LargeImageSource="Images/BrokenFactoryBlue.png"
+                                  LargeImageSource="Images/AddFile.png"
                                   Name="btnMRSlope2d"
                                   Click="NewDataFile"
                                   />
@@ -152,7 +168,7 @@
                 <RibbonGroup Header="Simulation">
                     <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
                     <RibbonButton Name="btnShowSummaryStats" Label="Display Summary Stats" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowMesh" Label="Display Mesh" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowMesh" Label="Display Displaced Mesh" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
                     <RibbonButton Name="btnShowField" Label="Display Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
                     <RibbonButton Name="btnShowBearingHist" Label="Display Bearing Histogram" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False" />
                     

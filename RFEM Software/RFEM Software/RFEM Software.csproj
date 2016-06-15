@@ -407,7 +407,75 @@
   <ItemGroup>
     <Resource Include="Images\ToolTipHelp_Error.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SaveAs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AddFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AddFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Project.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Documents Folder-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Dossier-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MS Access-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MS Excel-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Error-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Form-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Todo List-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Normal Distribution Histogram-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Open in Window-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Open in Browser-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Accounting-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Business-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\User Manual-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Statistics-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Questions-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Bar Chart-64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

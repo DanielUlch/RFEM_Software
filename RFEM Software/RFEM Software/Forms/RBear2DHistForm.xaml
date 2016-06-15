@@ -38,6 +38,8 @@
             <Setter Property="Height" Value="18" />
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="50"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
     
@@ -47,13 +49,13 @@
     </UserControl.CommandBindings>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Border Name="HistElement" Height="500" Width="500" Margin="10" BorderThickness="3" Grid.Column="0">
+        <Border Name="HistElement" Height="500" Width="500" Margin="15" BorderThickness="3" Grid.Column="1" HorizontalAlignment="Left">
 
         </Border>
-        <StackPanel HorizontalAlignment="Left" Grid.Column="1">
+        <StackPanel HorizontalAlignment="Left" Grid.Column="0">
 
             <TextBlock Text="Bearing Capacity Histogram Options" 
                    HorizontalAlignment="Center" 

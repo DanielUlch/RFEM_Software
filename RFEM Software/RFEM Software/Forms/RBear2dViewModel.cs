@@ -15,7 +15,7 @@ namespace RFEM_Software.Forms
         private RBear2D _FormData;
         
          
-        private bool _ChangesHaveBeenMade;
+        private bool _ChangesHaveBeenMade = false;
 
         private int _ProgressPercentage;
         private string _CurrentOperation = "Ready";
@@ -486,7 +486,12 @@ namespace RFEM_Software.Forms
             get { return _FormData.FrictionAnglePrefix; }
             set
             {
-                _FormData.FrictionAnglePrefix = value;
+                if(_FormData.FrictionAnglePrefix != value)
+                {
+                    _FormData.FrictionAnglePrefix = value;
+                    NotifyPropertyChanged();
+                }
+                
             }
         }
         public DistributionInfo DilationAngleDist
@@ -684,7 +689,14 @@ namespace RFEM_Software.Forms
                 return _FormData.CanDisplayBearingHist;
             }
         }
-
+        public bool ChangesHaveBeenMade
+        {
+            get { return _ChangesHaveBeenMade; }
+        }
+        public string DataFilePath
+        {
+            get { return _FormData.AppDataFileLocation; }
+        }
         public string MeshFilePath
         {
             get
@@ -716,6 +728,10 @@ namespace RFEM_Software.Forms
                 return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
                     _FormData.BaseName + ".cap";
             }
+        }
+        public Program Type
+        {
+            get { return Program.RBear2D; }
         }
         public string this[string columnName]
         {
@@ -1111,6 +1127,7 @@ namespace RFEM_Software.Forms
         }
         protected void NotifyFormDataPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            _ChangesHaveBeenMade = true;
             PropertyChanged(this, new PropertyChangedEventArgs(e.PropertyName));
         }
 
@@ -1118,7 +1135,7 @@ namespace RFEM_Software.Forms
         {
             if (HasErrors)
             {
-                MessageBox.Show("Please correct erros in form before running the simulation.");
+                MessageBox.Show("Please correct errors in form before running the simulation.");
                 return Task.FromResult("");
             }
             else
@@ -1134,7 +1151,34 @@ namespace RFEM_Software.Forms
                         CurrentOperation = ps;
                     }), token));
 
+                ProgressPercentage = 0;
+                ProgressDetails = "";
                 return tsk;
+            }
+        }
+        public void Save()
+        {
+            if (HasErrors)
+            {
+                MessageBox.Show("Please correct errors in form before saving.");
+            }
+            else
+            {
+                FileWriter.Write(_FormData);
+                _ChangesHaveBeenMade = false;
+            }
+        }
+        public void SaveAs(string filePath)
+        {
+            if (HasErrors)
+            {
+                MessageBox.Show("Please correct errors in form before saving.");
+            }
+            else
+            {
+                FileWriter.Write(_FormData);
+                FileWriter.Write(_FormData, filePath);
+                _ChangesHaveBeenMade = false;
             }
         }
     }

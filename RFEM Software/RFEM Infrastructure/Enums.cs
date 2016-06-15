@@ -249,6 +249,11 @@ namespace RFEM_Infrastructure
         RSetl3D,
         RSlope2D
     }
+    public enum Results
+    {
+        Statistics,
+        Histogram
+    }
     public static class InfrastructureExtensions
     {
         public static int? ToNullableInt32(this string s)
