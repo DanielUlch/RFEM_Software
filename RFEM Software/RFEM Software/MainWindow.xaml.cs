@@ -43,15 +43,22 @@ namespace RFEM_Software
         private ColumnDefinition column1CloneForLayer1;
 
         /// <summary>
-        /// Location of the application help file
+        /// Location of the application help file.
         /// </summary>
         private string ApplicationHelpLocation = "RFEM_Software.Help_Files.AppHelp.xaml";
 
+        /// <summary>
+        /// Cancellation token source for cancelling asynchronous simulation runs.
+        /// </summary>
         private CancellationTokenSource _TokenSource;
+
+        /// <summary>
+        /// Boolean variable specifying whether a simulation is currently running.
+        /// </summary>
         private bool _CurrentlyRunningSim;
 
         /// <summary>
-        /// Constructor for the window
+        /// Constructor for the window.
         /// </summary>
         public MainWindow()
         {
@@ -66,6 +73,7 @@ namespace RFEM_Software
             column1CloneForLayer1 = new ColumnDefinition();
             column1CloneForLayer1.SharedSizeGroup = "column1";
 
+            //Wire the button events from the ribbon to routines in the main window
             this.mainRibbon.btn_RunSim.Click += btnRunSim_Click;
             this.mainRibbon.btnOpenExisting.Click += OpenExistingFile;
 
@@ -73,7 +81,6 @@ namespace RFEM_Software
             this.mainRibbon.btnShowMesh.Click += btnShowMesh_Click;
             this.mainRibbon.btnShowField.Click += btnShowField_Click;
             this.mainRibbon.btnShowBearingHist.Click += btnShowBearingHist_Click;
-
 
             this.mainRibbon.btnSave.Click += btnSave_Click;
             this.mainRibbon.qaBtnSave.Click += btnSave_Click;
@@ -84,25 +91,35 @@ namespace RFEM_Software
 
 
         }
+        
         /// <summary>
-        /// This method is called by the ribbon. The ribbon passes the input form that the
-        /// user wishes to display, as well as the header for the new tab. The method creates
-        /// and displays the tab.
+        /// Adds a new data input tab to the main window and selects it.
         /// </summary>
         /// <param name="newTabContent">
-        /// The data input form that will be displayed in the new tab.
+        /// The control to be displayed in the tab.
+        /// </param>
+        /// <param name="view">
+        /// The view that implements ISimView for this control.
+        /// </param>
+        /// <param name="viewModel">
+        /// The view-model that implements ISimViewModel for this control.
         /// </param>
         /// <param name="tabName">
-        /// The header for the new tab.
+        /// The tab name for this control.
+        /// </param>
+        /// <param name="programType">
+        /// The program for which this data input control will be used.
         /// </param>
         public void AddNewDataInput(UserControl newTabContent,
                                     ISimView view,
                                     ISimViewModel viewModel,
-                                    string tabName)
+                                    string tabName,
+                                    Program programType)
         {
-
+            //Specify width, so that the scrollviewer will be the appropriate width
             newTabContent.Width = this.Width - 10;
 
+            //Create DataEntryTab
             DataEntryTab NewTab = new DataEntryTab(RFEMTabType.DataInput,
                                                     this.CloseTab,
                                                     this.CloseAllTabs,
@@ -110,84 +127,131 @@ namespace RFEM_Software
                                                     viewModel,
                                                     this.CommandBindings,
                                                     newTabContent, 
-                                                    tabName);
-            
-            //Add the tab to this window's list of tabs
-            tabItems.Add(NewTab);
+                                                    tabName,
+                                                    programType);
 
-            //Reset the tab controls data context so it recognizes the new tab
-            tabControl.DataContext = null;
-            tabControl.DataContext = tabItems;
-
-            //Select the new tab and set focus. The set focus is required to enable
-            //the help command of the context menus
-            tabControl.SelectedItem = NewTab;
-            tabControl.Focus();
+            //Add and select the new tab
+            AddAndSelectTab(NewTab);
 
         }
         
+        /// <summary>
+        /// Adds and selects a new settings tab in the main window.
+        /// </summary>
         private void AddNewSettingsTab()
         {
+            //Creates the new settings tab
             SettingsTab NewTab = new SettingsTab(RFEMTabType.Settings,
                                                  CloseTab,
                                                  CloseAllTabs);
 
-            //Add the tab to this window's list of tabs
-            tabItems.Add(NewTab);
-
-            //Reset the tab controls data context so it recognizes the new tab
-            tabControl.DataContext = null;
-            tabControl.DataContext = tabItems;
-
-            //Select the new tab and set focus. The set focus is required to enable
-            //the help command of the context menus
-            tabControl.SelectedItem = NewTab;
-            tabControl.Focus();
+            //Adds it to the tab control and selects it
+            AddAndSelectTab(NewTab);
         }
 
-        private void AddNewResultsTab(string tabContent, 
+        /// <summary>
+        /// Adds a new tab that displays the string stored in the file that is passed.
+        /// </summary>
+        /// <param name="filePath">
+        /// The file path for results file that will be read and displayed.
+        /// </param>
+        /// <param name="tabName">
+        /// The tab name of the new tab.
+        /// </param>
+        /// <param name="dataTab">
+        /// The DataEntryTab that is associated with these results.
+        /// </param>
+        private void AddNewResultsTab(string filePath, 
                                      string tabName, 
                                      DataEntryTab dataTab)
         {
+            //Creates new ResultsTab
             ResultsTab NewTab = new ResultsTab(RFEMTabType.Results,
                                                CloseTab,
                                                CloseAllTabs,
                                                dataTab,
-                                               tabContent,
+                                               filePath,
                                                tabName);
 
-            //Add the tab to this window's list of tabs
-            tabItems.Add(NewTab);
-
-            //Reset the tab controls data context so it recognizes the new tab
-            tabControl.DataContext = null;
-            tabControl.DataContext = tabItems;
-
-            //Select the new tab and set focus. The set focus is required to enable
-            //the help command of the context menus
-            tabControl.SelectedItem = NewTab;
-            tabControl.Focus();
+            //Adds it to the tab control and selects it
+            AddAndSelectTab(NewTab);
         }
-        private void AddNewHistogramTab(UserControl tabContent, 
-                                        string tabName, 
-                                        DataEntryTab dataTab,
-                                        IHistView view,
-                                        IHistViewModel viewModel)
-        {
-            tabContent.Width = this.Width - 10;
 
+        /// <summary>
+        /// Adds a histogram tab to the main window. 
+        /// This overload is used when it is being created from an open DataEntryTab.
+        /// </summary>
+        /// <param name="dataTab">
+        /// The DataEntryTab associated with the histogram.
+        /// </param>
+        private void AddNewHistogramTab(DataEntryTab dataTab)
+        {
+            //Creates new histogram tab
             HistogramTab NewTab = new HistogramTab(RFEMTabType.Results,
                                                    CloseTab,
                                                    CloseAllTabs,
                                                    dataTab,
-                                                   tabContent,
                                                    this.CommandBindings,
-                                                   view,
-                                                   viewModel,
-                                                   tabName);
+                                                   this.Width-10);
 
+            //Adds it to the tab control and selects it
+            AddAndSelectTab(NewTab);
+        }
+
+        /// <summary>
+        /// Adds a histogram tab to the main window.
+        /// This overload is used when the tab being created when the application is first opened.
+        /// If a histogram tab was open when it was closed, the relevant information was stored in the settings.
+        /// This relevant information is then sent to this method to recreate the tab.
+        /// </summary>
+        /// <param name="baseName">
+        /// Root name of the program and results files.
+        /// </param>
+        /// <param name="filePath">
+        /// File path of the histogram data-file.
+        /// </param>
+        /// <param name="programType">
+        /// The type of program that created this histogram.
+        /// </param>
+        /// <param name="nSim">
+        /// The number of realizations used in the simulation that generated the data.
+        /// </param>
+        /// <param name="nFootings">
+        /// The number of footings in the simulation that generated the data.
+        /// </param>
+        private void AddNewHistogramTab(string baseName,
+                                        string filePath,
+                                        Program programType,
+                                        int nSim, 
+                                        int nFootings)
+        {
+            //Create the new histogram tab
+            HistogramTab NewTab = new HistogramTab(RFEMTabType.Results,
+                                                   CloseTab,
+                                                   CloseAllTabs,
+                                                   this.CommandBindings,
+                                                   this.Width - 10,
+                                                   programType,
+                                                   nSim,
+                                                   nFootings,
+                                                   baseName,
+                                                   filePath);
+
+            //Add it to the tab control and select it
+            AddAndSelectTab(NewTab);
+            
+        }
+
+        /// <summary>
+        /// This method adds and selects a new tab.
+        /// </summary>
+        /// <param name="newTab">
+        /// The tab to be added.
+        /// </param>
+        private void AddAndSelectTab(RFEMTabItem newTab)
+        {
             //Add the tab to this window's list of tabs
-            tabItems.Add(NewTab);
+            tabItems.Add(newTab);
 
             //Reset the tab controls data context so it recognizes the new tab
             tabControl.DataContext = null;
@@ -195,37 +259,55 @@ namespace RFEM_Software
 
             //Select the new tab and set focus. The set focus is required to enable
             //the help command of the context menus
-            tabControl.SelectedItem = NewTab;
+            tabControl.SelectedItem = newTab;
             tabControl.Focus();
         }
 
-
-        ///NOT IMPLEMENTED YET////////////////////////////////////
         /// <summary>
-        /// This method is called from the context menu of a tab header. When implemented,
-        /// it will have to pass the targeted tab to this method. This method will also
-        /// have to check if saves are needed and prompt the user.
+        /// This method is called from the context menu of a tab header.
+        /// The targeted tab is passed via the tag property of the context menu.
+        /// This method also checks whether changes have been made to the file,
+        /// and, if necessary, prompts the user to save.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">
+        /// The menu item that triggered the event.
+        /// </param>
         /// <param name="e"></param>
         private void CloseTab(object sender, RoutedEventArgs e)
         {
-            MenuItem x = sender as MenuItem;
-            RFEMTabItem owner = null;
+
+            MenuItem x = sender as MenuItem;    //The menu item that triggered the event
+            RFEMTabItem owner = null;           //The tab that owns the context menu
+
+            //The currently selected tab, if this tab is being closed, we must show another tab
             RFEMTabItem tempSelectedItem = tabControl.SelectedItem as RFEMTabItem;
+
+            //A viewmodel which, if this is a data entry tab, will tell us whether the data needs to be saved
             ISimViewModel vm = null;
+
+
+            //Checks to see if a menuitem triggered the event
             if (x != null)
             {
+                
+                //Attempts to retrieve the tab to be closed from the tab property of the context menu
                 owner = ((ContextMenu)x.Parent).Tag as RFEMTabItem;
+
+                //Checks whether the tag was a tab item
                 if(owner!= null)
                 {
+                    //Assigns the viewmodel if the tab is a data input tab
                     if (owner.Type == RFEMTabType.DataInput)
                         vm = ((DataEntryTab)owner).ViewModel;
 
+                    //if the viewmodel exists and changes have been made since the last save
                     if(vm != null && vm.ChangesHaveBeenMade)
                     {
+                        //Ask the user if they want to save the changes
                         var result = MessageBox.Show("Changes have been made to the file: '"+ vm.BaseName +"'. Would you like to save these changes?", 
                                                         "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                        //if yes, save it and coninue, if cancel, exit the routine, if no, continue
                         if (result == MessageBoxResult.Yes)
                         {
                             vm.Save();
@@ -234,44 +316,63 @@ namespace RFEM_Software
                         }
 
                     }
+
+                    //Remove the tab from 
                     ((List<RFEMTabItem>)tabControl.ItemsSource).Remove(owner);
                     
+                    //Reset datacontext
                     tabControl.DataContext = null;
                     tabControl.DataContext = tabItems;
+
+                    //if the tab being displayed was not the tab being closed
                     if(tempSelectedItem != null && tempSelectedItem != owner)
                     {
+                        //display the tab that was being displayed when the process began
                         tabControl.SelectedItem = tempSelectedItem;
+                    }
+                    else if(tabControl.Items.Count > 0)
+                    {
+                        //display the first tab
+                        tabControl.SelectedItem = tabControl.Items[0];
                     }
                 }
             }
 
         }
 
-        ///NOT IMPLEMENTED YET///////////////////////////////////////////
         /// <summary>
-        /// This method will close all tabs that are open. It will have to check if each tab
-        /// needs to be saved.
+        /// This method closes all tabs that are open. It checks each data entry file, and, if necessary, prompts the user to save it.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">
+        /// The menuitem that triggered the event.
+        /// </param>
         /// <param name="e"></param>
         private void CloseAllTabs(object sender, RoutedEventArgs e)
         {
             ISimViewModel vm = null;
 
+            //Loop through all open tabs
             foreach (RFEMTabItem item in tabItems)
             {
+                //If the tab is a data input tab, check to see if it needs to be saved
                 if(item.Type == RFEMTabType.DataInput)
                 {
+                    //Explicitly convert to dataentrytab and retrieve viewmodel
                     vm = ((DataEntryTab)item).ViewModel;
 
+                    //If the viewmodel exists and changes have been made since the last save
                     if (vm != null && vm.ChangesHaveBeenMade)
                     {
+                        //Prompt user to save
                         var result = MessageBox.Show("Changes have been made to the file: '" + vm.BaseName + "'. Would you like to save these changes?",
                                                         "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                        //If the user selects yes, save and continue
                         if (result == MessageBoxResult.Yes)
                         {
                             vm.Save();
                         }
+                        //if the user selects cancel, exit the routine
                         else if (result == MessageBoxResult.Cancel)
                         {
                             return;
@@ -281,7 +382,11 @@ namespace RFEM_Software
                 }
                 
             }
+
+            //Delete all tabs
             tabItems.Clear();
+
+            //Reset datacontext
             tabControl.DataContext = null;
             tabControl.DataContext = tabItems;
         }
@@ -294,13 +399,20 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void TabSelectionChanged(object sender, RoutedEventArgs e)
         {
+            //Check if there is a tab selected
             if(this.tabControl.SelectedItem != null)
             {
+                //Check if tab is a datainput tab
                 if (((RFEMTabItem)this.tabControl.SelectedItem).Type == RFEMTabType.DataInput){
+
+                    //Make visible, and select, the Run Tools section of the ribbon
                     this.mainRibbon.RunTools.Visibility = Visibility.Visible;
                     this.mainRibbon.tabRunControl.IsSelected = true;
+
+                    //Set the main window's datacontext to the underlying viewmodel
                     this.DataContext = ((DataEntryTab)this.tabControl.SelectedItem).ViewModel;
                     
+                    //Bind visibility of the buttons to the underlying datacontext
                     var Binding = new Binding("CanDisplaySummaryStats");
                     Binding.Source = this.DataContext;
                     this.mainRibbon.btnShowSummaryStats.SetBinding(RibbonButton.IsEnabledProperty, Binding);
@@ -319,11 +431,13 @@ namespace RFEM_Software
                 }
                 else
                 {
+                    //Hide the Run Tools section of the ribbon
                     this.mainRibbon.RunTools.Visibility = Visibility.Collapsed;
                 }
             }
             else
             {
+                //Hide the Run Tools section of the ribbon
                 this.mainRibbon.RunTools.Visibility = Visibility.Collapsed;
             }
                 
@@ -402,7 +516,7 @@ namespace RFEM_Software
             layer1.ColumnDefinitions.Remove(column1CloneForLayer1);
         }
         
-        ///NOT IMPLEMENTED YET//////////////////////////////
+
         /// <summary>
         /// This method will check to see if tabs need to be persisted, and
         /// prompt the user accordingly.
@@ -410,42 +524,52 @@ namespace RFEM_Software
         /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            //string tabInfo;
-            //ISimViewModel vm = null;
-            //Properties.Settings.Default.TabsOpenOnClose = new System.Collections.Specialized.StringCollection();
-            //foreach(RFEMTabItem tab in tabItems)
-            //{
-            //    tabInfo = "";
-            //    switch (tab.Type)
-            //    {
-            //        case RFEMTabType.Settings:
-            //            tabInfo = RFEMTabType.Settings.ToString() + ";Settings";
-            //            break;
-            //        case RFEMTabType.DataInput:
-            //            tabInfo = RFEMTabType.DataInput.ToString();
-            //            ScrollViewer viewer = tab.Content as ScrollViewer;
-            //            vm = ((UserControl)viewer.Content).DataContext as ISimViewModel;
-            //            tabInfo += ";" + vm.BaseName + ";" + vm.DataFilePath + ";" + vm.Type.ToString();
-            //            break;
-            //        case RFEMTabType.Results:
-            //            var sv = tab.Content as ScrollViewer;
-            //            TextBlock tb = null;
-            //            if (sv != null)
-            //                tb = sv.Content as TextBlock;
-            //            if(tb != null)
-            //            {
-            //                //This is a statistics tab
-            //                //tabInfo = RFEMTabType.Results.ToString() + ";Statistics;"
-            //            }
-            //            break;
-            //    }
-            //    if(tabInfo != "")
-            //    {
-            //        Properties.Settings.Default.TabsOpenOnClose.Add(tabInfo);
-            //    }
-            //}
-            //Properties.Settings.Default.Save();
-            //CloseAllTabs(null, null);
+            string tabInfo;
+            ISimViewModel vm = null;
+            Properties.Settings.Default.TabsOpenOnClose = new System.Collections.Specialized.StringCollection();
+            foreach (RFEMTabItem tab in tabItems)
+            {
+                tabInfo = "";
+                switch (tab.Type)
+                {
+                    case RFEMTabType.Settings:
+                        tabInfo = RFEMTabType.Settings.ToString() + ";Settings";
+                        break;
+                    case RFEMTabType.DataInput:
+                        tabInfo = RFEMTabType.DataInput.ToString();
+                        vm = ((DataEntryTab)tab).ViewModel;
+                        tabInfo += ";" + vm.BaseName + ";" + vm.DataFilePath + ";" + vm.Type.ToString();
+                        break;
+                    case RFEMTabType.Results:
+                        if(tab.GetType() == typeof(ResultsTab))
+                        {
+                            ResultsTab rTab = (ResultsTab)tab;
+                            tabInfo = RFEMTabType.Results.ToString() + ";" +
+                                        rTab.TabName + ";" +
+                                        rTab.FilePath + ";" +
+                                        Results.Statistics;
+                        }else if(tab.GetType() == typeof(HistogramTab)){
+                            HistogramTab hTab = (HistogramTab)tab;
+                            IHistViewModel hVM = hTab.ViewModel;
+                            tabInfo = RFEMTabType.Results.ToString() + ";" +
+                                      hTab.TabName + ";" +
+                                      hVM.FilePath + ";" +
+                                      Results.Histogram.ToString() + ";" +
+                                      hTab.ProgramType.ToString() + ";" +
+                                      hVM.NSim + ";" +
+                                      hVM.NFootings + ";" +
+                                      hVM.BaseName;
+                                        
+                        }
+                        break;
+                }
+                if (tabInfo != "")
+                {
+                    Properties.Settings.Default.TabsOpenOnClose.Add(tabInfo);
+                }
+            }
+            Properties.Settings.Default.Save();
+            CloseAllTabs(null, null);
             base.OnClosing(e);
         }
 
@@ -456,67 +580,76 @@ namespace RFEM_Software
         /// <param name="e"></param>
         protected override void OnInitialized(EventArgs e)
         {
-            
+            base.OnInitialized(e);
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //string[] tabInfo;
-            //RFEMTabType type;
-            //string tabName;
-            //string filePath;
+            string[] tabInfo;
+            RFEMTabType type;
+            string tabName;
+            string filePath;
 
-            base.OnInitialized(e);
-            ////Load data files from isolated storage
-            //if (Properties.Settings.Default.TabsOpenOnClose != null)
-            //{
+            
 
-            //    foreach (string s in Properties.Settings.Default.TabsOpenOnClose)
-            //    {
-            //        try
-            //        {
-            //            tabInfo = s.Split(';');
-            //            type = (RFEMTabType)Enum.Parse(typeof(RFEMTabType), tabInfo[0]);
-            //            tabName = tabInfo[1];
-            //            switch (type)
-            //            {
-            //                case RFEMTabType.DataInput:
-            //                    Program formType;
-            //                    formType = (Program)Enum.Parse(typeof(Program), tabInfo[3]);
-            //                    filePath = tabInfo[2];
-            //                    var formData = FileReader.Read(formType, filePath);
-            //                    var control = FormBuilder.Build(formData, formType);
-            //                    AddNewDataInput(control, tabName);
-            //                    break;
-            //                case RFEMTabType.Settings:
-            //                    btnSettings_Click(null, null);
-            //                    break;
-            //                case RFEMTabType.Results:
-            //                    Results resultsType = (Results)Enum.Parse(typeof(Results), tabInfo[3]);
-            //                    filePath = tabInfo[2];
-            //                    switch (resultsType)
-            //                    {
-            //                        case Results.Statistics:
-            //                            string content = FileReader.Read(filePath);
-            //                            AddNewResultsTab(content, tabName);
-            //                            break;
-            //                        case Results.Histogram:
+            //Load data files from isolated storage
+            if (Properties.Settings.Default.TabsOpenOnClose != null)
+            {
 
-            //                            break;
+                foreach (string s in Properties.Settings.Default.TabsOpenOnClose)
+                {
+                    try
+                    {
+                        tabInfo = s.Split(';');
+                        type = (RFEMTabType)Enum.Parse(typeof(RFEMTabType), tabInfo[0]);
+                        tabName = tabInfo[1];
+                        switch (type)
+                        {
+                            case RFEMTabType.DataInput:
+                                Program formType;
+                                formType = (Program)Enum.Parse(typeof(Program), tabInfo[3]);
+                                filePath = tabInfo[2];
+                                var formData = FileReader.Read(formType, filePath);
+                                var control = FormBuilder.Build(formData, formType);
+                                AddNewDataInput(control, 
+                                                (ISimView)control, 
+                                                ((ISimView)control).ViewModel, 
+                                                tabName,
+                                                formType);
+                                break;
+                            case RFEMTabType.Settings:
+                                btnSettings_Click(null, null);
+                                break;
+                            case RFEMTabType.Results:
+                                Results resultsType = (Results)Enum.Parse(typeof(Results), tabInfo[3]);
+                                filePath = tabInfo[2];
+                                switch (resultsType)
+                                {
+                                    case Results.Statistics:
+                                        AddNewResultsTab(filePath, tabName, null);
+                                        break;
+                                    case Results.Histogram:
+                                        var ProgramType = (Program)Enum.Parse(typeof(Program), tabInfo[4]);
+                                        AddNewHistogramTab(tabInfo[7],
+                                                           filePath,
+                                                           ProgramType,
+                                                           int.Parse(tabInfo[5]),
+                                                           int.Parse(tabInfo[6]));
+                                        break;
 
-            //                    }
-            //                    break;
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
+                                }
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
 
-            //        }
-            //    }
-
-
+                    }
+                }
 
 
-            //}
+
+
+            }
         }
 
         /// <summary>
@@ -768,9 +901,8 @@ namespace RFEM_Software
             try
             {
                 string SummaryFilePath = ((ISimViewModel)this.DataContext).SummaryFilePath;
-                string SummaryStats = FileReader.Read(SummaryFilePath);
 
-                AddNewResultsTab(SummaryStats, "Results", tabControl.SelectedItem as DataEntryTab);
+                AddNewResultsTab(SummaryFilePath, "Results", tabControl.SelectedItem as DataEntryTab);
             }
             catch(Exception ex)
             {
@@ -834,11 +966,9 @@ namespace RFEM_Software
         {
             try
             {
-                if(this.DataContext.GetType() == typeof(RBear2dViewModel))
+                if(this.DataContext.GetType().GetInterfaces().Contains(typeof(ISimViewModel)))
                 {
-                    var vm = (RBear2dViewModel)this.DataContext;
-                    var form = new RBear2DHistForm((int)vm.NSimulations, vm.NumberOfFootings, vm.BaseName, vm.HistFilePath);
-                    AddNewHistogramTab(form, vm.BaseName + " Histogram", tabControl.SelectedItem as DataEntryTab,form, (IHistViewModel)form.DataContext);
+                    AddNewHistogramTab(tabControl.SelectedItem as DataEntryTab);
                 }
                 else
                 {
@@ -874,7 +1004,8 @@ namespace RFEM_Software
                     AddNewDataInput(form,
                                     (ISimView)form, 
                                     ((ISimView)form).ViewModel, 
-                                    formData.BaseName);
+                                    formData.BaseName,
+                                    fileType);
                 }
                 catch(Exception ex)
                 {
@@ -1018,7 +1149,11 @@ namespace RFEM_Software
                 {
                     case "btnMRBear2d":
                         var form = new Rbear2dForm();
-                        myWindow.AddNewDataInput(form, form, ((ISimView)form).ViewModel, "RBear2d");
+                        myWindow.AddNewDataInput(form, 
+                                                 form, 
+                                                 ((ISimView)form).ViewModel, 
+                                                 "RBear2d",
+                                                 Program.RBear2D);
                         break;
                     case "btnMRDam2d":
                         MessageBox.Show("MRDamn2d Stub");

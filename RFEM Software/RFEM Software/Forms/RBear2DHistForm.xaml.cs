@@ -44,6 +44,10 @@ namespace RFEM_Software.Forms
         {
             InitializeComponent();
         }
+        public IHistViewModel ViewModel
+        {
+            get { return viewModel; }
+        }
         public RBear2DHistForm(int nSim, int nFootings, string baseName, string inputFilePath)
         {
             viewModel = new RBear2DHistViewModel(nSim, nFootings, baseName, inputFilePath);

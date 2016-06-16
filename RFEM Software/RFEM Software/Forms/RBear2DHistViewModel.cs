@@ -11,6 +11,10 @@ namespace RFEM_Software.Forms
 {
     public class RBear2DHistViewModel : IHistViewModel, IDataErrorInfo, INotifyPropertyChanged
     {
+        private int _NSim;
+        private int _NFooting;
+        private string _BaseName;
+
         private int footingNum = 1;
         private bool showPlotTitles = true;
         private double vertOffset = 0;
@@ -44,11 +48,23 @@ namespace RFEM_Software.Forms
 
         private double lineKeyXOffset = 0;
         private double lineKeyYOffset = 0;
-
-        private string _BaseName;
+        
         private string _InputFilePath;
 
         private List<string> _Errors = new List<string>();
+
+        public int NSim
+        {
+            get { return _NSim; }
+        }
+        public int NFootings
+        {
+            get { return _NFooting; }
+        }
+        public string BaseName
+        {
+            get { return _BaseName; }
+        }
 
         public int FootingNum
         {
@@ -352,6 +368,10 @@ namespace RFEM_Software.Forms
             }
         }
 
+        public string FilePath
+        {
+            get { return _InputFilePath; }
+        }
         public string Error
         {
             get

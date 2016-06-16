@@ -8,6 +8,7 @@ namespace RFEM_Software
 {
     public interface IHistView
     {
+        IHistViewModel ViewModel { get; }
         string helpLocation(string topic);
     }
 }

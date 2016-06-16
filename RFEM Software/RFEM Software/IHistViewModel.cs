@@ -8,5 +8,9 @@ namespace RFEM_Software
 {
     public interface IHistViewModel
     {
+        int NSim { get; }
+        int NFootings { get; }
+        string BaseName { get; }
+        string FilePath { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RFEM_Infrastructure;
+using RFEM_Software.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -99,6 +101,7 @@ namespace RFEM_Software
     {
         private ISimView _View;
         private ISimViewModel _ViewModel;
+        private Program _ProgramType;
 
         public ISimView View
         {
@@ -108,7 +111,10 @@ namespace RFEM_Software
         {
             get { return _ViewModel; }
         }
-
+        public Program ProgramType
+        {
+            get { return _ProgramType; }
+        }
         public DataEntryTab(RFEMTabType type, 
                             RoutedEventHandler closeTab,
                             RoutedEventHandler closeAllTabs, 
@@ -116,10 +122,12 @@ namespace RFEM_Software
                             ISimViewModel viewModel, 
                             CommandBindingCollection cmdBindings,
                             UserControl content,
-                            string tabName): base(type, closeTab, closeAllTabs)
+                            string tabName,
+                            Program programType): base(type, closeTab, closeAllTabs)
         {
             _View = view;
             _ViewModel = viewModel;
+            _ProgramType = programType;
 
             content.CommandBindings.Clear();
             content.CommandBindings.AddRange(cmdBindings);
@@ -143,20 +151,37 @@ namespace RFEM_Software
     {
         private DataEntryTab _DataTab;
 
+        private string _FilePath;
+
+        private string _TabName;
+
         public DataEntryTab DataTab
         {
             get { return _DataTab; }
+        }
+        public string FilePath
+        {
+            get { return _FilePath; }
+        }
+        public string TabName
+        {
+            get { return _TabName; }
         }
         public ResultsTab(RFEMTabType type,
                           RoutedEventHandler closeTab,
                           RoutedEventHandler closeAllTabs,
                           DataEntryTab dataTab,
-                          string tabContent,
+                          string filePath,
                           string tabName): base(type, closeTab, closeAllTabs)
         {
-            _DataTab = dataTab;
 
-            base.SetTabContent(new TextBlock() { Text = tabContent });
+            string SummaryStats = FileReader.Read(filePath);
+
+            _DataTab = dataTab;
+            _TabName = tabName;
+            _FilePath = filePath;
+
+            base.SetTabContent(new TextBlock() { Text = SummaryStats });
             base.SetTabHeader(tabName);
         }
         
@@ -168,6 +193,8 @@ namespace RFEM_Software
         private IHistView _View;
         private IHistViewModel _ViewModel;
         private DataEntryTab _DataTab;
+        private string _TabName;
+        private Program _ProgramType;
 
         public DataEntryTab DataTab
         {
@@ -181,25 +208,83 @@ namespace RFEM_Software
         {
             get { return _ViewModel; }
         }
+        public string TabName
+        {
+            get { return _TabName; }
+        }
+        public Program ProgramType
+        {
+            get { return _ProgramType; }
+        }
         public HistogramTab(RFEMTabType type,
                             RoutedEventHandler closeTab,
                             RoutedEventHandler closeAllTabs,
                             DataEntryTab dataTab,
-                            UserControl content,
                             CommandBindingCollection cmdBindings,
-                            IHistView view,
-                            IHistViewModel viewModel,
-                            string tabName): base(type, closeTab, closeAllTabs)
+                            double width): base(type, closeTab, closeAllTabs)
         {
-            _View = view;
-            _ViewModel = viewModel;
+            UserControl form;
+            switch (dataTab.ProgramType)
+            {
+                case Program.RBear2D:
+                    RBear2dViewModel vm = (RBear2dViewModel)dataTab.ViewModel;
+                    form = new RBear2DHistForm((int)vm.NSimulations, vm.NumberOfFootings, vm.BaseName, vm.HistFilePath);
+                    break;
+                default:
+                    throw new NotImplementedException("Histogram tab has not been implemented for this program.");
+            }
+            
+
+            form.Width = width;
+
+            _View = (IHistView)form;
+            _ViewModel = _View.ViewModel;
             _DataTab = dataTab;
+            _TabName = _DataTab.ViewModel.BaseName + "-Histogram";
+            _ProgramType = dataTab.ProgramType;
 
-            content.CommandBindings.Clear();
-            content.CommandBindings.AddRange(cmdBindings);
+            form.CommandBindings.Clear();
+            form.CommandBindings.AddRange(cmdBindings);
 
-            base.SetTabHeader(tabName);
-            base.SetTabContent(content);
+            base.SetTabHeader(_TabName);
+            base.SetTabContent(form);
+        }
+        public HistogramTab(RFEMTabType type,
+                            RoutedEventHandler closeTab,
+                            RoutedEventHandler closeAllTabs,
+                            CommandBindingCollection cmdBindings,
+                            double width,
+                            Program programType,
+                            int nSim,
+                            int nFootings,
+                            string baseName,
+                            string filePath): base(type, closeTab, closeAllTabs)
+        {
+            UserControl form;
+
+            switch (programType)
+            {
+                case Program.RBear2D:
+                    form = new RBear2DHistForm(nSim, nFootings, baseName, filePath);
+                    break;
+                default:
+                    throw new NotImplementedException("Histogram tab has not been implemented for this program");
+            }
+
+            form.Width = width;
+
+            _View = (IHistView)form;
+            _ViewModel = _View.ViewModel;
+            _DataTab = null;
+            _TabName = baseName + "-Histogram";
+            _ProgramType = programType;
+
+            form.CommandBindings.Clear();
+            form.CommandBindings.AddRange(cmdBindings);
+
+            base.SetTabHeader(_TabName);
+            base.SetTabContent(form);
+
         }
     }
 
