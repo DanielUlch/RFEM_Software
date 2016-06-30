@@ -16,15 +16,21 @@ using System.Windows.Shapes;
 namespace RFEM_Software
 {
     /// <summary>
-    /// Ribbon control used in the main window
+    /// Ribbon control used in the main window.
     /// </summary>
     public partial class RFEMRibbon : UserControl
     {
+        public delegate void NewDataFileRequestedHandler(object sender, RoutedEventArgs e);
+        public event NewDataFileRequestedHandler NewDataFileRequested;
         public RFEMRibbon()
         {
             InitializeComponent();
         }
 
-        //Event handling is done in a partial class in MainWindow.xaml
+        private void NewDataFile(object sender, RoutedEventArgs e)
+        {
+            NewDataFileRequested(sender, e);
+        }
+        
     }
 }

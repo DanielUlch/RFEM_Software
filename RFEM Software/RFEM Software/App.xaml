@@ -2,17 +2,49 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:RFEM_Software"
+             xmlns:com="clr-namespace:RFEM_Software.Commands"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+        <sys:Double x:Key="TBHeight" >20</sys:Double>
+
+        <Style x:Key="HelpEnabled" TargetType="{x:Type FrameworkElement}">
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Help" 
+                                  Command="com:CustomCommands.NewHelpClick"
+                                  CommandParameter="{Binding Path=Tag}"
+                                  />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+
         <Style TargetType="{x:Type RibbonWindow}">
             <Setter Property="FontFamily" Value="Segoe UI" />
         </Style>
+
         <Style TargetType="{x:Type TextBox}">
-            <Setter Property="Height" Value="18" />
+            <Setter Property="Height" Value="{DynamicResource ResourceKey=TBHeight}" />
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Width" Value="50"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Help" 
+                                  Command="com:CustomCommands.NewHelpClick"
+                                  CommandParameter="{Binding Path=Tag}"
+                                  />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Height" Value="22" />

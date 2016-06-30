@@ -8,7 +8,7 @@ namespace RFEM_Infrastructure
 {
     public interface IHasDataFile
     {
-        string DataFileString();
+        string GetDataFileString();
         string DataFileLocation();
 
         string AppDataFileLocation { get; }

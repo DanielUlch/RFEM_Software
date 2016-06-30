@@ -1,0 +1,52 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RDam_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The earth dam has the following geometry, and may optionally have a drain
+at the downstream toe extending along the dam base towards the interior.
+The upstream water level is assumed to lie at the top of the dam on the
+right hand side. That is, the flow is from right to left.
+
+
+                         nxe elements
+                     |
+        &lt;----  xtop ---->|
+
+                     -------------------  -  -  -  -   --- (water level)
+                    /                   \               |
+                   /                     \              |
+          y       /                       \             |
+          ^      /                         \            |
+          |     /                           \          yh  nye elements
+          |    /                             \          |
+          |   /                               \         |
+          |  /                                 \        |
+            /                                   \       |
+           /----------------,                    \      |
+          -----------------------------------------    ---    -----------> x
+          |
+            &lt;---- drain ---->|
+          |
+                &lt;---------------- xbot --------------->|
+                          nxe elements
+
+
+On this line, the number of elements that the earth dam should be
+divided into is specified. In the vertical direction, over the distance yh,
+the earth dam is subdivided evenly into the number of elements specified in
+the Y-direction (thus all elements initially have the same height). In the
+horizontal direction, both the top and bottom of the dam are subdivided
+into nxe equal spaces (where nxe is the number of elements specified in the
+X-direction) and straight lines are drawn between corresponding nodes on
+the top and bottom surface. This constitutes the fixed mesh, used to
+determine the measuring points for gradients, fluxes, and potentials, and
+the initial finite element mesh. The finite element mesh itself undergoes
+an iterative deformation process which locates the free surface and maps
+all of the elements to the flow region under the free surface.
+
+Note that the drain, if present, is simply made up of elements along the
+earth dam base. Thus, the number of elements subdividing the earth dam
+should be selected so that the drain height and width can be (at least
+approximately) represented by a whole number of elements.
+    </Paragraph>
+</FlowDocument>

@@ -9,6 +9,9 @@
              
              BorderThickness="5 5 5 0"
              >
+    <UserControl.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"/>
+    </UserControl.CommandBindings>
     <Grid>
         <Ribbon WindowIconVisibility="collapsed">
             <Ribbon.ApplicationMenu>
@@ -50,6 +53,9 @@
                     <RibbonApplicationMenuItem Header="Settings"
                                                ImageSource="Images/Settings.png"
                                                Name="btnSettings"/>
+                    <RibbonApplicationMenuItem Header="Close"
+                                               ImageSource="Images/Exit.png"
+                                               Command="ApplicationCommands.Close"/>
                 </RibbonApplicationMenu>
                     
                     
@@ -63,13 +69,17 @@
             </Ribbon.QuickAccessToolBar>
 
             <Ribbon.HelpPaneContent>
-                <RibbonButton SmallImageSource="Images/Help.png"
-                              Click="RibbonHelp_Click"/>
+                <RibbonButton   Name="btnRibbonHelp"
+                                SmallImageSource="Images/Help.png"/>
             </Ribbon.HelpPaneContent>
 
             <Ribbon.ContextualTabGroups>
-                <RibbonContextualTabGroup x:Name="RunTools" 
-                                          Header="Run Tools"
+                <RibbonContextualTabGroup x:Name="RBearRunTools" 
+                                          Header="RBear Run Tools"
+                                          Visibility="Collapsed" 
+                                          Background="Red" />
+                <RibbonContextualTabGroup x:Name="RDamRunTools" 
+                                          Header="RDam Run Tools"
                                           Visibility="Collapsed" 
                                           Background="Red" />
             </Ribbon.ContextualTabGroups>
@@ -159,21 +169,41 @@
             </RibbonTab>
             
             <RibbonTab Header="Export">
-                
+                <RibbonGroup Header="Office Applications">
+                    <RibbonButton Label="Export to Excel" LargeImageSource="Images/MSExcel.png" />
+                    <RibbonButton Label="Export to Access" LargeImageSource="Images/MSAccess.png" />
+                </RibbonGroup>
             </RibbonTab>
             <RibbonTab Header="Visualization">
                 
             </RibbonTab>
-            <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="tabRunControl">
+            <RibbonTab Header="Run Control" ContextualTabGroupHeader="RBear Run Tools" Name="tabRBearRunControl">
                 <RibbonGroup Header="Simulation">
-                    <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/BrokenFactoryBlue.png" />
-                    <RibbonButton Name="btnShowSummaryStats" Label="Display Summary Stats" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowMesh" Label="Display Displaced Mesh" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowField" Label="Display Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowBearingHist" Label="Display Bearing Histogram" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False" />
+                    <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/Start.png" />
+                    <RibbonButton Name="btnShowSummaryStats" Label="Summary Statistics" LargeImageSource="Images/Accounting.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowMesh" Label="Displaced Mesh" LargeImageSource="Images/Grid.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowField" Label="Random Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnShowBearingHist" Label="Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False" />
                     
                 </RibbonGroup>
                 
+            </RibbonTab>
+            <RibbonTab Header="Run Control" ContextualTabGroupHeader="RDam Run Tools" Name="tabRDamRunControl">
+                <RibbonGroup Header="Simulation">
+                    <RibbonButton Label="Run Simulation" Name="btn_RDamRunSim" LargeImageSource="Images/Start.png" />
+                    <RibbonButton Name="btnRDamSummaryStats" Label="Summary Statistics" LargeImageSource="Images/Accounting.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamFlownet" Label="Flownet" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamField" Label="Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamMeanGradientField" Label="Mean Gradient Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
+                    <RibbonButton Name="btnRDamStdDevGradientField" Label="Standard Deviation Gradient Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
+                    <RibbonButton Name="btnRDamMeanFluxField" Label="Mean Flux Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
+                    <RibbonButton Name="btnRDamStdDevFluxField" Label="Standard Deviation Flux Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamMeanPotentialField" Label="Mean Potential Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamStdDevPotentialField" Label="Standard Deviation Potential Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamFlowHist" Label="Flow Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False"/>
+                    <RibbonButton Name="btnRDamCondHist" Label="Conductivity Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="false"/>
+                    <RibbonButton Name="btnRDamGradHist" Label="Gradient Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False"/>
+                </RibbonGroup>
             </RibbonTab>
             
             

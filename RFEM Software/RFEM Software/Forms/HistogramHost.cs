@@ -16,6 +16,8 @@ namespace RFEM_Software.Forms
         private string _ghostViewPath;
         private string _workingDirectory;
 
+        private Process _Process;
+
         internal const int
   WS_CHILD = 0x40000000,
   WS_VISIBLE = 0x10000000,
@@ -63,6 +65,9 @@ namespace RFEM_Software.Forms
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
+            if (_Process != null && !_Process.HasExited)
+                _Process.Kill();
+
             var pInfo = new ProcessStartInfo()
             {
                 FileName = _ghostViewPath,
@@ -71,14 +76,14 @@ namespace RFEM_Software.Forms
                 CreateNoWindow = true
             };
 
-            var p = Process.Start(pInfo);
-            p.WaitForInputIdle();
-            while(p.MainWindowHandle == IntPtr.Zero)
+            _Process = Process.Start(pInfo);
+            _Process.WaitForInputIdle();
+            while(_Process.MainWindowHandle == IntPtr.Zero)
             {
                 Thread.Yield();
             }
 
-            IntPtr histogramHandle = p.MainWindowHandle;
+            IntPtr histogramHandle = _Process.MainWindowHandle;
 
             int style = GetWindowLong(histogramHandle, GWL_STYLE);
             style = style & ~((int)WS_CAPTION) & ~((int)WS_THICKFRAME);
@@ -101,7 +106,15 @@ namespace RFEM_Software.Forms
 
         protected override void DestroyWindowCore(HandleRef hwnd)
         {
+            if (_Process != null && !_Process.HasExited)
+                _Process.Kill();
             DestroyWindow(hwnd.Handle);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if(_Process != null && !_Process.HasExited)
+                _Process.Kill();
+            base.Dispose(disposing);
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RDam_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        Provide here the dimension of the flownet in the horizontal direction
+on the plotted page in inches. This is used to scale the overall image.
+The default is 4 inches wide.
+    </Paragraph>
+</FlowDocument>

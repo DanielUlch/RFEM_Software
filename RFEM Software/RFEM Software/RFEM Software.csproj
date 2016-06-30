@@ -54,6 +54,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>RFEM_Software.EntryPoint</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -78,24 +81,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Custom Controls\RFEMReader.cs" />
     <Compile Include="Custom Controls\RFEMToolTip.cs" />
+    <Compile Include="CustomCommands.cs" />
     <Compile Include="Dialogs\ReadDataFileDialog.xaml.cs">
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="FormBuilder.cs" />
+    <Compile Include="Forms\DoubleConverter.cs" />
     <Compile Include="Forms\HistogramHost.cs" />
-    <Compile Include="Forms\Rbear2dForm.xaml.cs">
+    <Compile Include="Forms\RBear2D\Rbear2dForm.xaml.cs">
       <DependentUpon>Rbear2dForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RBear2DHistForm.xaml.cs">
+    <Compile Include="Forms\RBear2D\RBear2DHistForm.xaml.cs">
       <DependentUpon>RBear2DHistForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RBear2DHistViewModel.cs" />
-    <Compile Include="Forms\RBear2dViewModel.cs" />
-    <Compile Include="Forms\Rdam2dForm.xaml.cs">
+    <Compile Include="Forms\RBear2D\RBear2DHistViewModel.cs" />
+    <Compile Include="Forms\RBear2D\RBear2dViewModel.cs" />
+    <Compile Include="Forms\RDam2D\Rdam2dForm.xaml.cs">
       <DependentUpon>Rdam2dForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Rdam2dViewModel.cs" />
+    <Compile Include="Forms\RDam2D\Rdam2dViewModel.cs" />
     <Compile Include="Forms\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
@@ -111,128 +118,128 @@
     <Compile Include="RFEMRibbon.xaml.cs">
       <DependentUpon>RFEMRibbon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RFEMTabItem.cs" />
-    <EmbeddedResource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
+    <Compile Include="Custom Controls\RFEMTabItem.cs" />
+    <Resource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\EchoInputToOutputFile.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\EchoInputToOutputFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ShowLogRF.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\ShowLogRF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\RBear2dHelp.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\RBear2dHelp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\PropertyToPlot.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\PropertyToPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\AppHelp.xaml">
+    </Resource>
+    <Resource Include="Help Files\AppHelp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\DisplacedMeshWidth.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\DisplacedMeshWidth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\OutputDebugData.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\OutputDebugData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\PlotFirstRF.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\PlotFirstRF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ProducePSPLOTOfFirstFEM.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\ProducePSPLOTOfFirstFEM.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ShowMeshOnDisplacedPlot.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\ShowMeshOnDisplacedPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\NormalizeCapacitySamples.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\NormalizeCapacitySamples.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\OutputCapacitySamples.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\OutputCapacitySamples.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\NumberOfElementsInXYDirections.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\NumberOfElementsInXYDirections.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ElementSizeInXYDirections.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\ElementSizeInXYDirections.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\NSizeOfFootings.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\NSizeOfFootings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\DisplacementIncPlasticTolBearingTol.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\DisplacementIncPlasticTolBearingTol.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\MaxStepsAndIterations.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\MaxStepsAndIterations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\NumberOfSimulations.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\NumberOfSimulations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\GeneratorSeed.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\GeneratorSeed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\CorrelationLengths.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\CorrelationLengths.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\CovarianceFunction.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\CovarianceFunction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\CohesionDistribution.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\CohesionDistribution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\FrictionAngleDistribution.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\FrictionAngleDistribution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\DilationAngleDistribution.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\DilationAngleDistribution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\ElasticModulusDistribution.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\ElasticModulusDistribution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\PoissonRatioDistribution.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\PoissonRatioDistribution.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Help Files\RBear Help Files\SoilPropertyCorrelationMatrix.xaml">
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\SoilPropertyCorrelationMatrix.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
+    </Resource>
     <Page Include="Dialogs\ReadDataFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RBear2DHistForm.xaml">
+    <Page Include="Forms\RBear2D\RBear2DHistForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Rdam2dForm.xaml">
+    <Page Include="Forms\RDam2D\Rdam2dForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,11 +287,131 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Resource Include="Help Files\RBear Help Files\BaseName.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RBear Help Files\JobTitle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="Help Files\RBearHist Help Files\ChiSquareHelp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Resource Include="Help Files\RBearHist Help Files\LineKeyHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\OutputDebugInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ProduceDisplayFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ProducePSPlotOfFirstFlownet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ShowMeshOnFlownet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ShowStreamlinesOrDrops.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\FlownetWidth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\NodesForGradientOutput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\OutputGradientMeanAndStdDev.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ShowDamDimensionsOnFlownet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ShowLogConductivityFieldOnFlownet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ShowTitlesOnFlownet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ConductivityMeanAndStdDev.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\DrainDimensionsAndConductivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\EarthDamDimensions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\GenerateUniformConductivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\NumberOfFiniteElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\NumberOfIterationsAndConvergence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\NumberOfRealization.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\OutputBlockConductivities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\OutputConductivityAverages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\OutputFlowRate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\RDamCorrelationLengths.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\RDamCovarianceFunction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\RDamGeneratorSeed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\DampOscillations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\ModifiedSpacingAlgorithms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\RestrainFreeSurfaceNonIncreasing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDam Help Files\UseAlternateAlgoIfFirstFails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
@@ -300,7 +427,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\Rbear2dForm.xaml">
+    <Page Include="Forms\RBear2D\Rbear2dForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -432,10 +559,10 @@
     <Resource Include="Images\Dossier-64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\MS Access-64.png" />
+    <Resource Include="Images\MSAccess.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\MS Excel-64.png" />
+    <Resource Include="Images\MSExcel.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Delete-64.png" />
@@ -450,16 +577,16 @@
     <Resource Include="Images\Todo List-64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Normal Distribution Histogram-64.png" />
+    <Resource Include="Images\NormalHist.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Open in Window-64.png" />
+    <Resource Include="Images\OpenInWindow.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Open in Browser-64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Accounting-64.png" />
+    <Resource Include="Images\Accounting.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Business-64.png" />
@@ -468,13 +595,22 @@
     <Resource Include="Images\User Manual-64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Statistics-64.png" />
+    <Resource Include="Images\Stats.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Questions-64.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Bar Chart-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Grid.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

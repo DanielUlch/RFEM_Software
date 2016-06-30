@@ -3,8 +3,8 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\RFEM Infrastructure.csprojResolveAssemblyReference.cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\RFEM Infrastructure.dll
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\RFEM Infrastructure.pdb
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\cdat_bear2w.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\display.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\hist_bear2d.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rbear2d.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\plotps.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rdam2d.exe

@@ -14,6 +14,8 @@ namespace RFEM_Infrastructure
             {
                 case Program.RBear2D:
                     return ReadRBearFile(filePath);
+                case Program.RDam2D:
+                    return ReadRDamFile(filePath);
                 default:
                     throw new NotImplementedException("A read function has not been implemented for the selected data file.");
             }
@@ -230,6 +232,148 @@ namespace RFEM_Infrastructure
 
             }
             return formData;
+        }
+        private static RDam2D ReadRDamFile(string filePath)
+        {
+            var formData = new RDam2D();
+            string Line;
+            string[] LineFragments;
+            int LHSLength = 50;
+
+            using (var reader = new System.IO.StreamReader(filePath))
+            {
+                formData.JobTitle = reader.ReadLine();
+                formData.BaseName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+
+                Line = reader.ReadLine();
+                formData.EchoInputDataToOutputFile = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.DebugCode = int.Parse(LineFragments[0]);
+                formData.RealizationNumber = int.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                formData.ProduceDisplayFile = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ProducePSPlotOfFirstFlownet = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.OutputGradientMeanAndStdDev = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.OutputFlowRate = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.OutputBlockConductivities = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.OutputConductivityAverages = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.GenerateUniformConductivity = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.NumElementsInXDir = int.Parse(LineFragments[0]);
+                formData.NumElementsInYDir = int.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                
+                for(int i = 1; i <= 6; i++)
+                {
+                    if(i<= LineFragments.Length)
+                    {
+                        formData.NodesForGradientOutput.Add(int.Parse((LineFragments[i - 1])));
+                    }
+                    else
+                    {
+                        formData.NodesForGradientOutput.Add(null);
+                    }
+                }
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.DrainXDimension = double.Parse(LineFragments[0]);
+                formData.DrainYDimension = double.Parse(LineFragments[1]);
+                formData.DrainConductivity = double.Parse(LineFragments[2]);
+
+                Line = reader.ReadLine();
+                formData.DamTop = double.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.DamBase = double.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.DamHeight = double.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.NumberOfRealizations = int.Parse(LineFragments[0]);
+                formData.MaxNumberOfIterations = int.Parse(LineFragments[1]);
+                formData.ConvergenceTolerance = double.Parse(LineFragments[2]);
+
+                Line = reader.ReadLine();
+                formData.GeneratorSeed = int.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.CorrelationLengthInXDir = int.Parse(LineFragments[0]);
+                formData.CorrelationLengthInYDir = int.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                formData.ConductivityMean = double.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ConductivityStdDev = double.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.CovFunction = CovFuncCharInv(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.NumEquipotentialDrops = int.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowEquipotentialDrops = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowStreamlines = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowMeshOnFlownet = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowLogConductivity = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowDamDimensionsOnFlownet = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowTitlesOnFlownet = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.FlownetWidth = int.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.DebugCode = int.Parse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.UseAlternateAlgoIfFirstFails = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.RestrainFreeSurfaceNonIncreasing = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.DampOscillations = TFInverse(Line.Substring(LHSLength));
+
+                Line = reader.ReadLine();
+                formData.ShowCentroidsOnMesh = TFInverse(Line.Substring(LHSLength));
+
+                return formData;
+            }
         }
         private static CovarianceFunction CovFuncCharInv(string covFuncChar)
         {

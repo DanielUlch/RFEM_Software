@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using RFEM_Software.Forms;
 
 namespace RFEM_Software
 {
@@ -16,6 +17,8 @@ namespace RFEM_Software
             {
                 case Program.RBear2D:
                     return new Rbear2dForm((RBear2D)formData);
+                case Program.RDam2D:
+                    return new Rdam2dForm((RDam2D)formData);
                 default:
                     throw new NotImplementedException();
             }

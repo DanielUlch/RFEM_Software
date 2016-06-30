@@ -1,0 +1,57 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RDam_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The earth dam has the following geometry, and may optionally have a drain
+at the downstream toe extending along the dam base towards the interior.
+The upstream water level is assumed to lie at the top of the dam on the
+right hand side. That is, the flow is from right to left.
+
+
+                     |
+        &lt;----  xtop ---->|
+
+                     -------------------  -  -  -  -   --- (water level)
+                    /                   \               |
+                   /                     \              |
+          y       /                       \             |
+          ^      /                         \            |
+          |     /                           \          yh
+          |    /                             \          |
+          |   /                               \         |
+          |  /                                 \        |
+            /                                   \       |
+           /----------------,                    \      |
+          -----------------------------------------    ---    -----------> x
+          |
+            &lt;---- drain ---->|
+          |
+                &lt;---------------- xbot --------------->|
+
+
+
+On this line of the data form, the width, height, and conductivity of the
+drain is specified. The length units must be consistent with those
+used in the remainder of the program.
+
+If either the width or height of the drain is set to zero, or if these values
+are left blank, then no drain is provided. However, if non-zero values are
+provided, then the drain is assumed to lie along the base of the dam starting
+from the downstream corner and progressing towards the right with width given
+by the x coordinate specified (first value) and thickness given by the
+specified y coordinate (second value).  Since the mapping of element
+conductivities to the specified drain conductivity is done by element height
+after the mesh is deformed, there may be some approximation to the area of the
+drain. That is, the drain itself may not have a perfectly level upper
+surface. The initial undeformed mesh is set up so that the drain is
+represented by an integer number of elements in both the horizontal and
+vertical directions. After elements are deformed to accomodate the upper free
+surface, the drain at the base of the dam may be somewhat deformed.
+
+The third value specified here is the drain element hydraulic conductivity.
+Since this is typically much larger than the hydraulic conductivity of the
+remainder of the earth dam, the drain element hydraulic conductivities are
+treated as non-random and fixed. That is, all drain elements will have the
+hydraulic conductivity specified here.
+    </Paragraph>
+</FlowDocument>

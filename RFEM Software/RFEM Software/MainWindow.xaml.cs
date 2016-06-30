@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using RFEM_Infrastructure;
+using RFEM_Software.Custom_Controls;
 using RFEM_Software.Forms;
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,7 @@ namespace RFEM_Software
         /// pane is pinned to layer 1, it must occupy the appropriate space on both layers.
         /// </summary>
         private ColumnDefinition column1CloneForLayer1;
-
-        /// <summary>
-        /// Location of the application help file.
-        /// </summary>
-        private string ApplicationHelpLocation = "RFEM_Software.Help_Files.AppHelp.xaml";
-
+        
         /// <summary>
         /// Cancellation token source for cancelling asynchronous simulation runs.
         /// </summary>
@@ -74,10 +70,24 @@ namespace RFEM_Software
             column1CloneForLayer1.SharedSizeGroup = "column1";
 
             //Wire the button events from the ribbon to routines in the main window
+            WireRibbonEvents();
+
+        }
+
+        /// <summary>
+        /// This method hooks up ribbon events to private methods in this class.
+        /// </summary>
+        private void WireRibbonEvents()
+        {
             this.mainRibbon.btn_RunSim.Click += btnRunSim_Click;
+            this.mainRibbon.btn_RDamRunSim.Click += btnRunSim_Click;
+
+
             this.mainRibbon.btnOpenExisting.Click += OpenExistingFile;
 
             this.mainRibbon.btnShowSummaryStats.Click += btnShowSummaryStats_Click;
+            this.mainRibbon.btnRDamSummaryStats.Click += btnShowSummaryStats_Click;
+
             this.mainRibbon.btnShowMesh.Click += btnShowMesh_Click;
             this.mainRibbon.btnShowField.Click += btnShowField_Click;
             this.mainRibbon.btnShowBearingHist.Click += btnShowBearingHist_Click;
@@ -87,11 +97,99 @@ namespace RFEM_Software
             this.mainRibbon.btnSaveAs.Click += btnSaveAs_Click;
             this.mainRibbon.qaBtnSaveAs.Click += btnSaveAs_Click;
             this.mainRibbon.btnSettings.Click += btnSettings_Click;
+            this.mainRibbon.btnRibbonHelp.Click += btnRibbonHelp_Click;
 
-
+            this.mainRibbon.NewDataFileRequested += NewDataFileRequested;
 
         }
-        
+
+        /// <summary>
+        /// This method is called when a user clicks one of the 'New Data Entry' buttons on the ribbon.
+        /// It creates a new data entry form depending on which button was pressed, and adds it to the tabControl.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewDataFileRequested(object sender, RoutedEventArgs e)
+        {
+            ISimView form;
+            try
+            {
+                //Resolve Sender
+                string ButtonName;
+                if (sender.GetType() == typeof(RibbonButton))
+                {
+                    ButtonName = ((Button)sender).Name;
+                }
+                else if (sender.GetType() == typeof(RibbonMenuItem))
+                {
+                    ButtonName = ((RibbonMenuItem)sender).Name;
+
+                }
+                else
+                {
+                    ButtonName = "";
+                }
+
+                //open appropriate tab
+                switch (ButtonName)
+                {
+                    case "btnMRBear2d":
+                        form = new Rbear2dForm();
+                        AddNewDataInput((UserControl)form,
+                                        form,
+                                        form.ViewModel,
+                                        "RBear2d",
+                                        Program.RBear2D);
+                        break;
+                    case "btnMRDam2d":
+                        form = new Rdam2dForm();
+                        AddNewDataInput((UserControl)form,
+                                         form,
+                                         form.ViewModel,
+                                         "RDam2D",
+                                         Program.RDam2D);
+                        break;
+                    case "btnMREarth2d":
+                        MessageBox.Show("MREarth2d Stub");
+                        break;
+                    case "btnMRFlow2d":
+                        MessageBox.Show("MRFlow2d Stub");
+                        break;
+                    case "btnMRFlow3d":
+                        MessageBox.Show("MRFlow3d Stub");
+                        break;
+                    case "btnMRPill2d":
+                        MessageBox.Show("MRPill2d Stub");
+                        break;
+                    case "btnMRPill3d":
+                        MessageBox.Show("MRPill3d Stub");
+                        break;
+                    case "btnMRSetl2d":
+                        MessageBox.Show("MRSetl2d Stub");
+                        break;
+                    case "btnMRSetl3d":
+                        MessageBox.Show("MRSetl3d Stub");
+                        break;
+                    case "btnMRSlope2d":
+                        MessageBox.Show("MRSlope2d Stub");
+                        break;
+                    default:
+                        MessageBox.Show("Unknown Sender");
+                        throw new ArgumentException();
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                //A new button has been added that is not the appropriate type
+                MessageBox.Show(ex.Message);
+
+            }
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+            }
+        }
+
         /// <summary>
         /// Adds a new data input tab to the main window and selects it.
         /// </summary>
@@ -110,7 +208,7 @@ namespace RFEM_Software
         /// <param name="programType">
         /// The program for which this data input control will be used.
         /// </param>
-        public void AddNewDataInput(UserControl newTabContent,
+        private void AddNewDataInput(UserControl newTabContent,
                                     ISimView view,
                                     ISimViewModel viewModel,
                                     string tabName,
@@ -399,47 +497,65 @@ namespace RFEM_Software
         /// <param name="e"></param>
         private void TabSelectionChanged(object sender, RoutedEventArgs e)
         {
+            //Hide the Run Tools section of the ribbon
+            this.mainRibbon.RBearRunTools.Visibility = Visibility.Collapsed;
+            this.mainRibbon.RDamRunTools.Visibility = Visibility.Collapsed;
+
+
             //Check if there is a tab selected
-            if(this.tabControl.SelectedItem != null)
+            if (this.tabControl.SelectedItem != null)
             {
                 //Check if tab is a datainput tab
                 if (((RFEMTabItem)this.tabControl.SelectedItem).Type == RFEMTabType.DataInput){
+                    var tab = (DataEntryTab)this.tabControl.SelectedItem;
 
-                    //Make visible, and select, the Run Tools section of the ribbon
-                    this.mainRibbon.RunTools.Visibility = Visibility.Visible;
-                    this.mainRibbon.tabRunControl.IsSelected = true;
+                    switch (tab.ProgramType)
+                    {
+                        case Program.RBear2D:
+                            //Make visible, and select, the Run Tools section of the ribbon
+                            this.mainRibbon.RBearRunTools.Visibility = Visibility.Visible;
+                            this.mainRibbon.tabRBearRunControl.IsSelected = true;
 
-                    //Set the main window's datacontext to the underlying viewmodel
-                    this.DataContext = ((DataEntryTab)this.tabControl.SelectedItem).ViewModel;
+                            //Set the main window's datacontext to the underlying viewmodel
+                            this.DataContext = tab.ViewModel;
+
+                            //Bind visibility of the buttons to the underlying datacontext
+                            var Binding = new Binding("CanDisplaySummaryStats");
+                            Binding.Source = this.DataContext;
+                            this.mainRibbon.btnShowSummaryStats.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                            Binding = new Binding("CanDisplayMesh");
+                            Binding.Source = this.DataContext;
+                            this.mainRibbon.btnShowMesh.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                            Binding = new Binding("CanDisplayField");
+                            Binding.Source = this.DataContext;
+                            this.mainRibbon.btnShowField.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                            Binding = new Binding("CanDisplayBearingHist");
+                            Binding.Source = this.DataContext;
+                            this.mainRibbon.btnShowBearingHist.SetBinding(RibbonButton.IsEnabledProperty, Binding);
+
+                            break;
+
+                        case Program.RDam2D:
+                            this.mainRibbon.RDamRunTools.Visibility = Visibility.Visible;
+                            this.mainRibbon.tabRDamRunControl.IsSelected = true;
+
+                            //Set the main window's datacontext to the underlying viewmodel
+                            this.DataContext = tab.ViewModel;
+
+                            var Bind = new Binding("CanDisplaySummaryStats");
+                            Bind.Source = this.DataContext;
+                            this.mainRibbon.btnRDamSummaryStats.SetBinding(RibbonButton.IsEnabledProperty, Bind);
+
+                            break;
+                    }
                     
-                    //Bind visibility of the buttons to the underlying datacontext
-                    var Binding = new Binding("CanDisplaySummaryStats");
-                    Binding.Source = this.DataContext;
-                    this.mainRibbon.btnShowSummaryStats.SetBinding(RibbonButton.IsEnabledProperty, Binding);
-
-                    Binding = new Binding("CanDisplayMesh");
-                    Binding.Source = this.DataContext;
-                    this.mainRibbon.btnShowMesh.SetBinding(RibbonButton.IsEnabledProperty, Binding);
-
-                    Binding = new Binding("CanDisplayField");
-                    Binding.Source = this.DataContext;
-                    this.mainRibbon.btnShowField.SetBinding(RibbonButton.IsEnabledProperty, Binding);
-
-                    Binding = new Binding("CanDisplayBearingHist");
-                    Binding.Source = this.DataContext;
-                    this.mainRibbon.btnShowBearingHist.SetBinding(RibbonButton.IsEnabledProperty, Binding);
                 }
-                else
-                {
-                    //Hide the Run Tools section of the ribbon
-                    this.mainRibbon.RunTools.Visibility = Visibility.Collapsed;
-                }
+                
             }
-            else
-            {
-                //Hide the Run Tools section of the ribbon
-                this.mainRibbon.RunTools.Visibility = Visibility.Collapsed;
-            }
+            
                 
 
         }
@@ -518,8 +634,9 @@ namespace RFEM_Software
         
 
         /// <summary>
-        /// This method will check to see if tabs need to be persisted, and
-        /// prompt the user accordingly.
+        /// This method persists the tabs currently open. It also checks whether data entry files need to be saved.
+        /// The tabs are stored as strings in the TabsOpenOnClose string collection in the application settings.
+        /// The format of the string changes depending on the type of tab.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
@@ -527,9 +644,15 @@ namespace RFEM_Software
             string tabInfo;
             ISimViewModel vm = null;
             Properties.Settings.Default.TabsOpenOnClose = new System.Collections.Specialized.StringCollection();
+
+            //Iterate through each open tab
             foreach (RFEMTabItem tab in tabItems)
             {
+
+                //Initialize string to be saved
                 tabInfo = "";
+
+                //Format string according to tabtype
                 switch (tab.Type)
                 {
                     case RFEMTabType.Settings:
@@ -563,45 +686,55 @@ namespace RFEM_Software
                         }
                         break;
                 }
+                //If there is a string, add it to the collection
                 if (tabInfo != "")
                 {
                     Properties.Settings.Default.TabsOpenOnClose.Add(tabInfo);
                 }
             }
+
+            //Save settings
             Properties.Settings.Default.Save();
+
+            //Close all tabs and request saves for data entry files
             CloseAllTabs(null, null);
+
+            //Finalize the closing of the main window
             base.OnClosing(e);
         }
 
-        ///NOT IMPLEMENTED YET//////////////////////////////////////////////
         /// <summary>
-        /// This method will load persisted saved tabs.
+        /// Loads the tabs that were open the last time the application was closed.
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-        }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             string[] tabInfo;
             RFEMTabType type;
             string tabName;
             string filePath;
-
             
-
-            //Load data files from isolated storage
+            //If the tab collection exists
             if (Properties.Settings.Default.TabsOpenOnClose != null)
             {
 
+                //Iterate through each string in the collection
                 foreach (string s in Properties.Settings.Default.TabsOpenOnClose)
                 {
+                    //Wrapped in a try block incase files have been misplaced and cannot be loaded
                     try
                     {
+                        //Split the string at every semi-colon
                         tabInfo = s.Split(';');
+
+                        //Determine the tabtype
                         type = (RFEMTabType)Enum.Parse(typeof(RFEMTabType), tabInfo[0]);
+
+                        //Determine the tab name
                         tabName = tabInfo[1];
+
+                        //Depending on the tab type, read the appropriate information from the string and load the tab
                         switch (type)
                         {
                             case RFEMTabType.DataInput:
@@ -642,7 +775,7 @@ namespace RFEM_Software
                     }
                     catch (Exception ex)
                     {
-
+                        //do nothing if tab cannot be loaded
                     }
                 }
 
@@ -650,45 +783,6 @@ namespace RFEM_Software
 
 
             }
-        }
-
-        /// <summary>
-        /// This method tells the context menus that they can execute on the main window.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void HelpClick_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        /// <summary>
-        /// This method asks the selected form for the help file associated with
-        /// the command parameter. The form will return the location of the help file for the
-        /// control specified in the command parameter, or a default help file location.
-        /// This method then calls LoadReader() which loads the given help file into
-        /// the flow document reader in the help pane.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">
-        /// Contains a control in its parameter, which is the control that the help
-        /// command originated from.
-        /// </param>
-        private void HelpClick_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            ISimView form = null;
-
-            //Convert to data entry tab
-            var tabContent = tabControl.SelectedItem as DataEntryTab;
-
-            if (tabContent != null)
-                form = tabContent.View;
-
-            //Ask the form for the location of the help file
-            string helpLocation = form.HelpLocation((FrameworkElement)e.Parameter);
-
-            //Load the help file into the flowdocuement reader
-            LoadReader(helpLocation);
         }
 
         /// <summary>
@@ -722,65 +816,61 @@ namespace RFEM_Software
                 var tab = (RFEMTabItem)tabControl.SelectedItem;
 
                 //If the tab is a data input tab
-                if (tab.Type == RFEMTabType.DataInput)
+                if (tab.GetType() == typeof(DataEntryTab))
                 {
                     //Get the selected form
                     var helpTab = ((DataEntryTab)tab).View;
 
-                    //Ask the selected form for the help file associated with a hovered control
-                    string helpLocation = helpTab.hoveredHelpDocLocation();
+                    //Ask the selected form for the help topic associated with a hovered control
+                    string helpLocation = helpTab.GetHoveredHelpTopic();
 
                     //Load the help file
-                    LoadReader(helpLocation);
+                    LoadReaderNew(helpLocation);
 
-                } else
+                }
+                else if (tab.GetType() == typeof(HistogramTab))
+                {
+                    //Get the selected form
+                    var helpTab = ((HistogramTab)tab).View;
+
+                    //Ask the selected form for the help topic associated with a hovered control
+                    string helpLocation = helpTab.GetHoveredHelpTopic();
+
+                    //Load the help file
+                    LoadReaderNew(helpLocation);
+                }
+                else
                 {
                     //Load the defaul help file for this application
-                    LoadReader(ApplicationHelpLocation);
+                    LoadReaderNew("");
                 }
             }
             else
             {
                 //Load the defaul help file for this application
-                LoadReader(ApplicationHelpLocation);
+                LoadReaderNew("");
             }    
         }
 
+        /// <summary>
+        /// This method tells the context menus that the NewHelp command can be executed on the main window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewHelpClickCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+
         private void NewHelpClickExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            //Get the form from the selected tab
-            var tabContent = (IHistView)((ScrollViewer)((RFEMTabItem)tabControl.SelectedItem).Content).Content;
-
-            //Ask the form for the location of the help file
-            string helpLocation = tabContent.helpLocation((string)e.Parameter);
-
-            //Load the help file into the flowdocuement reader
-            LoadReaderNew(new Uri(helpLocation, UriKind.Relative));
+            LoadReaderNew((string)e.Parameter);
         }
 
-        /// <summary>
-        /// This method takes a help file location string and loads the help file into the
-        /// flow document reader in the help pane. It is called by the Help and HelpClick
-        /// command handlers.
-        /// </summary>
-        /// <param name="helpLocation">
-        /// The location of the help flow document as an embedded resource.
-        /// </param>
-        private void LoadReader(string helpLocation)
+        private void LoadReaderNew(string topic)
         {
-            //Get the help file as a file stream
-            var helpStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(helpLocation);
-
-            //Read the file stream into a flow docuement
-            FlowDocument helpContent = System.Windows.Markup.XamlReader.Load(helpStream) as FlowDocument;
-
-            //Display the flow document in the flowdocument reader
-            HelpReader.Document = helpContent;
+            HelpReader.LoadHelpTopic(topic);
 
             //If the help pane is not pinned, pin it
             if (helpPaneButton.Visibility == Visibility.Visible)
@@ -790,52 +880,46 @@ namespace RFEM_Software
                 DockPane();
             }
         }
-
-        private void LoadReaderNew(Uri path)
-        {
-            FlowDocument doc = Application.LoadComponent(path) as FlowDocument;
-
-            if(doc != null)
-            {
-                HelpReader.Document = doc;
-
-                //If the help pane is not pinned, pin it
-                if (helpPaneButton.Visibility == Visibility.Visible)
-                {
-                    layer2.Visibility = Visibility.Visible;
-                    layer2.ColumnDefinitions[1].Width = new GridLength(200);
-                    DockPane();
-                }
-            }
-        }
+    
         /// <summary>
-        /// External facing method to allow the ribbon to ask for the default help file to be loaded.
-        /// This happens when the user presses the help button on the right side of the ribbon.
+        /// This method is called when the user clicks the help button on the right of the ribbon.
+        /// Currently it loads the default help file into the help-reader.
         /// </summary>
-        public void LoadReader()
+        private void btnRibbonHelp_Click(object sender, RoutedEventArgs e)
         {
-            LoadReader(ApplicationHelpLocation);
+            LoadReaderNew("");
         }
 
-        private async Task RunSimAsync()
-        {
-            string uriSource;
 
+        /// <summary>
+        /// This method runs the simulation asynchronously
+        /// </summary>
+        /// <returns></returns>
+        private async Task RunSimAsync(RibbonButton button)
+        {
+            
+            //Make the progress bar and the details label in the status bar visible
             this.progressBar.Visibility = Visibility.Visible;
             this.lblSimDetails.Visibility = Visibility.Visible;
+
+            //Reset the cancellation token
             _TokenSource = new CancellationTokenSource();
             var token = _TokenSource.Token;
+
             _CurrentlyRunningSim = true;
 
-            this.mainRibbon.btn_RunSim.Label = "Cancel Run";
-            uriSource = "pack://application:,,,/RFEM Software;component/Images/Cancel.png";
-            this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+            //Change the 'Run Simulation' button in the ribbon to a 'Cancel Run' button
+            button.Label = "Cancel Run";
+            string uriSource = "pack://application:,,,/RFEM Software;component/Images/Cancel.png";
+            button.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
 
 
             try
             {
-                var tsk = await ((ISimView)((ScrollViewer)((
-                                RFEMTabItem)this.tabControl.SelectedItem).Content).Content).ViewModel.RunSimAsync(token);
+                //Run the simulation asynchronously
+                var tsk = await ((DataEntryTab)tabControl.SelectedItem).ViewModel.RunSimAsync(token);
+
+                //If the simulation was not cancelled, show the global statistics
                 if (!token.IsCancellationRequested)
                 {
                     MessageBox.Show(tsk, "Global Statistics", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -843,65 +927,101 @@ namespace RFEM_Software
                 
             }catch(OperationCanceledException oex)
             {
-                this.lblStatus.Content = "Run Canelled";
+                this.lblStatus.Content = "Run Canceled";
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             finally
             {
-                this.mainRibbon.btn_RunSim.Label = "Run Simulation";
-                uriSource = "pack://application:,,,/RFEM Software;component/Images/BrokenFactoryBlue.png";
-                this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+                //Reset the 'Cancel Run' button in the ribbon back to 'Run Simulation'
+                button.Label = "Run Simulation";
+                uriSource = "pack://application:,,,/RFEM Software;component/Images/Start.png";
+                button.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
 
+                //Clear the cancellation token
                 _TokenSource = null;
                 _CurrentlyRunningSim = false;
+
+                //Hide the progress bar and details in the status bar
                 this.progressBar.Visibility = Visibility.Hidden;
                 this.lblSimDetails.Visibility = Visibility.Hidden;
             }
             
             
         }
+
+        /// <summary>
+        /// This method is called when a user clicks the 'Run Simulation' button on the ribbon.
+        /// If the simulation is not currently running, the method asynchronously runs the simulation.
+        /// If there is a simulation running, the run is cancelled.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btnRunSim_Click(object sender, RoutedEventArgs e)
         {
-            if (!_CurrentlyRunningSim)
+            try
             {
-                await RunSimAsync();
-            }
-            else
-            {
-                try
-                {
-                    _TokenSource.Cancel();
-                }
-                catch (OperationCanceledException oex)
-                {
-                    this.lblStatus.Content = "Run Canelled";
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    this.mainRibbon.btn_RunSim.Label = "Run Simulation";
-                    string uriSource = "pack://application:,,,/RFEM Software;component/Images/BrokenFactoryBlue.png";
-                    this.mainRibbon.btn_RunSim.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+                var button = (RibbonButton)sender;
 
-                    _TokenSource = null;
-                    _CurrentlyRunningSim = false;
-                    this.progressBar.Visibility = Visibility.Hidden;
-                    this.lblSimDetails.Visibility = Visibility.Hidden;
+                if (!_CurrentlyRunningSim)
+                {
+                    //Run the simulation asynchronously
+                    await RunSimAsync(button);
                 }
-                
+                else
+                {
+                    try
+                    {
+                        //Cancel simulation
+                        _TokenSource.Cancel();
+                    }
+                    catch (OperationCanceledException oex)
+                    {
+                        this.lblStatus.Content = "Run Canelled";
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        //Reset the 'Cancel Run' button in the ribbon back to 'Run Simulation'
+                        button.Label = "Run Simulation";
+                        string uriSource = "pack://application:,,,/RFEM Software;component/Images/Start.png";
+                        button.LargeImageSource = new ImageSourceConverter().ConvertFromString(uriSource) as ImageSource;
+
+                        //Clear the cancellation token
+                        _TokenSource = null;
+                        _CurrentlyRunningSim = false;
+
+                        //Hide the progress bar and details in the status bar
+                        this.progressBar.Visibility = Visibility.Hidden;
+                        this.lblSimDetails.Visibility = Visibility.Hidden;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method is called when a user presses the 'Show Summary Statistics' button on the ribbon.
+        /// It opens a new results tab with the summary statistics in it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnShowSummaryStats_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string SummaryFilePath = ((ISimViewModel)this.DataContext).SummaryFilePath;
+                //Get the path of the 
+                string SummaryFilePath = ((DataEntryTab)tabControl.SelectedItem).ViewModel.SummaryFilePath;
 
+                //Open the new results tab
                 AddNewResultsTab(SummaryFilePath, "Results", tabControl.SelectedItem as DataEntryTab);
             }
             catch(Exception ex)
@@ -909,59 +1029,49 @@ namespace RFEM_Software
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method is called when the user clicks the 'Displaced Mesh' button on the ribbon.
+        /// It opens the displaced mesh file in ghostview.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnShowMesh_Click(object sender, RoutedEventArgs e)
         {
-            try {
-                var pInfo = new ProcessStartInfo();
-                pInfo.UseShellExecute = true;
-                pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-                pInfo.Arguments = "\"" + ((ISimViewModel)this.DataContext).MeshFilePath + "\"";
-                pInfo.CreateNoWindow = false;
-
-                var p = new Process { StartInfo = pInfo };
-                p.Start();
+            try
+            {
+                ((DataEntryTab)tabControl.SelectedItem).ViewModel.ShowMesh();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method is called when the user clicks the 'Show Field' button on the ribbon.
+        /// It opens the field file in ghostview.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnShowField_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var pInfo = new ProcessStartInfo();
-                pInfo.UseShellExecute = false;
-                pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                            "\\RFEM_Software";
-                string appFileDir = Environment.GetCommandLineArgs()[0];
-                string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
-                displayFilePath += "\\Executables\\display.exe";
-                pInfo.FileName = displayFilePath;
-                pInfo.CreateNoWindow = true;
-                pInfo.Arguments = ((ISimViewModel)this.DataContext).FieldFilePath;
-
-                var p = new Process { StartInfo = pInfo };
-                p.Start();
-                p.WaitForExit();
-
-                pInfo = new ProcessStartInfo();
-                pInfo.UseShellExecute = false;
-                pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-                pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                            "\\RFEM_Software";
-                pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
-                pInfo.CreateNoWindow = true;
-
-                p = new Process { StartInfo = pInfo };
-                p.Start();
-
+                ((DataEntryTab)tabControl.SelectedItem).ViewModel.ShowField();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method is called when a user clicks the 'Show Bearing Histogram' button on the ribbon.
+        /// It opens a new histogram tab.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnShowBearingHist_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -980,25 +1090,33 @@ namespace RFEM_Software
             }
         }
        
+        /// <summary>
+        /// This method is called when a user clicks the 'Open Existing File' button on the ribbon.
+        /// It opens up a custom dialog to open the appropriate type of tab for the datafile.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenExistingFile(object sender, RoutedEventArgs e)
         {
             string filePath="";
             bool result = false;
             Program fileType=Program.RBear2D;
+
+            //Show dialog and retrieve the file path, as well as the type of data file.
             var Diag = new Dialogs.ReadDataFileDialog((a,b,c) =>
             {
                 filePath = a;
                 fileType = b;
                 result = c;
             });
-
-
             Diag.ShowDialog();
 
+            //If the user clicked ok
             if (result == true)
             {
                 try
                 {
+                    //Read the file and add it to the tab control
                     IHasDataFile formData = FileReader.Read(fileType, filePath);
                     UserControl form = FormBuilder.Build(formData, fileType);
                     AddNewDataInput(form,
@@ -1017,24 +1135,42 @@ namespace RFEM_Software
             }
         }
     
+        /// <summary>
+        /// This method is called when a user clicks the 'Settings' menu item in the ribbon menu.
+        /// The method opens a settings tab if there isn't one already open. 
+        /// If there is one already open, it selects it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            if(!tabControl.Items.OfType<RFEMTabItem>().Any(p=> ((RFEMTabItem)p).Type == RFEMTabType.Settings))
+            //If the tab control contains no settings tabs
+            if(!tabControl.Items.OfType<RFEMTabItem>().Any(p=> p.Type == RFEMTabType.Settings))
             {
+                //Add a new settings tab
                 AddNewSettingsTab();
             }
             else
             {
-                tabControl.Items.OfType<RFEMTabItem>().Where(p => ((RFEMTabItem)p).Type == RFEMTabType.Settings).First().IsSelected = true;
+                //Select the existing settings tab
+                tabControl.Items.OfType<RFEMTabItem>().Where(p => p.Type == RFEMTabType.Settings).First().IsSelected = true;
             }
-            
         }
+
+        /// <summary>
+        /// This method is called when a user clicks the save button on the ribbon quick-access menu.
+        /// It saves the data-entry file selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                //If this is a data entry file
                 if (this.DataContext.GetType().GetInterfaces().Contains(typeof(ISimViewModel)))
                 {
+                    //Save the file
                     ((ISimViewModel)this.DataContext).Save();
                 }
                 else
@@ -1046,19 +1182,29 @@ namespace RFEM_Software
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method is called when a user clicks the save-as button on the ribbon quick-access toolbar.
+        /// If the current tab is a data-entry tab, it opens a dialog that attempts to save the file where the user wishes to save it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSaveAs_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                //If the current tab is a data-entry tab
                 if (this.DataContext.GetType().GetInterfaces().Contains(typeof(ISimViewModel)))
                 {
+                    //Specify dialog options
                     SaveFileDialog diag = new SaveFileDialog();
-
                     diag.FileName = ((ISimViewModel)this.DataContext).BaseName;
                     diag.Filter = "Data Files|*.dat|All files|*.*";
 
+                    //Show dialog
                     if(diag.ShowDialog() == true)
                     {
+                        //If the user clicks save, save the file at the appropriate location
                         ((ISimViewModel)this.DataContext).SaveAs(diag.FileName);
                     }
                     
@@ -1074,182 +1220,12 @@ namespace RFEM_Software
             }
         }
 
+        private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         
-    }
-
-    /// <summary>
-    /// Partial class of the ribbon that is used in the main window. The ribbon contains a 
-    /// variety of buttons that trigger events on the main window.
-    /// </summary>
-    public partial class RFEMRibbon
-    {
-        
-        ///NOT IMPLEMENTED YET////////////////////////////////////
-        /// <summary>
-        /// This button will allow the user to change various application settings. It may
-        /// take them to a menu tab or to the auxillary menu in the ribbon menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Settings Stub");
-        }
-
-        /// <summary>
-        /// This method is called when the user clicks the help button on the right
-        /// side of the ribbon. It asks the main menu to display the application help
-        /// file in the help pane.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RibbonHelp_Click(object sender, RoutedEventArgs e)
-        {
-            //Find Host Window
-            MainWindow myWindow = (MainWindow)Window.GetWindow(this);
-
-            //Ask it to display application help
-            myWindow.LoadReader();
-        }
-
-        /// <summary>
-        /// This method is called when the user clicks any of the buttons in the 
-        /// new data file ribbon group on the home tab. It figures out which button called it
-        /// and asks the main window to open the appropriate data input tab.
-        /// </summary>
-        /// <param name="sender">
-        /// Ribbon button or Ribbon menu item that was pressed.
-        /// </param>
-        /// <param name="e"></param>
-        private void NewDataFile(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Find Host Window
-                MainWindow myWindow = (MainWindow)Window.GetWindow(this);
-
-                //Resolve Sender
-                string ButtonName;
-                if (sender.GetType() == typeof(RibbonButton))
-                {
-                     ButtonName = ((Button)sender).Name;
-                }
-                else if (sender.GetType() == typeof(RibbonMenuItem))
-                {
-                    ButtonName = ((RibbonMenuItem)sender).Name;
-
-                } else
-                {
-                    ButtonName = "";
-                }
-                
-                
-                //Ask the main window to open the appropriate tab
-                switch (ButtonName)
-                {
-                    case "btnMRBear2d":
-                        var form = new Rbear2dForm();
-                        myWindow.AddNewDataInput(form, 
-                                                 form, 
-                                                 ((ISimView)form).ViewModel, 
-                                                 "RBear2d",
-                                                 Program.RBear2D);
-                        break;
-                    case "btnMRDam2d":
-                        MessageBox.Show("MRDamn2d Stub");
-                        break;
-                    case "btnMREarth2d":
-                        MessageBox.Show("MREarth2d Stub");
-                        break;
-                    case "btnMRFlow2d":
-                        MessageBox.Show("MRFlow2d Stub");
-                        break;
-                    case "btnMRFlow3d":
-                        MessageBox.Show("MRFlow3d Stub");
-                        break;
-                    case "btnMRPill2d":
-                        MessageBox.Show("MRPill2d Stub");
-                        break;
-                    case "btnMRPill3d":
-                        MessageBox.Show("MRPill3d Stub");
-                        break;
-                    case "btnMRSetl2d":
-                        MessageBox.Show("MRSetl2d Stub");
-                        break;
-                    case "btnMRSetl3d":
-                        MessageBox.Show("MRSetl3d Stub");
-                        break;
-                    case "btnMRSlope2d":
-                        MessageBox.Show("MRSlope2d Stub");
-                        break;
-                    default:
-                        MessageBox.Show("Unknown Sender");
-                        throw new ArgumentException();
-                }
-            }
-            catch (InvalidCastException ex)
-            {
-                //A new button has been added that is not the appropriate type
-                MessageBox.Show(ex.Message );
-
-            }
-            catch (Exception exp)
-            {
-                MessageBox.Show(exp.Message);
-            }
-        }
-        
-    }
-}
-
-
-namespace RFEM_Software.Commands
-{
-    /// <summary>
-    /// Custom HelpClick command that allows differentiation between an F1 press and a context menu
-    /// help command. This command is for the context menu item click.
-    /// </summary>
-    public static class CustomCommands
-    {
-        public static readonly RoutedUICommand HelpClick = new RoutedUICommand("Help", "HelpClick",
-                           typeof(CustomCommands));
-        public static readonly RoutedUICommand NewHelpClick = new RoutedUICommand("Help", "NewHelpClick", typeof(CustomCommands));
-    }
-}
-
-public static class Extensions
-{
-    /// <summary>
-    /// This extension method was taken from stack overflow. It allows the visual tree to be searched
-    /// for all children controls. It is used to find all of the context menus in a form.
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <param name="recurse"></param>
-    /// <returns></returns>
-    public static IEnumerable<Visual> GetChildren(this Visual parent, bool recurse = true)
-    {
-        if (parent != null)
-        {
-            int count = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                // Retrieve child visual at specified index value.
-                var child = VisualTreeHelper.GetChild(parent, i) as Visual;
-
-                if (child != null)
-                {
-                    yield return child;
-
-                    if (recurse)
-                    {
-                        foreach (var grandChild in child.GetChildren(true))
-                        {
-                            yield return grandChild;
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 

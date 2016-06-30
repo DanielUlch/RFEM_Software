@@ -1,0 +1,1694 @@
+﻿ 
+    <UserControl x:Class="RFEM_Software.Forms.Rbear2dForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RFEM_Software.Forms"
+        xmlns:com="clr-namespace:RFEM_Software.Commands"
+        xmlns:cc="clr-namespace:RFEM_Software.Custom_Controls"
+        mc:Ignorable="d"
+        Height="auto" Width="700"
+        x:Name="rbearForm" Loaded="Form_Loaded" >
+    <UserControl.Resources>
+        <local:DoubleConverter x:Key="DoubleConverter" />
+
+       
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="com:CustomCommands.HelpClick" CanExecute="HelpClickStub"
+                        Executed="HelpClickExeStub"/>
+        <CommandBinding Command="com:CustomCommands.NewHelpClick" CanExecute="HelpClickStub"
+                        Executed="HelpClickExeStub"/>
+    </UserControl.CommandBindings>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+    
+
+    <StackPanel Orientation="Vertical" Name="MainPanel" HorizontalAlignment="Left" Margin="10 10 0 10" Grid.Column="0">
+
+        <StackPanel Orientation="Horizontal">
+
+            <Label Content="Job Title:"
+                   Tag="JobTitle"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Job Title" ToolTipMessage="Title for charts and files." />
+                </Label.ToolTip>
+            </Label>
+            
+            <TextBox x:Name="txtJobTitle" 
+                     Width="200"
+                     Tag="JobTitle"
+                     Text="{Binding Path=JobTitle, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Job Title" ToolTipMessage="Title for charts and files." />
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Basename:"
+                   Tag="BaseName"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Base Name" ToolTipMessage="Root name for data and result files." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox x:Name="txtBaseName"
+                     Width="100" 
+                     Tag="BaseName"
+                     Text="{Binding Path=BaseName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Base Name" ToolTipMessage="Root name for data and result files." />
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" >
+            <CheckBox x:Name="chkEchoInput"
+                      Content="Echo input data to output *.stt file?" 
+                      VerticalAlignment="center"
+                      Tag="EchoInputToOutputFile"
+                      Style="{StaticResource HelpEnabled}"
+                      IsChecked="{Binding Path=EchoInputDataToOutputFile, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Echo Input" 
+                                    ToolTipMessage="Display input data in the output statistics file."/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal" >
+            <CheckBox x:Name="chkOutputDebugData"
+                      Content="Write debug data to the *.stt file?"
+                      VerticalAlignment="center"
+                      Tag="OutputDebugData"
+                      Style="{StaticResource HelpEnabled}"
+                      IsChecked="{Binding Path=WriteDebugDataToOutputFile, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Output Debug Data"
+                                    ToolTipMessage="Writes debug information to the output statistics file." />
+                </CheckBox.ToolTip>
+            </CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <CheckBox x:Name="chkPlotFirstRF"
+                      Content="Plot first random field?"
+                      VerticalAlignment="center"
+                      Tag="PlotFirstRF"
+                      Style="{StaticResource HelpEnabled}"
+                      Checked="chkPlotFirstRF_Checked"
+                      Unchecked="chkPlotFirstRF_UnChecked"
+                      IsChecked="{Binding Path=PlotFirstRandomField, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Plot First Random Field"
+                                    ToolTipMessage="Enabling this option will cause the first random field (ie. the first
+                                                    realization) to be plotted as a DISPLAY format file." />
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <Label Name="lbPlotFirstRF" 
+                   Content="Property to plot:"
+                   Tag="PlotFirstRF"
+                   Style="{StaticResource HelpEnabled}"
+                   Visibility="Collapsed">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Property to Plot"
+                                    ToolTipMessage="Select property to plot." />
+                </Label.ToolTip>
+            </Label>
+            <ComboBox x:Name="cboPlotFirstRF"
+                      Visibility="Collapsed"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value"
+                      Tag="PlotFirstRF"
+                      Style="{StaticResource HelpEnabled}"
+                      SelectedValue="{Binding Path=FirstRandomFieldProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                      >
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Property to Plot"
+                                    ToolTipMessage="Select property to plot." />
+                </ComboBox.ToolTip>
+            </ComboBox>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" >
+            <CheckBox x:Name="chkProducePSPLOTOfFirstFEM"
+                      Content="Produce a PostScript format file of first displaced finite element mesh"
+                      VerticalAlignment="center" 
+                      Tag="ProducePSPLOTOfFirstFEM"
+                      Style="{StaticResource HelpEnabled}"
+                      Checked="chkProducePSPLOTOfFirstFEM_Checked" 
+                      Unchecked="chkProducePSPLOTOfFirstFEM_Unchecked"
+                      IsChecked="{Binding ProducePSPLOTOfFirstFEM}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Produce PostScript File"
+                                    ToolTipMessage="Enabling this option causes the first random displaced bearing failure mesh to be shown as a PostScript plot." />
+                </CheckBox.ToolTip>
+            </CheckBox>
+        </StackPanel>
+        <StackPanel Name ="spProducePSPLOTOfFirstFEM" 
+                    Orientation="Vertical" 
+                    Margin="30 0 0 0"
+                    Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox x:Name="chkShowMeshOnDisplacedPlot"
+                              Content="Show mesh on displaced mesh plot?"
+                              VerticalAlignment="center" 
+                          Tag="ShowRFOnDisplacedMeshPlot"
+                          Style="{StaticResource HelpEnabled}"
+                              IsChecked="{Binding Path=ShowMeshOnDisplacedPlot}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Mesh on Displaced Plot"
+                                        ToolTipMessage="Enabling this option causes the displaced finite element mesh to
+                                                            be shown on the bearing failure plot."/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <CheckBox x:Name="chkShowRFOnPlot"
+                         Content="Show random field on plot?"
+                         VerticalAlignment="center"
+                         IsChecked="{Binding Path=ShowRFOnPSPLOT}"
+                         Checked="chkShowRFOnPlot_Checked"
+                         Unchecked="chkShowRFOnPlot_Unchecked"
+                          Tag="ShowRFOnDisplacedMeshPlot"
+                          Style="{StaticResource HelpEnabled}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Random Field on Plot"
+                                        ToolTipMessage="Enabling this option results in one of the random soil property
+                                                        fields to be shown as a greyscale image on the bearing failure plot." />
+                    </CheckBox.ToolTip>
+
+                </CheckBox>
+                <CheckBox x:Name="chkShowLogRF"
+                              Content="Show log-random field"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding Path=ShowLogRandomField}"
+                              Visibility="Collapsed"
+                          Tag="ShowLogRF"
+                          Style="{StaticResource HelpEnabled}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Log Random Field"
+                                        ToolTipMessage="Controls whether the logarithm of the soil property field should be displayed." />
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                
+                <Label Name="lbPropertyToPlot"
+                           Content="Property to plot:"
+                           Visibility="Collapsed"
+                       Tag="PropertyToPlot"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Property to Plot"
+                                        ToolTipMessage="The soil property type to show on the bearing failure plot."/>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox x:Name="cboPropertyToPlot"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="Value"
+                              Visibility="Collapsed"
+                              SelectedValue="{Binding PSPLOTProperty, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                          Tag="PropertyToPlot"
+                          Style="{StaticResource HelpEnabled}">
+                    <ComboBox.ToolTip>
+                        <cc:RFEMToolTip Title="Property to Plot"
+                                        ToolTipMessage="The soil property type to show on the bearing failure plot."/>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Label Name="lbDisplacedMeshWidth" 
+                           Content="Displaced mesh plot width:"
+                       Tag="DisplacedMeshWidth"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDisplacedMeshWidth"
+                             Width="50"
+                             Text="{Binding Path=DisplacedMeshPlotWidth, Mode=TwoWay, 
+                                    UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true,
+                                    Converter={StaticResource DoubleConverter}}"
+                         Tag="DisplacedMeshWidth">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbDisplacedMeshWidthUnits" 
+                           Content="inches"
+                       Tag="DisplacedMeshWidth"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Displaced Mesh Width"
+                                        ToolTipMessage="The width of the displaced mesh plot." />
+                    </Label.ToolTip>
+                </Label>
+
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox x:Name="chkNormalizeCapacitySamples"
+                      Content="Normalize bearing capacity samples?"
+                      VerticalAlignment="center"
+                      IsChecked="{Binding Path=NormalizeBearingCapacitySamples}"
+                      Tag="NormalizeCapacitySamples"
+                      Style="{StaticResource HelpEnabled}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Normalize Bearing Capacity Samples"
+                                    ToolTipMessage="Causes the individual bearing capacity realizations to be divided by the deterministic (at the mean) bearing capacity." />
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+        </StackPanel>
+        <CheckBox Name="chkOutputCapacitySamples"
+                  Content="Output bearing capacity samples?"
+                  VerticalAlignment="Center" 
+                  IsChecked="{Binding Path=OutputBearingCapacitySamples}"
+                  Tag="OutputCapacitySamples"
+                  Style="{StaticResource HelpEnabled}">
+            <CheckBox.ToolTip>
+                <cc:RFEMToolTip Title="Output Bearing Capacity Samples"
+                                ToolTipMessage="Results in the output of a sequence of (nsim) computed bearing capacity realizations to the output file *.cap"/>
+            </CheckBox.ToolTip>
+        </CheckBox>
+        
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Number of elements: "
+                   Tag="NumberOfElementsInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. These values specify the number of elements in each direction." />
+
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtNElementsInXDir"
+                     Width="50"
+                     Tag="NumberOfElementsInXYDirections"
+                     Text="{Binding Path=NElementsInXDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in X-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the x-direction."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in x-direction"
+                   Tag="NumberOfElementsInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in X-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the x-direction."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox x:Name="txtNElementsInYDir"
+                     Width="50"
+                     Tag="NumberOfElementsInXYDirections"
+                     Text="{Binding Path=NElementsInYDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in Y-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the y-direction."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in y-direction"
+                   Name="TestLabel"
+                   Tag="NumberOfElementsInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Elements in Y-Direction"
+                                    ToolTipMessage="The soil medium is divided into a grid of rectangular finite elements. This value specifies the number in the y-direction."/>
+                </Label.ToolTip>
+            </Label>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Element Size:"
+                   Tag="ElementSizeInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the dimensions of each element."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtElementSizeInXDir"
+                     Width="50"
+                     Tag="ElementSizeInXYDirections"
+                     Text="{Binding Path=ElementSizeInXDir, UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in X-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the x-direction."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in x-direction"
+                   Tag="ElementSizeInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in X-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the x-direction."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtElementSizeInYDir"
+                     Width="50"
+                     Tag="ElementSizeInXYDirections"
+                     Text="{Binding Path=ElementSizeInYDir, UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in Y-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the y-direction."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in y-direction"
+                   Tag="ElementSizeInXYDirections"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Element Size in Y-Direction"
+                                    ToolTipMessage="Each element is assumed to be rectangular. Provide here the size in the y-direction."/>
+                </Label.ToolTip>
+            </Label>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+
+            <GroupBox Name="gbNFootings"
+                      Tag="NSizeOfFootings"
+                      Style="{StaticResource HelpEnabled}">
+                <GroupBox.Header>
+                    <Label Content="Number of footings"
+                           Tag="NSizeOfFootings"
+                           Style="{StaticResource HelpEnabled}">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Number of Footings"
+                                            ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                        </Label.ToolTip>
+                    </Label>
+                </GroupBox.Header>
+                <GroupBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Footings"
+                                    ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                </GroupBox.ToolTip>
+                <DockPanel>
+                    <RadioButton Name="rbOneFooting"
+                                 GroupName="gpNFootings"
+                                 IsChecked="true"
+                                 Content="1"
+                                 DockPanel.Dock="Left"
+                                 Tag="NSizeOfFootings"
+                                 Style="{StaticResource HelpEnabled}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Number of Footings"
+                                            ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+                        <RadioButton Name="rbTwoFootings"
+                                     GroupName="gpNFootings"
+                                     Content="2" 
+                                     Checked="rbTwoFootings_Checked" 
+                                     Unchecked="rbTwoFootings_Unchecked"
+                                     DockPanel.Dock="Right"
+                                     Tag="NSizeOfFootings"
+                                     Style="{StaticResource HelpEnabled}"
+                                     Width="50">
+                            <RadioButton.ToolTip>
+                                <cc:RFEMToolTip Title="Number of Footings"
+                                            ToolTipMessage="Denotes the number of footings applied to the surface of the soil mass." />
+                            </RadioButton.ToolTip>
+                        </RadioButton>
+                    </DockPanel>
+            </GroupBox>
+            <Label Content="Footing width:"
+                   Tag="NSizeOfFootings"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Footing Width"
+                                    ToolTipMessage="Gives the number of elements, in the x-direction, under the footing."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtFootingWidth"
+                     Width="50"
+                     Tag="NSizeOfFootings"
+                     Text="{Binding Path=FootingWidth, UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Footing Width"
+                                    ToolTipMessage="Gives the number of elements, in the x-direction, under the footing."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Name="lbFootingGap" 
+                   Content="Footing gap"
+                   Visibility="Collapsed"
+                   Tag="NSizeOfFootings"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Footing Gap"
+                                    ToolTipMessage="Gives the number of elements, in the x-direction, between the two footings."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtFootingGap"
+                     Width="50"
+                     Tag="NSizeOfFootings"
+                     Visibility="collapsed"
+                     Text="{Binding Path=FootingGap, UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Footing Gap"
+                                    ToolTipMessage="Gives the number of elements, in the x-direction, between the two footings."/>
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Displacement inc:"
+                   Tag="DisplacementIncPlasticTolBearingTol"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Displacement Increment"
+                                    ToolTipMessage="This is the distance that the footing is displaced on each `displacement step'." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtDisplacementInc"
+                     Width="50"
+                     Tag="DisplacementIncPlasticTolBearingTol"
+                     Text="{Binding Path=DisplacementInc, UpdateSourceTrigger=LostFocus, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Displacement Increment"
+                                    ToolTipMessage="This is the distance that the footing is displaced on each `displacement step'." />
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="Plastic tol:"
+                   Tag="DisplacementIncPlasticTolBearingTol"
+                   Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Plastic Tolerance"
+                                    ToolTipMessage="The convergence tolerance for the plasticity algorithm." />
+                    </Label.ToolTip>
+                </Label>
+            <TextBox Name="txtPlasticTol"
+                     Width="50"
+                     Tag="DisplacementIncPlasticTolBearingTol"
+                     Text="{Binding Path=PlasticTol, UpdateSourceTrigger=LostFocus, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Plastic Tolerance"
+                                    ToolTipMessage="The convergence tolerance for the plasticity algorithm." />
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="Bearing tol:"
+                   Tag="DisplacementIncPlasticTolBearingTol"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Bearing Tolerance"
+                                    ToolTipMessage="The convergence tolerance on the computed bearing capacity." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtBearingTol"
+                     Width="50"
+                     Tag="DisplacementIncPlasticTolBearingTol"
+                     Text="{Binding Path=BearingTol, UpdateSourceTrigger=LostFocus, 
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Bearing Tolerance"
+                                    ToolTipMessage="The convergence tolerance on the computed bearing capacity." />
+                </TextBox.ToolTip>
+            </TextBox>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Max number of steps:"
+                   Tag="MaxStepsAndIterations"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Max Number of Steps"
+                                    ToolTipMessage="the maximum number of displacement increments that may be carried out."/>
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtMaxNumSteps"
+                     Width="50"
+                     Tag="MaxStepsAndIterations"
+                     Text="{Binding Path=MaxNumSteps, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Max Number of Steps"
+                                    ToolTipMessage="the maximum number of displacement increments that may be carried out."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="Max number of iterations:"
+                   Tag="MaxStepsAndIterations"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Max Number of Iterations"
+                                    ToolTipMessage="The maximum number of iterations allowed for the plastic flow redistribution." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtMaxNumIter"
+                     Width="50"
+                     Tag="MaxStepsAndIterations"
+                     Text="{Binding Path=MaxNumIterations, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Max Number of Iterations"
+                                    ToolTipMessage="The maximum number of iterations allowed for the plastic flow redistribution." />
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Number of simulations:"
+                   Tag="NumberOfSimulations"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Simulations"
+                                    ToolTipMessage="The number of realizations to generate." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtNumSimulations"
+                     Width="50"
+                     Tag="NumberOfSimulations"
+                     Text="{Binding Path=NSimulations, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Number of Simulations"
+                                    ToolTipMessage="The number of realizations to generate." />
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Generator seed:"
+                   Tag="GeneratorSeed"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Generator Seed"
+                                    ToolTipMessage="The random number generator is initialized by a positive integer, or `seed'." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtGeneratorSeed"
+                     Width="50"
+                     Tag="GeneratorSeed"
+                     Text="{Binding Path=GeneratorSeed, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Generator Seed"
+                                    ToolTipMessage="The random number generator is initialized by a positive integer, or `seed'." />
+                </TextBox.ToolTip>
+            </TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Correlation lengths:"
+                   Tag="CorrelationLengths"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Length"
+                                    ToolTipMessage="A `correlation length' or `scale of fluctuation' is, roughly speaking, the separation distance beyond which soil properties at two points are negligibly correlated." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtCorrelationLengthXDir"
+                     Width="50"
+                     Tag="CorrelationLengths"
+                     Text="{Binding Path=CorLengthInXDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Length"
+                                    ToolTipMessage="A `correlation length' or `scale of fluctuation' is, roughly speaking, the separation distance beyond which soil properties at two points are negligibly correlated." />
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in x-direction"
+                   Tag="CorrelationLengths"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Length"
+                                    ToolTipMessage="A `correlation length' or `scale of fluctuation' is, roughly speaking, the separation distance beyond which soil properties at two points are negligibly correlated." />
+                </Label.ToolTip>
+            </Label>
+            <TextBox Name="txtCorrelationLengthYDir"
+                     Width="50"
+                     Tag="CorrelationLengths"
+                     Text="{Binding Path=CorLengthInYDir, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Length"
+                                    ToolTipMessage="A `correlation length' or `scale of fluctuation' is, roughly speaking, the separation distance beyond which soil properties at two points are negligibly correlated." />
+                </TextBox.ToolTip>
+            </TextBox>
+            <Label Content="in y-direction"
+                   Tag="CorrelationLengths"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Length"
+                                    ToolTipMessage="A `correlation length' or `scale of fluctuation' is, roughly speaking, the separation distance beyond which soil properties at two points are negligibly correlated." />
+                </Label.ToolTip>
+            </Label>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Covariance function:"
+                   Tag="CovarianceFunction"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Covariance Function"
+                                    ToolTipMessage="This is the name of the covariance function defining how the covariance falls off with separation distance."/>
+                </Label.ToolTip>
+            </Label>
+            <ComboBox Name="cboCovarianceFunc"
+                      Tag="CovarianceFunction"
+                      Style="{StaticResource HelpEnabled}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding Path=CovFunction, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Covariance Function"
+                                    ToolTipMessage="This is the name of the covariance function defining how the covariance falls off with separation distance."/>
+                </ComboBox.ToolTip>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Cohesion distribution"
+                   Tag="CohesionDistribution"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Cohesion Distribution"
+                                    ToolTipMessage="The soil cohesion distribution." />
+                </Label.ToolTip>
+            </Label>
+
+            <ComboBox Name="cboCohesionDist"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" 
+                      Tag="CohesionDistribution"
+                      Style="{StaticResource HelpEnabled}"
+                      SelectionChanged="cboCohesionDist_SelectionChanged"
+                      SelectedValue="{Binding Path=CohesionDist.Type, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Cohesion Distribution"
+                                    ToolTipMessage="The soil cohesion distribution." />
+                </ComboBox.ToolTip>
+            </ComboBox>
+
+        </StackPanel>
+        <StackPanel Orientation="Vertical"
+                    Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbCohesionMean" 
+                       Content="Mean: "
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Mean"
+                                        ToolTipMessage="The mean of the soil cohesion distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionMean"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.Mean, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Mean"
+                                        ToolTipMessage="The mean of the soil cohesion distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbCohesionStdDev" 
+                       Content="Standard deviation:"
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil cohesion distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionStdDev"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.StandardDev, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil cohesion distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbCohesionLB" 
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}"
+                       Content="Lower bound:">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Lower Bound"
+                                        ToolTipMessage="The lower bound on the soil cohesion bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionLB"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.LowerBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Lower Bound"
+                                        ToolTipMessage="The lower bound on the soil cohesion bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbCohesionUB" 
+                       Content="Upper bound:"
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Upper Bound"
+                                        ToolTipMessage="The upper bound on the soil cohesion bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionUB"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.UpperBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Upper Bound"
+                                        ToolTipMessage="The upper bound on the soil cohesion bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbCohesionLocation" 
+                       Content="Location: "
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Location"
+                                        ToolTipMessage="The location parameter for the soil cohesion bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionLocation"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.Location,UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Location"
+                                        ToolTipMessage="The location parameter for the soil cohesion bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbCohesionScale" 
+                       Content="Scale:"
+                       Tag="CohesionDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Scale"
+                                        ToolTipMessage="The scale parameter for the soil cohesion bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtCohesionScale"
+                         Width="50"
+                         Tag="CohesionDistribution"
+                         Text="{Binding Path=CohesionDist.Scale, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Cohesion Scale"
+                                        ToolTipMessage="The scale parameter for the soil cohesion bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Friction angle distribution:"
+                   Tag="FrictionAngleDistribution"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Friction Angle Distribution"
+                                    ToolTipMessage="The distribution of the soil friction angle."/>
+                </Label.ToolTip>
+            </Label>
+            <ComboBox Name="cboFrictionAngleDist"
+                      DisplayMemberPath="Name"
+                      Tag="FrictionAngleDistribution"
+                      Style="{StaticResource HelpEnabled}"
+                      SelectedValuePath="Value" SelectionChanged="cboFrictionAngleDist_SelectionChanged"
+                      SelectedValue="{Binding Path=FrictionAngleDist.Type, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Friction Angle Distribution"
+                                    ToolTipMessage="The distribution of the soil friction angle."/>
+                </ComboBox.ToolTip>
+            </ComboBox>
+            <GroupBox Header="Selected distribution governs"
+                      Name="gbFrictionAngle"
+                      Tag="FrictionAngleDistribution"
+                      Style="{StaticResource HelpEnabled}">
+                <GroupBox.ToolTip>
+                    <cc:RFEMToolTip Title="Friction Angle Parameter"
+                                    ToolTipMessage="It is often desirable to deal with tan(phi), rather than phi, so the option is given here to specify the distribution of tan(phi) rather than phi directly."/>
+                </GroupBox.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Name="rbFrictionAnglePhi"
+                                 Content="phi"
+                                 GroupName="gpFrictionAngle"
+                                 IsChecked="True"
+                                 Checked="rbFrictionAnglePhi_Checked"
+                                 Tag="FrictionAngleDistribution"
+                                 Style="{StaticResource HelpEnabled}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Friction Angle Parameter"
+                                    ToolTipMessage="It is often desirable to deal with tan(phi), rather than phi, so the option is given here to specify the distribution of tan(phi) rather than phi directly."/>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+                    <RadioButton Name="rbFrictionAngleTanPhi"
+                                 Content="tan(phi)"
+                                 GroupName="gpFrictionAngle"
+                                 Checked="rbFrictionAngleTanPhi_Checked"
+                                 Tag="FrictionAngleDistribution"
+                                 Style="{StaticResource HelpEnabled}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Friction Angle Parameter"
+                                    ToolTipMessage="It is often desirable to deal with tan(phi), rather than phi, so the option is given here to specify the distribution of tan(phi) rather than phi directly."/>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbFrictionAngleMean" 
+                       Content="Mean:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Mean"
+                                        ToolTipMessage="The mean of the soil friction angle distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleMean"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.Mean, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Mean"
+                                        ToolTipMessage="The mean of the soil friction angle distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbFrictionAngleStdDev" 
+                       Content="Standard deviation:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil friction angle distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleStdDev"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.StandardDev, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil friction angle distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbFrictionAngleLB" 
+                       Content="Lower bound:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil friction angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleLB"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.LowerBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil friction angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbFrictionAngleUB" 
+                       Content="Upper bound:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil friction angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleUB"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.UpperBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil friction angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbFrictionAngleLocation" 
+                       Content="Location:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Location"
+                                        ToolTipMessage="The location parameter for the soil friction angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleLocation"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.Location, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friction Angle Location"
+                                        ToolTipMessage="The location parameter for the soil friction angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbFrictionAngleScale" 
+                       Content="Scale:"
+                       Tag="FrictionAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Friciton Angle Scale"
+                                        ToolTipMessage="The scale parameter for the soil friction angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtFrictionAngleScale"
+                         Width="50"
+                         Tag="FrictionAngleDistribution"
+                         Text="{Binding Path=FrictionAngleDist.Scale, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Friciton Angle Scale"
+                                        ToolTipMessage="The scale parameter for the soil friction angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Dilation angle distribution:"
+                   Tag="DilationAngleDistribution"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Dilation Angle Distribution"
+                                    ToolTipMessage="The distribution of the soil dilation angle."/>
+                </Label.ToolTip>
+            </Label>
+            <ComboBox Name="cboDilationAngleDist"
+                      Tag="DilationAngleDistribution"
+                      Style="{StaticResource HelpEnabled}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboDilationAngleDist_SelectionChanged"
+                      SelectedValue="{Binding Path=DilationAngleDist.Type, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Dilation Angle Distribution"
+                                    ToolTipMessage="The distribution of the soil dilation angle."/>
+                </ComboBox.ToolTip>
+            </ComboBox>
+
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleMean" 
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}"
+                       Content="Mean">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Mean"
+                                        ToolTipMessage="The mean of the soil dilation angle distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleMean"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.Mean,UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Mean"
+                                        ToolTipMessage="The mean of the soil dilation angle distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbDilationAngleStdDev" 
+                       Content="Standard deviation:"
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil dilation angle distribution"/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleStdDev"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.StandardDev, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="Dilation Angle Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil dilation angle distribution"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleLB" 
+                       Content="Lower bound:"
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil dilation angle distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleLB"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.LowerBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil dilation angle distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbDilationAngleUB" 
+                       Content="Upper bound:"
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil dilation angle distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleUB"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.UpperBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil dilation angle distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbDilationAngleLocation" 
+                       Content="Location:"
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Location"
+                                        ToolTipMessage="The location parameter of the soil dilation angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleLocation"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.Location, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Location"
+                                        ToolTipMessage="The location parameter of the soil dilation angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbDilationAngleScale" 
+                       Content="Scale:"
+                       Tag="DilationAngleDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Scale"
+                                        ToolTipMessage="The scale parameter for the dilation angle bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtDilationAngleScale"
+                         Width="50"
+                         Tag="DilationAngleDistribution"
+                         Text="{Binding Path=DilationAngleDist.Scale, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Dilation Angle Scale"
+                                        ToolTipMessage="The scale parameter for the dilation angle bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Elastic modulus distribution"
+                   Tag="ElasticModulusDistribution"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Elastic Modulus Distribution"
+                                    ToolTipMessage="The soil elastic modulus distribution."/>
+                </Label.ToolTip>
+            </Label>
+            <ComboBox Name="cboElasticModDist"
+                      Tag="ElasticModulusDistribution"
+                      Style="{StaticResource HelpEnabled}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboElasticModDist_SelectionChanged"
+                      SelectedValue="{Binding Path=ElasticModulusDist.Type, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Elastic Modulus Distribution"
+                                    ToolTipMessage="The soil elastic modulus distribution."/>
+                </ComboBox.ToolTip>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModMean"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}"
+                       Content="Mean:">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Mean"
+                                        ToolTipMessage="The mean of the soil elastic modulus distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModMean"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.Mean, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Mean"
+                                        ToolTipMessage="The mean of the soil elastic modulus distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbElasticModStdDev" 
+                       Content="Standard deviation"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil elastic modulus distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModStdDev"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.StandardDev, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil elastic modulus distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModLB" 
+                       Content="Lower bound:"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil elastic modulus bounded distribution"/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModLB"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.LowerBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil elastic modulus bounded distribution"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbElasticModUB" 
+                       Content="Upper bound:"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil elastic modulus bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModUB"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.UpperBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil elastic modulus bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbElasticModLocation" 
+                       Content="Location:"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Location"
+                                        ToolTipMessage="The location parameter for the soil elastic modulus bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModLocation"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.Location, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Location"
+                                        ToolTipMessage="The location parameter for the soil elastic modulus bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbElasticModScale" 
+                       Content="Scale:"
+                       Tag="ElasticModulusDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Scale"
+                                        ToolTipMessage="The scale parameter for the soil elastic modulus bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtElasticModScale"
+                         Width="50"
+                         Tag="ElasticModulusDistribution"
+                         Text="{Binding Path=ElasticModulusDist.Scale, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Elastic Modulus Scale"
+                                        ToolTipMessage="The scale parameter for the soil elastic modulus bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Poisson's ratio distribution"
+                   Tag="PoissonRatioDistribution"
+                   Style="{StaticResource HelpEnabled}">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Poisson's Ratio Distribution"
+                                    ToolTipMessage="The distribution of the soil Poisson's Ratio."/>
+                </Label.ToolTip>
+            </Label>
+            <ComboBox Name="cboPoissonRTIODist"
+                      Tag="PoissonRatioDistribution"
+                      Style="{StaticResource HelpEnabled}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Value" SelectionChanged="cboPoissonRTIODist_SelectionChanged"
+                      SelectedValue="{Binding Path=PoissonsRatioDist.Type, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}">
+                <ComboBox.ToolTip>
+                    <cc:RFEMToolTip Title="Poisson's Ratio Distribution"
+                                    ToolTipMessage="The distribution of the soil Poisson's Ratio."/>
+                </ComboBox.ToolTip>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="25 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioMean" 
+                       Content="Mean:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Mean"
+                                        ToolTipMessage="The mean of the soil Poisson's Ratio distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioMean"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.Mean, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Mean"
+                                        ToolTipMessage="The mean of the soil Poisson's Ratio distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbPoissonRatioStdDev" 
+                       Content="Standard deviation:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil Poisson's ratio distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioStdDev"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.StandardDev, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Standard Deviation"
+                                        ToolTipMessage="The standard deviation of the soil Poisson's ratio distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioLB" 
+                       Content="Lower bound:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil Poisson's Ratio bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioLB"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.LowerBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Lower Bound"
+                                        ToolTipMessage="The lower bound of the soil Poisson's Ratio bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbPoissonRatioUB" 
+                       Content="Upper bound:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil Poisson's Ratio bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioUB"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.UpperBound, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Upper Bound"
+                                        ToolTipMessage="The upper bound of the soil Poisson's Ratio bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lbPoissonRatioLocation" 
+                       Content="Location:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Location"
+                                        ToolTipMessage="The location parameter for the soil Poisson's Ratio bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioLocation"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.Location, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Location"
+                                        ToolTipMessage="The location parameter for the soil Poisson's Ratio bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                <Label Name="lbPoissonRatioScale" 
+                       Content="Scale:"
+                       Tag="PoissonRatioDistribution"
+                       Style="{StaticResource HelpEnabled}">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Scale"
+                                        ToolTipMessage="The scale parameter for the soil Poisson's Ratio bounded distribution."/>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="txtPoissonRatioScale"
+                         Width="50"
+                         Tag="PoissonRatioDistribution"
+                         Text="{Binding Path=PoissonsRatioDist.Scale, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Poisson's Ratio Scale"
+                                        ToolTipMessage="The scale parameter for the soil Poisson's Ratio bounded distribution."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+        <Label Content="Soil property correlation matrix elements:"
+               Tag="SoilPropertyCorrelationMatrix"
+               Style="{StaticResource HelpEnabled}">
+            <Label.ToolTip>
+                <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in the following table."/>
+            </Label.ToolTip>
+        </Label>
+        <Grid x:Name="GridSoilPropCorrelationMatrix"
+              Tag="SoilPropertyCorrelationMatrix"
+              Style="{StaticResource HelpEnabled}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label Content="Cohesion" Grid.Column="1" Grid.Row="0">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+            <Label Content="Cohesion" Grid.Column="0" Grid.Row="1">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+
+            <Label Content="Friction" Grid.Column="2" Grid.Row="0">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+            <Label Content="Friction" Grid.Column="0" Grid.Row="2">
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+
+            <Label Content="Dilation" Grid.Column="3" Grid.Row="0" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+            <Label Content="Dilation" Grid.Column="0" Grid.Row="3" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+
+            <Label Content="Elastic Mod" Grid.Column="4" Grid.Row="0" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+            <Label Content="Elastic Mod" Grid.Column="0" Grid.Row="4" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+
+            <Label Content="Poisson's Ratio" Grid.Column="5" Grid.Row="0" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+            <Label Content="Poisson's Ratio" Grid.Column="0" Grid.Row="5" >
+                <Label.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </Label.ToolTip>
+            </Label>
+
+            <TextBox Name="txtCorrCohesionCohesion"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Column="1"
+                     Grid.Row="1">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrFrictionFriction"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Column="2"
+                     Grid.Row="2" >
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrDilationDilation"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Row="3"
+                     Grid.Column="3" >
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrElasModElasMod"
+                     Width="50"
+                     IsEnabled="false"
+                     Text="1"
+                     Grid.Row="4"
+                     Grid.Column="4" >
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrPoissonRTPoissonRT"
+                     Width="50"
+                     IsEnabled="False"
+                     Text="1"
+                     Grid.Row="5"
+                     Grid.Column="5" >
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+
+            <TextBox Name="txtCorrCohesionFriction"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="2"
+                     Text="{Binding Path=CorrCohesionFriction, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=true, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrCohesionDilation"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="3"
+                     Text="{Binding Path=CorrCohesionDilation, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrCohesionElasMod"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="4"
+                     Text="{Binding Path=CorrCohesionElasMod, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrCohesionPoissonRT"
+                     Width="50"
+                     Grid.Row="1"
+                     Grid.Column="5"
+                     Text="{Binding Path=CorrCohesionPoissonRT, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+
+            <TextBox Name="txtCorrFrictionDilation"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="3"
+                     Text="{Binding Path=CorrFrictionDilation, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrFrictionElasMod"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="4"
+                     Text="{Binding Path=CorrFrictionElasMod, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrFrictionPoissonRT"
+                     Width="50"
+                     Grid.Row="2"
+                     Grid.Column="5"
+                     Text="{Binding Path=CorrFrictionPoissonRT, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+
+            <TextBox Name="txtCorrDilationElasMod"
+                     Width="50"
+                     Grid.Row="3"
+                     Grid.Column="4" 
+                     Text="{Binding Path=CorrDilationElasMod, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+            <TextBox Name="txtCorrDilationPoissionRT"
+                     Width="50"
+                     Grid.Row="3"
+                     Grid.Column="5"
+                     Text="{Binding Path=CorrDilationPoissionRT, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+
+            <TextBox Name="txtCorrElasModPoissonRT"
+                     Width="50"
+                     Grid.Row="4"
+                     Grid.Column="5"
+                     Text="{Binding Path=CorrElasModPoissonRT, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                <TextBox.ToolTip>
+                    <cc:RFEMToolTip Title="Correlation Matrix"
+                                ToolTipMessage="The correlation coefficients, acting between each random soil property, can be defined in this table."/>
+                </TextBox.ToolTip>
+            </TextBox>
+
+        </Grid>
+
+    </StackPanel>
+    </Grid>
+</UserControl>

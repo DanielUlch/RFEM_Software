@@ -16,10 +16,10 @@ namespace RFEM_Software
 
         Task<string> RunSimAsync(CancellationToken token);
 
-        bool CanDisplaySummaryStats { get; }
-        bool CanDisplayMesh { get; }
-        bool CanDisplayField { get; }
-        bool CanDisplayBearingHist { get; }
+        //bool CanDisplaySummaryStats { get; }
+        //bool CanDisplayMesh { get; }
+        //bool CanDisplayField { get; }
+        //bool CanDisplayBearingHist { get; }
 
         bool ChangesHaveBeenMade { get; }
 
@@ -32,5 +32,8 @@ namespace RFEM_Software
 
         void Save();
         void SaveAs(string filePath);
+
+        void ShowMesh();
+        void ShowField();
     }
 }

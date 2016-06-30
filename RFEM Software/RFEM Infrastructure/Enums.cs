@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: System.Windows.Markup.XmlnsDefinition("http://courses.engmath.dal.ca/rfem/Infrastructure", "RFEM_Infrastructure")]
 namespace RFEM_Infrastructure
 {
     /// <summary>
@@ -253,6 +254,12 @@ namespace RFEM_Infrastructure
     {
         Statistics,
         Histogram
+    }
+    public enum SpacingAlgorithm
+    {
+        Geometric,
+        Linear,
+        Proportional
     }
     public static class InfrastructureExtensions
     {

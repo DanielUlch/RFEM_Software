@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
+
 namespace RFEM_Infrastructure
 {
     public class DistributionInfo: INotifyPropertyChanged, IDataErrorInfo

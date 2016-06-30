@@ -12,7 +12,7 @@ namespace RFEM_Infrastructure
         {
             using (var fileWriter = new System.IO.StreamWriter(formData.DataFileLocation(), false))
             {
-                fileWriter.Write(formData.DataFileString());
+                fileWriter.Write(formData.GetDataFileString());
             }
 
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
@@ -23,7 +23,7 @@ namespace RFEM_Infrastructure
 
             using (var fileWriter = new System.IO.StreamWriter(formData.AppDataFileLocation, false))
             {
-                fileWriter.Write(formData.DataFileString());
+                fileWriter.Write(formData.GetDataFileString());
             }
 
         }
@@ -31,7 +31,7 @@ namespace RFEM_Infrastructure
         {
             using (var fileWriter = new System.IO.StreamWriter(filePath, false))
             {
-                fileWriter.Write(formData.DataFileString());
+                fileWriter.Write(formData.GetDataFileString());
             }
 
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
@@ -42,7 +42,7 @@ namespace RFEM_Infrastructure
 
             using (var fileWriter = new System.IO.StreamWriter(formData.AppDataFileLocation, false))
             {
-                fileWriter.Write(formData.DataFileString());
+                fileWriter.Write(formData.GetDataFileString());
             }
         }
     }

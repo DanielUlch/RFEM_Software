@@ -1,0 +1,9 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.RDam_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        If the flownet plot is enabled above, this option enables showing the
+dimensions of the soil mass on the flownet plot. This is generally a useful
+feature
+    </Paragraph>
+</FlowDocument>

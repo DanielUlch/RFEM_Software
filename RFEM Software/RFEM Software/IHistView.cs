@@ -9,6 +9,15 @@ namespace RFEM_Software
     public interface IHistView
     {
         IHistViewModel ViewModel { get; }
-        string helpLocation(string topic);
+
+        /// <summary>
+        /// When a user clicks F1, the main application window will request a help file 
+        /// topic via this method.
+        /// </summary>
+        /// <returns>
+        /// The topic of the help file pertaining to the element that is currently hovered, 
+        /// or the default help file for this form
+        /// </returns>
+        string GetHoveredHelpTopic();
     }
 }
