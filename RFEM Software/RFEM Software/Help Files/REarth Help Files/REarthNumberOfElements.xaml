@@ -1,0 +1,30 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The soil medium is divided into a grid of rectangular finite elements
+according to the following scheme
+    </Paragraph>
+
+    <Paragraph>
+        INSERT PICTURE HERE
+    </Paragraph>
+
+    <Paragraph>
+        The wall, which extends nwe elements down the left hand side, is rigid
+and is translated horizontally into (passive) or away from (active) the
+soil mass.
+
+On this line, the number of elements in the x and y directions, nxe
+and nye, respectively, are specified.
+
+The following finite element features also apply;
+
+      - the right boundary is fixed in the x-direction and therefore
+        only allow movement in the (vertical) y-direction.
+      - the bottom boundary is completely fixed and therefore there is no
+        movement allowed along this boundary.
+      - the top boundary is the ground level and is free to deform under the
+        application of the wall displacement.
+    </Paragraph>
+</FlowDocument>

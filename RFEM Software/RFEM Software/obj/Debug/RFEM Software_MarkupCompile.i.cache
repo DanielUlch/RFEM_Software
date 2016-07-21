@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml
-91735521803
+16-10315370
 
-30264397747
+4923514409
 17581787841
-Dialogs\ReadDataFileDialog.xaml;Forms\RBear2D\RBear2DHistForm.xaml;Forms\RDam2D\Rdam2dForm.xaml;Forms\SettingsForm.xaml;Help Files\RBearHist Help Files\ChiSquareHelp.xaml;MainWindow.xaml;Forms\RBear2D\Rbear2dForm.xaml;RFEMRibbon.xaml;Themes\Generic.xaml;
-images\splashscreen.png
+Dialogs\ReadDataFileDialog.xaml;Forms\Histogram\HistogramFormCore.xaml;Forms\RBear2D\RBear2DHistForm.xaml;Forms\RDam2D\RDam2DConductivityHist.xaml;Forms\RDam2D\RDam2DFlowRateHist.xaml;Forms\RDam2D\Rdam2dForm.xaml;Forms\RDam2D\RDam2DNodalGradientHist.xaml;Forms\REarth2D\REarth2DForm.xaml;Forms\RFlow2D\RFlow2DForm.xaml;Forms\RFlow3D\RFlow3DForm.xaml;Forms\SettingsForm.xaml;Help Files\RBearHist Help Files\ChiSquareHelp.xaml;MainWindow.xaml;Forms\RBear2D\Rbear2DForm.xaml;RFEMRibbon.xaml;Themes\Generic.xaml;
+
 True
 

@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Custom Controls\DataGridMatrixHelper.cs" />
     <Compile Include="Custom Controls\RFEMReader.cs" />
     <Compile Include="Custom Controls\RFEMToolTip.cs" />
     <Compile Include="CustomCommands.cs" />
@@ -88,28 +89,58 @@
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
-    <Compile Include="FormBuilder.cs" />
-    <Compile Include="Forms\DoubleConverter.cs" />
-    <Compile Include="Forms\HistogramHost.cs" />
-    <Compile Include="Forms\RBear2D\Rbear2dForm.xaml.cs">
-      <DependentUpon>Rbear2dForm.xaml</DependentUpon>
+    <Compile Include="FormFactory.cs" />
+    <Compile Include="FormRepository.cs" />
+    <Compile Include="Forms\Converters.cs" />
+    <Compile Include="Forms\Histogram\HistogramCoreViewModel.cs" />
+    <Compile Include="Forms\Histogram\HistogramFormCore.xaml.cs">
+      <DependentUpon>HistogramFormCore.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram\HistogramHost.cs" />
+    <Compile Include="Forms\RBear2D\Rbear2DForm.xaml.cs">
+      <DependentUpon>Rbear2DForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\RBear2D\RBear2DHistForm.xaml.cs">
       <DependentUpon>RBear2DHistForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\RBear2D\RBear2DHistViewModel.cs" />
-    <Compile Include="Forms\RBear2D\RBear2dViewModel.cs" />
+    <Compile Include="Forms\RBear2D\RBear2DViewModel.cs" />
+    <Compile Include="Forms\RDam2D\RDam2DConductivityHist.xaml.cs">
+      <DependentUpon>RDam2DConductivityHist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RDam2D\RDam2DConductivityHistViewModel.cs" />
+    <Compile Include="Forms\RDam2D\RDam2DFlowRateHist.xaml.cs">
+      <DependentUpon>RDam2DFlowRateHist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RDam2D\RDam2DFlowRateHistViewModel.cs" />
     <Compile Include="Forms\RDam2D\Rdam2dForm.xaml.cs">
       <DependentUpon>Rdam2dForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RDam2D\Rdam2dViewModel.cs" />
+    <Compile Include="Forms\RDam2D\RDam2DNodalGradientHist.xaml.cs">
+      <DependentUpon>RDam2DNodalGradientHist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RDam2D\RDam2DNodalGradientHistViewModel.cs" />
+    <Compile Include="Forms\RDam2D\RDam2DViewModel.cs" />
+    <Compile Include="Forms\REarth2D\REarth2DForm.xaml.cs">
+      <DependentUpon>REarth2DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\REarth2D\REarth2DViewModel.cs" />
+    <Compile Include="Forms\RFlow2D\RFlow2DForm.xaml.cs">
+      <DependentUpon>RFlow2DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RFlow2D\RFlow2DViewModel.cs" />
+    <Compile Include="Forms\RFlow3D\RFlow3DForm.xaml.cs">
+      <DependentUpon>RFlow3DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RFlow3D\RFlow3DViewModel.cs" />
     <Compile Include="Forms\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IHistView.cs" />
-    <Compile Include="IHistViewModel.cs" />
-    <Compile Include="ISimView.cs" />
-    <Compile Include="ISimViewModel.cs" />
+    <Compile Include="Interfaces\IHistView.cs" />
+    <Compile Include="Interfaces\IHistViewModel.cs" />
+    <Compile Include="Interfaces\ISimView.cs" />
+    <Compile Include="Interfaces\ISimViewModel.cs" />
+    <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,6 +150,8 @@
       <DependentUpon>RFEMRibbon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Custom Controls\RFEMTabItem.cs" />
+    <Compile Include="SimManager.cs" />
+    <Compile Include="StateManager.cs" />
     <Resource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -235,11 +268,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\Histogram\HistogramFormCore.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\RBear2D\RBear2DHistForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\RDam2D\RDam2DConductivityHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\RDam2D\RDam2DFlowRateHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\RDam2D\Rdam2dForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\RDam2D\RDam2DNodalGradientHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\REarth2D\REarth2DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\RFlow2D\RFlow2DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\RFlow3D\RFlow3DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -415,6 +476,106 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\ConductivityHistogram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\ConductivityTypeToPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\FlowPropertyToPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\FlowRateHistogram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\NodalHistograms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\RDamHist Help Files\NodalHistQuantityToPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthOutputDebugInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\PlotFirstRandomField.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthDisplacedMeshWidth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthProducePSPlotOfFirstFEM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\ShowMeshOnDisplacedMeshPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\ShowRandomFieldOnDisplacedMesh.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\StoreWallReactionSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\DisplacementIncPlasticTolStressTol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\OutputSampledSoilProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthCorrelationLengths.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthCovarianceFunction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthElementSize.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthGeneratorSeed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthMaxNumStepsIterations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthNumberOfElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthNumSimulations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\SampleLocations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\VirtuallySampleSoil.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\WallDepthAndRoughness.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -427,7 +588,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\RBear2D\Rbear2dForm.xaml">
+    <Page Include="Forms\RBear2D\Rbear2DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -508,7 +669,7 @@
     <Resource Include="Images\bearing_cap.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Images\SplashScreen.png" />
+    <Resource Include="Images\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\pile_setl.png" />
@@ -611,6 +772,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AddToQueue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RemoveFromQueue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

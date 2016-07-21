@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RFEM_Infrastructure
 {
-    public class RBear2D : IHasDataFile, INotifyPropertyChanged
+    public class RBear2D : ISimModel, INotifyPropertyChanged
     {
 
         private PlotProperty _FirstRandomFieldProperty;
@@ -129,7 +129,7 @@ namespace RFEM_Infrastructure
 
         public int? MaxNumSteps { get; set; }
         public int? MaxNumIterations { get; set; }
-        public int? NSimulations { get; set; }
+        public int NumberOfRealizations { get; set; }
         public int? GeneratorSeed { get; set; }
 
         public int? CorLengthInXDir { get; set; }
@@ -274,7 +274,7 @@ namespace RFEM_Infrastructure
                                                 PoissonsRatioDist.Dist.Name.ToLower()));
             }
 
-            str.AppendLine("Number of realizations . . . . . . . . . . . . .  " + NSimulations);
+            str.AppendLine("Number of realizations . . . . . . . . . . . . .  " + NumberOfRealizations);
             str.AppendLine("Generator seed (0 for random seed) . . . . . . .  " + GeneratorSeed);
             str.AppendLine(string.Format("Correlation length in X [and Y] directions . . .  {0} {1}", CorLengthInXDir,
                                             CorLengthInYDir));
@@ -397,7 +397,7 @@ namespace RFEM_Infrastructure
                         if(Line == "Analyzing realization:")
                         {
 
-                            while (progress < (int)NSimulations && !token.IsCancellationRequested && !reader.EndOfStream)
+                            while (progress < (int)NumberOfRealizations && !token.IsCancellationRequested && !reader.EndOfStream)
                             {
                                 Line = reader.ReadLine();
                                 if(Line != null)
@@ -440,7 +440,7 @@ namespace RFEM_Infrastructure
 
                         if (Line == "Analyzing realization:")
                         {
-                            while (progress < (int)NSimulations && !token.IsCancellationRequested)
+                            while (progress < (int)NumberOfRealizations && !token.IsCancellationRequested)
                             {
                                 ch = (char)reader.Read();
                                 if (ch == ' ' || ch == '\r')
@@ -479,6 +479,8 @@ namespace RFEM_Infrastructure
 
             return ProgramOutput;
         }
+
+
         protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
 

@@ -1,0 +1,14 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The `output sampled soil properties' flag, when set to true, results in the
+(average) sampled friction angle, unit weight, and cohesion values being
+written to the output file *.sam for each realization. These are the values
+which were used in the Rankine prediction of the wall reaction and overturning
+moment.  Outputting these (average) sampled values is sometimes useful if the
+distribution of the sampled soil values is to be checked or if individual
+values are of interest.
+
+    </Paragraph>
+</FlowDocument>

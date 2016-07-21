@@ -8,3 +8,5 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rbear2d.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\plotps.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rdam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\hist_dam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rearth2d.exe

@@ -21,10 +21,10 @@ namespace RFEM_Software.Forms
     /// </summary>
     public partial class Rdam2dForm : UserControl, ISimView
     {
-        private Rdam2dViewModel _ViewModel;
+        private RDam2DViewModel _ViewModel;
         public Rdam2dForm()
         {
-            _ViewModel = new Rdam2dViewModel();
+            _ViewModel = new RDam2DViewModel();
 
             this.DataContext = _ViewModel;
 
@@ -34,7 +34,7 @@ namespace RFEM_Software.Forms
         }
         public Rdam2dForm(RDam2D formData)
         {
-            _ViewModel = new Rdam2dViewModel(formData);
+            _ViewModel = new RDam2DViewModel(formData);
 
             this.DataContext = _ViewModel;
 

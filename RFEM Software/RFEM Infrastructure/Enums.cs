@@ -35,7 +35,7 @@ namespace RFEM_Infrastructure
     {
         Deterministic,
         Normal,
-        LogNormal,
+        Lognormal,
         Bounded
     }
 
@@ -47,6 +47,14 @@ namespace RFEM_Infrastructure
         Beta,
         Gamma,
         Uniform
+    }
+
+    public enum HistogramType
+    {
+        RBear_Bearing,
+        RDam_FlowRate,
+        RDam_Conductivity,
+        RDam_NodeGradient
     }
 
     /// <summary>
@@ -163,7 +171,7 @@ namespace RFEM_Infrastructure
                         case DistributionType.Normal:
                             Name = "Normal";
                             break;
-                        case DistributionType.LogNormal:
+                        case DistributionType.Lognormal:
                             Name = "Lognormal";
                             break;
                         case DistributionType.Bounded:
@@ -189,7 +197,7 @@ namespace RFEM_Infrastructure
                 case DistributionType.Normal:
                     Name = "Normal";
                     break;
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     Name = "Lognormal";
                     break;
                 case DistributionType.Bounded:
@@ -239,6 +247,7 @@ namespace RFEM_Infrastructure
     }
     public enum Program
     {
+        None,
         RBear2D,
         RDam2D,
         REarth2D,
@@ -250,6 +259,7 @@ namespace RFEM_Infrastructure
         RSetl3D,
         RSlope2D
     }
+
     public enum Results
     {
         Statistics,
@@ -277,5 +287,34 @@ namespace RFEM_Infrastructure
         }
     }
 
+    public enum REarthSoilProperties
+    {
+        Cohesion,
+        FrictionAngle,
+        DilationAngle,
+        ElasticModulus,
+        PoissonsRatio,
+        UnitWeight,
+        PressureCoefficient
+    }
+    public enum REarthDistributions
+    {
+        Deterministic,
+        Normal,
+        Lognormal,
+        Bounded,
+        fphi
+    }
+    public enum REarthPhiFunctions
+    {
+        Phi,
+        SinPhi,
+        TanPhi
+    }
+    public enum FrictionAngle
+    {
+        Phi,
+        TanPhi
+    }
 
 }

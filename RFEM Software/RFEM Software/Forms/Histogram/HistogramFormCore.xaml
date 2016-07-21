@@ -1,0 +1,615 @@
+﻿<UserControl x:Class="RFEM_Software.Forms.HistogramFormCore"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cc="clr-namespace:RFEM_Software.Custom_Controls"
+             xmlns:com="clr-namespace:RFEM_Software.Commands"
+             xmlns:local="clr-namespace:RFEM_Software.Forms"
+             xmlns:infra="http://courses.engmath.dal.ca/rfem/Infrastructure"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:DoubleConverter x:Key="DoubleConverter" />
+        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource HelpEnabled}"/>
+        <Style TargetType="Label" BasedOn="{StaticResource HelpEnabled}"/>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource HelpEnabled}"/>
+        <Style TargetType="RadioButton" BasedOn="{StaticResource HelpEnabled}"/>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource HelpEnabled}"/>
+
+
+        <ObjectDataProvider x:Key="HistogramDistEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="infra:HistogramDistribution" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+    </UserControl.Resources>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="com:CustomCommands.NewHelpClick" CanExecute="HelpClickStub"
+                        Executed="HelpClickExeStub"/>
+    </UserControl.CommandBindings>
+    
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" >
+                
+                <CheckBox Name="chkShowPlotTitles" 
+                      Content="Show plot titles?" 
+                      VerticalAlignment="Center"
+                      Tag="ShowTitlesHelp"
+                      IsChecked="{Binding Path=ShowPlotTitles, UpdateSourceTrigger=PropertyChanged}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Show Plot Titles"
+                                    ToolTipMessage="Show titles on histogram plot?"/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+
+                            <Setter Property="Visibility" Value="Visible" />
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=chkShowPlotTitles, Path=IsChecked}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <Label Name="lbVerticalOffset" 
+                   Content="Vertical offset: "
+                   Tag="ShowTitlesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                        </Label.ToolTip>
+                    </Label>
+                    <TextBox Name="txtTitleVerticalOffset"
+                     Tag="ShowTitlesHelp" 
+                     Text="{Binding Path=VerticalOffset, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    <Label Name="lbVerticalOffsetUnits" 
+                   Content="inches"
+                   Tag="ShowTitlesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Title Vertical Offset"
+                                    ToolTipMessage="Vertical offset of the title."/>
+                        </Label.ToolTip>
+                    </Label>
+                </StackPanel>
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                
+                <Label Name="lbNumberOfIntervals" 
+                       Content="Number of histogram intervals:"
+                   Tag="NumIntervalsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Number of Intervals"
+                                    ToolTipMessage="A histogram counts number of outcomes from the simulation that fall
+into each of a series of intervals and then plots these frequency
+counts as a series of bars."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtNumInvervals"
+                     Tag="NumIntervalsHelp"
+                     Text="{Binding Path=NumIntervals, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Number of Intervals"
+                                    ToolTipMessage="A histogram counts number of outcomes from the simulation that fall
+into each of a series of intervals and then plots these frequency
+counts as a series of bars."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+            </StackPanel>
+
+            <CheckBox Name="chkCustomAxis" 
+                  Content="Set lengths and origin of plot axes"
+                  Tag="LengthOriginAxesHelp"
+                  IsChecked="{Binding Path=CustomAxis}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Set Lengths and Origin of Axes"
+                                ToolTipMessage="This option allows the user to set the lengths of the x- and y-axes
+and the location of the axes' origin on the printed page."/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+            <StackPanel Name="stakCustomAxis" Orientation="Vertical" Margin="30 0 0 0">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=chkCustomAxis, Path=IsChecked}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                
+                <StackPanel Orientation="Horizontal">
+
+                    <Label Name="lbXAxisLength" 
+                       Content="x-axis length:"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                    <TextBox Name="txtXAxisLength"
+                         Tag="LengthOriginAxesHelp"
+                         Text="{Binding Path=XAxisLength, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    
+                    <Label Name="lbXAxisLengthUnits" 
+                       Content="inches"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="X-Axis Length"
+                                        ToolTipMessage="The length of the x-axis on the histogram plot."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                    <Label Name="lbXAxisOrigin" 
+                       Content="Origin x position"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Origin X Position"
+                                        ToolTipMessage="The `Origin x-position' value is the distance from the left edge of the
+page to the axes' origin."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                    <TextBox Name="txtXAxisOrigin"
+                         Tag="LengthOriginAxesHelp"
+                         Text="{Binding Path=XAxisOrigin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="Origin X Position"
+                                        ToolTipMessage="The `Origin x-position' value is the distance from the left edge of the
+page to the axes' origin."/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    
+                    <Label Name="lbXAxisOriginUnits" 
+                       Content="inches"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Origin X Position"
+                                        ToolTipMessage="The `Origin x-position' value is the distance from the left edge of the
+page to the axes' origin."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                    
+                    <Label Name="lbYAxisLength" 
+                       Content="y-axis length:"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Y-Axis Length"
+                                        ToolTipMessage="The length of the y-axis on the histogram plot."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                    <TextBox Name="txtYAxisLength"
+                         Tag="LengthOriginAxesHelp"
+                         Text="{Binding Path=YAxisLength, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="Y-Axis Length"
+                                        ToolTipMessage="The length of the y-axis on the histogram plot."/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    
+                    <Label Name="lbYAxisLengthUnits" 
+                       Content="inches"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Y-Axis Length"
+                                        ToolTipMessage="The length of the y-axis on the histogram plot."/>
+                        </Label.ToolTip>
+
+                    </Label>
+                    
+                    <Label Name="lbYAxisOrigin" 
+                       Content="Origin y position:"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Origin Y Position"
+                                        ToolTipMessage="The `Origin y-position' value is the distance from the bottom edge of the
+page to the axes' origin."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                    <TextBox Name="txtYAxisOrigin"
+                         Tag="LengthOriginAxesHelp"
+                         Text="{Binding Path=YAxisOrigin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                        <TextBox.ToolTip>
+                            <cc:RFEMToolTip Title="Origin Y Position"
+                                        ToolTipMessage="The `Origin y-position' value is the distance from the bottom edge of the
+page to the axes' origin."/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    
+                    <Label Name="lbYAxisOriginUnits" 
+                       Content="inches"
+                       Tag="LengthOriginAxesHelp">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Origin Y Position"
+                                        ToolTipMessage="The `Origin y-position' value is the distance from the bottom edge of the
+page to the axes' origin."/>
+                        </Label.ToolTip>
+                    </Label>
+                    
+                </StackPanel>
+
+            </StackPanel>
+            
+            <CheckBox Name="chkUseLogXAxis" 
+                      Content="Use logarithmically scaled x-axis?"
+                  Tag="LogScaleXAxisHelp"
+                  IsChecked="{Binding Path=UseLogAxis, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Use Logarithmically Scaled X-Axis"
+                                ToolTipMessage="This option allows the use of a logarithmically scaled x-axis.
+This might be useful for lognormally distributed simulation results
+so that the histogram appears normally distributed."/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            
+            <CheckBox Name="chkCustomXAxis" 
+                  Content="Set x-axis details?"
+                  Tag="XAxisDetailsHelp"
+                  IsChecked="{Binding Path=CustomXAxis, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Set X-Axis Details"
+                                ToolTipMessage="This option allows the x-axis details to be specified." />
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+            <StackPanel Name="stakXAxisDetails" 
+                    Orientation="Horizontal">
+                
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=chkCustomXAxis, Path=IsChecked}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Label Name="lbXAxisMin" 
+                       Content="Minimum:"
+                   Tag="XAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Minimum"
+                                    ToolTipMessage="This is the value used
+   to label the first tick mark on the axis, at the origin."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtXAxisMin"
+                     Tag="XAxisDetailsHelp"
+                     Text="{Binding Path=XAxisMin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Minimum"
+                                    ToolTipMessage="This is the value used
+   to label the first tick mark on the axis, at the origin."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbXAxisMax" 
+                       Content="Maximum:"
+                   Tag="XAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Maximum"
+                                    ToolTipMessage="his is the value used
+   to label the last tick mark on the axis."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtXAxisMax"
+                     Tag="XAxisDetailsHelp"
+                     Text="{Binding Path=XAxisMax, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Maximum"
+                                    ToolTipMessage="his is the value used
+   to label the last tick mark on the axis."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbXAxisIncrement" 
+                       Content="Increment:"
+                   Tag="XAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Increment"
+                                    ToolTipMessage="The tick mark increment. Successive tick marks will be labeled
+   at this increment."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtXAxisIncrement" 
+                     Tag="XAxisDetailsHelp"
+                     Text="{Binding Path=XAxisIncrement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="X-Axis Increment"
+                                    ToolTipMessage="The tick mark increment. Successive tick marks will be labeled
+   at this increment."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+            </StackPanel>
+            
+            <CheckBox Name="chkCustomYAxis" 
+                  Content="Set y-axis details?"
+                  Tag="YAxisDetailsHelp"
+                  IsChecked="{Binding Path=CustomYAxis, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Set Y-Axis Details"
+                                ToolTipMessage="This option allows the y-axis details to be specified."/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+            <StackPanel Name="stakYAxisDetails" 
+                    Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=chkCustomYAxis, Path=IsChecked}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                
+                <Label Name="lbYAxisMin" 
+                       Content="Minimum:"
+                   Tag="YAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Minimum"
+                                    ToolTipMessage="This is the value used
+   to label the first tick mark on the axis, at the origin."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtYAxisMin"
+                     Tag="YAxisDetailsHelp"
+                     Text="{Binding Path=YAxisMin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Minimum"
+                                    ToolTipMessage="This is the value used
+   to label the first tick mark on the axis, at the origin."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbYAxisMax" 
+                       Content="Maximum:"
+                   Tag="YAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Maximum"
+                                    ToolTipMessage="This is the value used
+   to label the last tick mark on the axis."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtYAxisMax"
+                     Tag="YAxisDetailsHelp"
+                     Text="{Binding Path=YAxisMax, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Maximum"
+                                    ToolTipMessage="This is the value used
+   to label the last tick mark on the axis."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbYAxisIncrement" 
+                       Content="Increment"
+                   Tag="YAxisDetailsHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Increment"
+                                    ToolTipMessage="The tick mark increment. Successive tick marks will be labeled
+   at this increment."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtYAxisIncrement"
+                     Tag="YAxisDetailsHelp"
+                     Text="{Binding Path=YAxisIncrement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Y-Axis Increment"
+                                    ToolTipMessage="The tick mark increment. Successive tick marks will be labeled
+   at this increment."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+            </StackPanel>
+            
+            <CheckBox Name="chkFitDistribution" 
+                  Content="Fit a distribution to simulated data histogram?"
+                  Tag="DistributionHelp"
+                  IsChecked="{Binding Path=FitDistribution, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Fit Distribution"
+                                ToolTipMessage="Fit one of the following distributions to the simulation results?"/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            
+            <StackPanel Name="StakFittedDistribution"
+                    Orientation="Vertical"
+                    Margin="30 0 0 0 ">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=chkFitDistribution, Path=IsChecked}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <StackPanel Orientation="Horizontal">
+                    
+                    <Label Name="lbFittedDistributionType"
+                       Tag="DistributionHelp"
+                       Content="Fitted Distribution Type">
+                        <Label.ToolTip>
+                            <cc:RFEMToolTip Title="Fitted Distribution Type"
+                                ToolTipMessage="The user must select from one of the provided
+distribution types, in which case the parameters (mean, variance,
+bounds, etc) of the fitted distribution are estimated from the
+simulation results and the fitted distribution shown as a second
+plot over the histogram."/>
+                        </Label.ToolTip>
+                    </Label>
+
+                    <ComboBox Name="cboFittedDistributionType"
+                              Tag="DistributionHelp"
+                              ItemsSource="{Binding Source={StaticResource HistogramDistEnum}}"
+                              SelectedValue="{Binding Path=FittedDistribution, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ComboBox.ToolTip>
+                            <cc:RFEMToolTip Title="Fitted Distribution Type"
+                                ToolTipMessage="The user must select from one of the provided
+distribution types, in which case the parameters (mean, variance,
+bounds, etc) of the fitted distribution are estimated from the
+simulation results and the fitted distribution shown as a second
+plot over the histogram."/>
+                        </ComboBox.ToolTip>
+                    </ComboBox>
+                </StackPanel>
+
+                
+                <CheckBox Name="chkAndersonDarling" Content="Show Anderson-Darling Goodness-of-Fit test statistic"
+                  Tag="AndersonDarlingHelp"
+                  IsChecked="{Binding Path=ShowAndersonDarlingStat, UpdateSourceTrigger=PropertyChanged}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Anderson Darling Test"
+                                ToolTipMessage="If this option is enabled, an Anderson-Darling goodness-of-fit test
+is performed to test to see if the fitted distribution is unacceptable."/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                
+                <CheckBox Name="chkChiSquare" 
+                          Content="Show Chi-Square Goodness-of-Fit p-value?"
+                  Tag="ChiSquareHelp"
+                  IsChecked="{Binding Path=ShowChiSquareStat, UpdateSourceTrigger=PropertyChanged}">
+                    <CheckBox.ToolTip>
+                        <cc:RFEMToolTip Title="Chi-Square Test"
+                                ToolTipMessage="If this option is enabled, a Chi-square goodness-of-fit test is
+performed to test to see if the fitted distribution selected above
+is statistically unacceptable."/>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                
+            </StackPanel>
+
+            <CheckBox Name="chkShowLineKey" 
+                  Content="Show line key on histogram plot?"
+                  Tag="LineKeyHelp"
+                  IsChecked="{Binding Path=ShowLineKey, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox.ToolTip>
+                    <cc:RFEMToolTip Title="Line Key"
+                                ToolTipMessage="This option enables displaying a line key, which is only appropriate
+if more than one line is to be displayed (eg, the histogram and the
+fitted distribution)."/>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            
+            <StackPanel Name="stakLineKeyDetails" 
+                    Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=chkShowLineKey, Path=IsChecked}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                
+                <Label Name="lbLineKeyXOffset" 
+                       Content="Line key x-offset:"
+                   Tag="LineKeyHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key X-Offset"
+                                    ToolTipMessage="This is the distance, in inches, between the y-axis
+             and the left-most edge of the line key"/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtLineKeyXOffset"
+                     Tag="LineKeyHelp"
+                     Text="{Binding Path=LineKeyXOffset, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key X-Offset"
+                                    ToolTipMessage="This is the distance, in inches, between the y-axis
+             and the left-most edge of the line key"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbLineKeyXOffsetUnits" 
+                       Content="inches"
+                   Tag="LineKeyHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key X-Offset"
+                                    ToolTipMessage="This is the distance, in inches, between the y-axis
+             and the left-most edge of the line key"/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <Label Name="lbLineKeyYOffset" 
+                       Content="y-offset:"
+                   Tag="LineKeyHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key Y-Offset"
+                                    ToolTipMessage="This is the distance, in inches, from the x-axis to
+             the top of the line key."/>
+                    </Label.ToolTip>
+                </Label>
+                
+                <TextBox Name="txtLineKeyYOffset"
+                     Tag="LineKeyHelp"
+                     Text="{Binding Path=LineKeyYOffset, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True, Converter={StaticResource DoubleConverter}}">
+                    <TextBox.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key Y-Offset"
+                                    ToolTipMessage="This is the distance, in inches, from the x-axis to
+             the top of the line key."/>
+                    </TextBox.ToolTip>
+                </TextBox>
+                
+                <Label Name="lbLineKeyYOffsetUnits" Content="inches"
+                   Tag="LineKeyHelp">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Line Key Y-Offset"
+                                    ToolTipMessage="This is the distance, in inches, from the x-axis to
+             the top of the line key."/>
+                    </Label.ToolTip>
+                </Label>
+                
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

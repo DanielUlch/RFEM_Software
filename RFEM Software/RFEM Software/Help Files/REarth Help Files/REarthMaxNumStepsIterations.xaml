@@ -1,0 +1,34 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The earth pressure analysis, being nonlinear, is performed by means of
+two iterations. The main iteration involves gradually displacing the
+wall into (or away from) the soil until the soil `fails' by no longer
+being able to pick up increased loads (or by achieving a steady minimum
+load). This is called the displacement increment.
+
+The second iteration is performed for each displacement increment and
+involves distributing the plastic flow of the soil (when it exceeds its
+elastic limit) until the nodal displacements stabilize.
+
+On this line, two integers are defined to limit the program and prevent
+runaway analyses that never converge. These integers are defined as
+follows;
+
+  i) `maxst' is the maximum number of displacement increments that may be
+     carried out. If the limiting soil pressure is not find prior to maxst
+     displacement steps, an error message is issued to the *.stt output
+     file. Very strong soils may require more displacement steps, although
+     the displacement increment should be selected so that the number of
+     displacement steps required to achieve soil failure is about 10 (see
+     Help for the Displacement Increment). A maximum value of 50,
+     for reasonable levels of soil variability, should be sufficient if
+     the deterministic number of displacement increments is around 10.
+
+ ii) `maxit' is the maximum number of iterations allowed for the plastic
+     flow redistribution which is carried out at each displacement
+     increment. A maximum value of about 300 has been found to be
+     reasonable in most cases.
+    </Paragraph>
+</FlowDocument>

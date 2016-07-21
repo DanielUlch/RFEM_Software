@@ -10,7 +10,7 @@
                     mc:Ignorable="d"
                     WindowState="maximized"
                     x:Name="mainWin"
-                    Title="RFEM Software" Height="350" Width="650" Loaded="MainWindow_Loaded"
+                    Title="RFEM Software" Height="350" Width="650"
             >
     <RibbonWindow.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommandHandler" />
@@ -22,10 +22,12 @@
                         Executed="NewHelpClickExecuted"/>
     </RibbonWindow.CommandBindings>
    
-    <Grid>
+    <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0" Name="BottomSplitterRow" />
+            <RowDefinition Height="15" Name="ExpanderRow"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
@@ -56,10 +58,7 @@
                     <UniformGrid Grid.Column="0">
                         <TabControl x:Name="tabControl" 
                                     Padding="10 0 0 0"
-                        
-                        
-                        ItemsSource="{Binding}" 
-                        SelectionChanged="TabSelectionChanged">
+                        ItemsSource="{Binding}">
 
                         </TabControl>
                     </UniformGrid>
@@ -99,16 +98,55 @@
 
         </DockPanel>
 
+        <GridSplitter Grid.Row="2"  IsEnabled="true" Name="BottomSplitter" Height="5" HorizontalAlignment="Stretch"/>
 
-        <StatusBar Grid.Row="2" VerticalAlignment="Center">
+
+
+        <Grid Name="BottomGrid"
+              Grid.Row="3"
+              Visibility="Collapsed"
+              Height="auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Name="btnBottomCollapser"
+                    Content="v"
+                    Grid.Row="0"
+                    Width="40"
+                    Height="15"
+                    Click="btnBottomCollapser_Click"/>
+
+
+            <ScrollViewer Height="Auto"
+                          Grid.Row="1">
+                <StackPanel>
+                    <TextBlock Text="{Binding Path=NumberOfLogicalProcessors, StringFormat=This computer has {0} logical processors}"
+                      Height="200"/>
+                </StackPanel>
+                
+
+            </ScrollViewer>
+        </Grid>
+
+
+        <Button Name="btnBottomExpander"
+                    Content="^"
+                Grid.Row="3"
+                Width="40"
+                Height="15"
+                    Click="btnBottomExpander_Click"/>
+
+
+        <StatusBar Grid.Row="4" VerticalAlignment="Center" Name="BottomStatusBar">
             <Label Content="Status:"/>
-            <Label x:Name="lblStatus" Content="{Binding Path=CurrentOperation}" />
+            <Label x:Name="lblStatus" Content="{Binding Path=CurrentOperation, Mode=OneWay}" />
             <ProgressBar  x:Name="progressBar" 
                           Width="160"
                           Height="15"
-                          Visibility="Hidden"
-                          Value="{Binding Path=ProgressPercentage}"/>
-            <Label Name="lblSimDetails" Content="{Binding Path=ProgressDetails}" Visibility="Hidden"/>
+                          Visibility="Visible"
+                          Value="{Binding Path=ProgressPercentage, Mode=OneWay}"/>
+            <Label Name="lblSimDetails" Content="{Binding Path=ProgressDetails, Mode=OneWay}" Visibility="Visible"/>
         </StatusBar>
         
         

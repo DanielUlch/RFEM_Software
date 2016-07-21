@@ -12,6 +12,7 @@
              d:DesignHeight="1200" d:DesignWidth="650">
     <UserControl.Resources>
         <local:DoubleConverter x:Key="DoubleConverter" />
+        <local:NullableConverter x:Key="NullableConverter"/>
         <Style TargetType="CheckBox" BasedOn="{StaticResource HelpEnabled}"/>
         <Style TargetType="Label" BasedOn="{StaticResource HelpEnabled}"/>
         <Style TargetType="GroupBox" BasedOn="{StaticResource HelpEnabled}"/>
@@ -395,6 +396,7 @@
                             Tag="NodesForGradientOutput"
                             AutoGenerateColumns="False" 
                             CanUserAddRows="False"
+                          CanUserDeleteRows="False"
                             Style="{StaticResource HelpEnabled}"
                             Height="auto"
                             ItemsSource="{Binding Path=NodesForGradientOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -404,7 +406,8 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Index" Binding="{Binding Path=Index}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Node Number" Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, 
-                                                                            ValidatesOnDataErrors=True, TargetNullValue={StaticResource NullString}}"/>
+                                                                            ValidatesOnDataErrors=True, TargetNullValue={StaticResource NullString},
+                                                                            Converter={StaticResource NullableConverter}}"/>
                     </DataGrid.Columns>
                     <DataGrid.ToolTip>
                         <cc:RFEMToolTip Title="Nodes for Gradient Output"

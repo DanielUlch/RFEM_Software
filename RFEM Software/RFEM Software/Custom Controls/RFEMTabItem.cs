@@ -94,6 +94,7 @@ namespace RFEM_Software.Custom_Controls
         protected void SetTabContent(FrameworkElement content)
         {
             _ScrollViewer.Content = content;
+            content.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
     }
@@ -221,15 +222,36 @@ namespace RFEM_Software.Custom_Controls
                             RoutedEventHandler closeAllTabs,
                             DataEntryTab dataTab,
                             CommandBindingCollection cmdBindings,
-                            double width): base(type, closeTab, closeAllTabs)
+                            double width,
+                            HistogramType histType): base(type, closeTab, closeAllTabs)
         {
             UserControl form;
             switch (dataTab.ProgramType)
             {
                 case Program.RBear2D:
-                    RBear2dViewModel vm = (RBear2dViewModel)dataTab.ViewModel;
-                    form = new RBear2DHistForm((int)vm.NSimulations, vm.NumberOfFootings, vm.BaseName, vm.HistFilePath);
+                    RBear2DViewModel vm = (RBear2DViewModel)dataTab.ViewModel;
+                    form = vm.CreateNewBearingHistForm();
                     break;
+                case Program.RDam2D:
+                    RDam2DViewModel RDamVM = (RDam2DViewModel)dataTab.ViewModel;
+
+                    switch (histType)
+                    {
+                        case HistogramType.RDam_FlowRate:
+                            form = RDamVM.CreateNewFlowRateHistForm();
+                            break;
+                        case HistogramType.RDam_Conductivity:
+                            form = RDamVM.CreateNewConducivityHistForm();
+                            break;
+                        case HistogramType.RDam_NodeGradient:
+                            form = RDamVM.CreateNewNodalGradientHistForm();
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    break;
+                    
                 default:
                     throw new NotImplementedException("Histogram tab has not been implemented for this program.");
             }

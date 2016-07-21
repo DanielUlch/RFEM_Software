@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RFEM_Infrastructure
 {
-    public interface IHasDataFile
+    public interface ISimModel
     {
         string GetDataFileString();
         string DataFileLocation();
@@ -14,6 +15,9 @@ namespace RFEM_Infrastructure
         string AppDataFileLocation { get; }
 
         string BaseName { get; }
-        
+
+        string RunSim(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token);
+
+        int NumberOfRealizations { get; }
     }
 }

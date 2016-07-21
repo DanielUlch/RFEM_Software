@@ -1,0 +1,23 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This entry is for the sample locations, specified as (x,y)
+indices into the random field arrays. These arrays are indexed
+as follows; (1,1) is at the upper left corner of the field,
+(1,2) is just below (1,1), while (2,1) is just to the right
+of element (1,1), etc. That is, elements are counted down and
+then to the right. One (x,y) index pair is to be provided for
+each sample to specify its location.
+
+For example, if two soil samples are taken, and this entry
+contains the following;
+
+	12 8  12 18
+
+then this means that the two soil samples are taken at the
+(x,y) indices (12,8) and (12,18). (It is assumed that the
+provided indices actually fall within the soil mass -- a
+warning is issued if this is not the case.)
+    </Paragraph>
+</FlowDocument>

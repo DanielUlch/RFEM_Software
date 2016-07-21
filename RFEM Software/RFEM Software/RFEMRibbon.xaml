@@ -3,14 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:infra="http://courses.engmath.dal.ca/rfem/Infrastructure"
              xmlns:local="clr-namespace:RFEM_Software"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
-             
              BorderThickness="5 5 5 0"
              >
     <UserControl.CommandBindings>
+        
         <CommandBinding Command="ApplicationCommands.Close"/>
+        
     </UserControl.CommandBindings>
     <Grid>
         <Ribbon WindowIconVisibility="collapsed">
@@ -74,14 +76,21 @@
             </Ribbon.HelpPaneContent>
 
             <Ribbon.ContextualTabGroups>
-                <RibbonContextualTabGroup x:Name="RBearRunTools" 
-                                          Header="RBear Run Tools"
-                                          Visibility="Collapsed" 
-                                          Background="Red" />
-                <RibbonContextualTabGroup x:Name="RDamRunTools" 
-                                          Header="RDam Run Tools"
-                                          Visibility="Collapsed" 
-                                          Background="Red" />
+                <RibbonContextualTabGroup x:Name="RunTools"
+                                          Header="Run Tools"
+                                          Background="Red">
+                    <RibbonContextualTabGroup.Style>
+                        <Style TargetType="{x:Type RibbonContextualTabGroup}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ActiveProgram}" Value="{x:Static infra:Program.None}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RibbonContextualTabGroup.Style>
+                    
+                </RibbonContextualTabGroup>
             </Ribbon.ContextualTabGroups>
             
             
@@ -177,35 +186,155 @@
             <RibbonTab Header="Visualization">
                 
             </RibbonTab>
-            <RibbonTab Header="Run Control" ContextualTabGroupHeader="RBear Run Tools" Name="tabRBearRunControl">
+            
+            <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="RunControlTab">
+                
                 <RibbonGroup Header="Simulation">
-                    <RibbonButton Label="Run Simulation" Name="btn_RunSim" LargeImageSource="Images/Start.png" />
-                    <RibbonButton Name="btnShowSummaryStats" Label="Summary Statistics" LargeImageSource="Images/Accounting.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowMesh" Label="Displaced Mesh" LargeImageSource="Images/Grid.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowField" Label="Random Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnShowBearingHist" Label="Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False" />
                     
+                    <!--               Buttons common accross all simulations                                -->
+
+                    <RibbonButton Name="btn_RunSim" >
+                        <RibbonButton.Style>
+                            <Style TargetType="{x:Type RibbonButton}">
+                                
+                                <Setter Property="LargeImageSource" Value="Images/Start.png" />
+                                <Setter Property="Label" Value="Run Sim"/>
+                                <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.Run}"/>
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToCancel}">
+                                        <Setter Property="LargeImageSource" Value="Images/Cancel.png" />
+                                        <Setter Property="Label" Value="Cancel Run" />
+                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.CancelRun}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToRemoveFromQueue}">
+                                        <Setter Property="LargeImageSource" Value="Images/RemoveFromQueue.png" />
+                                        <Setter Property="Label" Value="Remove From Queue" />
+                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.RemoveFromQueue}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToQueue}">
+                                        <Setter Property="LargeImageSource" Value="Images/AddToQueue.png" />
+                                        <Setter Property="Label" Value="Add to Queue" />
+                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.AddToQueue}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                
+                            </Style>
+                        </RibbonButton.Style>
+                    </RibbonButton>
+
+                    <RibbonButton Name="btnShowSummaryStats" 
+                                  Label="Summary Statistics" 
+                                  LargeImageSource="Images/Accounting.png"
+                                  IsEnabled="{Binding Path=SummaryStatsEnabled}"/>
+                    
+                    <!--                  RBear2D Buttons                                                -->
+                    
+                    <RibbonButton Name="btnRBear2DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRBear2DMesh}"
+                                  Visibility="{Binding Path=RBear2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRBear2DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRBear2DField}"
+                                  Visibility="{Binding Path=RBear2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRBear2DShowBearingHist" 
+                                  Label="Histogram" 
+                                  LargeImageSource="Images/NormalHist.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRBear2DHist}"
+                                  Visibility="{Binding Path=RBear2DButtonVisibility}"/>
+                    
+                    
+                    <!--                  RDam2D Buttons                         -->
+                    
+                    <RibbonButton Name="btnRDamFlownet" 
+                                  Label="Flownet" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DFlownet}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamField" 
+                                  Label="Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DField}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamMeanGradientField" 
+                                  Label="Mean Gradient Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamStdDevGradientField" 
+                                  Label="Standard Deviation Gradient Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamMeanFluxField" 
+                                  Label="Mean Flux Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamStdDevFluxField" 
+                                  Label="Standard Deviation Flux Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamMeanPotentialField" 
+                                  Label="Mean Potential Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamStdDevPotentialField" 
+                                  Label="Standard Deviation Potential Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamFlowHist" 
+                                  Label="Flow Histogram" 
+                                  LargeImageSource="Images/NormalHist.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DFlowHist}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamCondHist" 
+                                  Label="Conductivity Histogram" 
+                                  LargeImageSource="Images/NormalHist.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DConductivityHist}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <RibbonButton Name="btnRDamGradHist" 
+                                  Label="Gradient Histogram" 
+                                  LargeImageSource="Images/NormalHist.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRDam2DNodalGradientHist}"
+                                  Visibility="{Binding Path=RDam2DButtonVisibility}"/>
+                    
+                    <!--                     REarth2D Buttons                         -->
+
+                    <RibbonButton Name="btnREarth2DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayREarth2DMesh}"
+                                  Visibility="{Binding Path=REarth2DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnREarth2DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayREarth2DField}"
+                                  Visibility="{Binding Path=REarth2DButtonVisibility}"/>
+
                 </RibbonGroup>
                 
             </RibbonTab>
-            <RibbonTab Header="Run Control" ContextualTabGroupHeader="RDam Run Tools" Name="tabRDamRunControl">
-                <RibbonGroup Header="Simulation">
-                    <RibbonButton Label="Run Simulation" Name="btn_RDamRunSim" LargeImageSource="Images/Start.png" />
-                    <RibbonButton Name="btnRDamSummaryStats" Label="Summary Statistics" LargeImageSource="Images/Accounting.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamFlownet" Label="Flownet" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamField" Label="Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamMeanGradientField" Label="Mean Gradient Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
-                    <RibbonButton Name="btnRDamStdDevGradientField" Label="Standard Deviation Gradient Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
-                    <RibbonButton Name="btnRDamMeanFluxField" Label="Mean Flux Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="false"/>
-                    <RibbonButton Name="btnRDamStdDevFluxField" Label="Standard Deviation Flux Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamMeanPotentialField" Label="Mean Potential Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamStdDevPotentialField" Label="Standard Deviation Potential Field" LargeImageSource="Images/BrokenFactoryBlue.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamFlowHist" Label="Flow Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False"/>
-                    <RibbonButton Name="btnRDamCondHist" Label="Conductivity Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="false"/>
-                    <RibbonButton Name="btnRDamGradHist" Label="Gradient Histogram" LargeImageSource="Images/NormalHist.png" IsEnabled="False"/>
-                </RibbonGroup>
-            </RibbonTab>
-            
+         
             
         </Ribbon>
     </Grid>

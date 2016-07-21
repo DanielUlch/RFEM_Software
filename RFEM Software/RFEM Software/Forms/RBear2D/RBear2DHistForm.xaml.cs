@@ -26,12 +26,6 @@ namespace RFEM_Software.Forms
 
         private List<FrameworkElement> _HoverableControls;
        
-        public RBear2DHistForm()
-        {
-            InitializeComponent();
-
-            HistElement.Child = viewModel.GenerateHistogram();
-        }
         public IHistViewModel ViewModel
         {
             get { return viewModel; }
@@ -41,19 +35,13 @@ namespace RFEM_Software.Forms
             viewModel = new RBear2DHistViewModel(nSim, nFootings, baseName, inputFilePath);
 
             this.DataContext = viewModel;
-
+            
             InitializeComponent();
 
+            this.HistCore.DataContext = viewModel.HistogramCore;
+
             InitializeHoverableList();
-
-            if (nFootings < 2) gbFootingNumber.Visibility = Visibility.Collapsed;
-            if (viewModel.ShowPlotTitles) chkShowPlotTitles.IsChecked = true;
-            chkCustomAxis_Checked(null, null);
-            chkCustomXAxis_Checked(null, null);
-            chkCustomYAxis_Checked(null, null);
-            chkFitDistribution_Checked(null, null);
-            chkShowLineKey_Checked(null, null);
-
+            
             HistElement.Child = viewModel.GenerateHistogram();
         }
 
@@ -65,58 +53,9 @@ namespace RFEM_Software.Forms
                 gbFootingNumber,
                 rbFootingOne,
                 rbFootingTwo,
-                chkShowPlotTitles,
-                lbVerticalOffset,
-                txtTitleVerticalOffset,
-                lbVerticalOffsetUnits,
-                lbNumberOfIntervals,
-                txtNumInvervals,
-                chkCustomAxis,
-                lbXAxisLength,
-                txtXAxisLength,
-                lbXAxisLengthUnits,
-                lbXAxisOrigin,
-                txtXAxisOrigin,
-                lbXAxisOriginUnits,
-                lbYAxisLength,
-                txtYAxisLength,
-                lbYAxisLengthUnits,
-                lbYAxisOrigin,
-                txtYAxisOrigin,
-                lbYAxisOriginUnits,
-                chkUseLogXAxis,
-                chkCustomAxis,
-                lbXAxisMin,
-                txtXAxisMin,
-                lbXAxisMax,
-                txtXAxisMax,
-                lbXAxisIncrement,
-                txtXAxisIncrement,
-                chkCustomYAxis,
-                lbYAxisMin,
-                txtYAxisMin,
-                lbYAxisMax,
-                txtYAxisMax,
-                lbYAxisIncrement,
-                txtYAxisIncrement,
-                chkFitDistribution,
-                gbFittedDistribution,
-                rbNormal,
-                rbExponential,
-                rbGamma,
-                rbLogNormal,
-                rbBeta,
-                rbUniform,
-                chkAndersonDarling,
-                chkChiSquare,
-                chkShowLineKey,
-                lbLineKeyXOffset,
-                txtLineKeyXOffset,
-                lbLineKeyXOffsetUnits,
-                lbLineKeyYOffset,
-                txtLineKeyYOffset,
-                lbLineKeyYOffsetUnits
             };
+
+            _HoverableControls.AddRange(HistCore.HoverableControls);
         }
         #region CompilerTricks
         /// <summary>
@@ -140,125 +79,7 @@ namespace RFEM_Software.Forms
             MessageBox.Show(e.Parameter.ToString());
         }
         #endregion
-
-        private void chkShowPlotTitles_Checked(object sender, RoutedEventArgs e)
-        {
-            if(lbVerticalOffset != null)
-            {
-                if (chkShowPlotTitles.IsChecked == true)
-                {
-                    lbVerticalOffset.Visibility = Visibility.Visible;
-                    txtTitleVerticalOffset.Visibility = Visibility.Visible;
-                    lbVerticalOffsetUnits.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    lbVerticalOffset.Visibility = Visibility.Collapsed;
-                    txtTitleVerticalOffset.Visibility = Visibility.Collapsed;
-                    lbVerticalOffsetUnits.Visibility = Visibility.Collapsed;
-                }
-            }
-            
-        }
-
-        private void chkCustomAxis_Checked(object sender, RoutedEventArgs e)
-        {
-            if(chkCustomAxis != null)
-            {
-                if (chkCustomAxis.IsChecked == true)
-                {
-                    stakCustomAxis.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    stakCustomAxis.Visibility = Visibility.Collapsed;
-                }
-            }
-            
-        }
-
-        private void chkCustomXAxis_Checked(object sender, RoutedEventArgs e)
-        {
-            if(chkCustomXAxis.IsChecked == true)
-            {
-                stakXAxisDetails.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                stakXAxisDetails.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void chkCustomYAxis_Checked(object sender, RoutedEventArgs e)
-        {
-            if(chkCustomYAxis.IsChecked == true)
-            {
-                stakYAxisDetails.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                stakYAxisDetails.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void chkFitDistribution_Checked(object sender, RoutedEventArgs e)
-        {
-            if(chkFitDistribution.IsChecked == true)
-            {
-                StakFittedDistribution.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                StakFittedDistribution.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void chkShowLineKey_Checked(object sender, RoutedEventArgs e)
-        {
-            if(stakLineKeyDetails != null)
-            {
-                if (chkShowLineKey.IsChecked == true)
-                {
-                    stakLineKeyDetails.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    stakLineKeyDetails.Visibility = Visibility.Collapsed;
-                }
-            }
-            
-        }
-
-        private void rbNormal_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.Normal;
-        }
-
-        private void rbLogNormal_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.LogNormal;
-        }
-
-        private void rbExponential_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.Exponential;
-        }
-
-        private void rbBeta_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.Beta;
-        }
-
-        private void rbGamma_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.Gamma;
-        }
-
-        private void rbUniform_Checked(object sender, RoutedEventArgs e)
-        {
-            viewModel.FittedDistribution = HistogramDistribution.Uniform;
-        }
-
+        
         private void rbFootingOne_Checked(object sender, RoutedEventArgs e)
         {
             viewModel.FootingNum = 1;
@@ -269,10 +90,19 @@ namespace RFEM_Software.Forms
             viewModel.FootingNum = 2;
         }
         
+
         private void btnUpdateHistogram_Click(object sender, RoutedEventArgs e)
         {
-            HistElement.Child = viewModel.GenerateHistogram();
+            try
+            {
+                HistElement.Child = viewModel.GenerateHistogram();
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
+
 
         public string GetHoveredHelpTopic()
         {
@@ -284,9 +114,16 @@ namespace RFEM_Software.Forms
             return "";
         }
 
+
         private void btnPopOutHistogram_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.PopOutHistogram();
+            try
+            {
+                viewModel.PopOutHistogram();
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

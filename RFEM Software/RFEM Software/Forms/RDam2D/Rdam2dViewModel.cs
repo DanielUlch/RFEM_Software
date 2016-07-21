@@ -9,10 +9,11 @@ using RFEM_Infrastructure;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Diagnostics;
 
 namespace RFEM_Software.Forms
 {
-    class Rdam2dViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    class RDam2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade = false;
 
@@ -34,12 +35,9 @@ namespace RFEM_Software.Forms
             new NodeNumber {Index=6, Value= null }
         };
 
-        private bool HasErrors
+        public ISimModel Model
         {
-            get
-            {
-                return (_Errors.Count > 0);
-            }
+            get { return _FormData; }
         }
         #region FormProperties
 
@@ -601,6 +599,15 @@ namespace RFEM_Software.Forms
             }
         }
         #endregion
+
+        #region Validation
+        private bool HasErrors
+        {
+            get
+            {
+                return (_Errors.Count > 0);
+            }
+        }
         public string this[string columnName]
         {
             get
@@ -627,19 +634,19 @@ namespace RFEM_Software.Forms
                         validationMessage = "Realization number must be a positive integer.";
                     break;
                 case "NumEquipotentialDrops":
-                    if (_FormData.NumEquipotentialDrops < 0 & ProduceDisplayFile & ShowStreamlines)
+                    if (_FormData.NumEquipotentialDrops < 0 & ProducePSPlotOfFirstFlownet & ShowStreamlines)
                         validationMessage = "Number of equipotential drops must be a positive integer.";
                     break;
                 case "FlownetWidth":
-                    if (_FormData.FlownetWidth <= 0 & ProduceDisplayFile)
+                    if (_FormData.FlownetWidth <= 0 & ProducePSPlotOfFirstFlownet )
                         validationMessage = "Flownet width must be a positive value.";
                     break;
                 case "NumElementsInXDir":
-                    if (_FormData.NumElementsInXDir < 1)
+                    if (_FormData.NumElementsInXDir < 0)
                         validationMessage = "Number of elements must be a positive integer.";
                     break;
                 case "NumElementsInYDir":
-                    if(_FormData.NumElementsInYDir < 1)
+                    if(_FormData.NumElementsInYDir < 0)
                         validationMessage = "Number of elements must be a positive integer.";
                     break;
                 case "DrainXDimension":
@@ -706,6 +713,20 @@ namespace RFEM_Software.Forms
             }
             return validationMessage;
         }
+        public string Error
+        {
+            get
+            {
+                string result = this[string.Empty];
+                if (result != null && result.Trim().Length == 0)
+                {
+                    result = null;
+                }
+                return result;
+            }
+        }
+        #endregion
+
 
         public bool CanDisplaySummaryStats
         {
@@ -714,7 +735,30 @@ namespace RFEM_Software.Forms
                 return _FormData.CanDisplaySummaryStats;
             }
         }
-
+        public bool CanDisplayFlownet
+        {
+            get { return _FormData.CanDisplayFlownet; }
+        }
+        public bool CanDisplayField
+        {
+            get { return _FormData.CanDisplayField; }
+        }
+        public bool CanDisplayGradientMeanAndStdDevFields
+        {
+            get { return _FormData.CanDisplayGradientMeanAndStdDevFields; }
+        }
+        public bool CanDisplayFlowRateHist
+        {
+            get { return _FormData.CanDisplayFlowRateHist; }
+        }
+        public bool CanDisplayEffectiveConductivityHist
+        {
+            get { return _FormData.CanDisplayEffectiveConductivityHist; }
+        }
+        public bool CanDisplayNodeGradientHist
+        {
+            get { return _FormData.CanDisplayNodeGradientHist; }
+        }
         public bool ChangesHaveBeenMade
         {
             get
@@ -732,24 +776,18 @@ namespace RFEM_Software.Forms
 
             set
             {
-                _CurrentOperation = value;
+                if(_CurrentOperation != value)
+                {
+                    _CurrentOperation = value;
+                    NotifyPropertyChanged();
+                }
+                
             }
         }
 
         
 
-        public string Error
-        {
-            get
-            {
-                string result = this[string.Empty];
-                if (result != null && result.Trim().Length == 0)
-                {
-                    result = null;
-                }
-                return result;
-            }
-        }
+        
         
         public string ProgressDetails
         {
@@ -795,17 +833,19 @@ namespace RFEM_Software.Forms
         {
             get
             {
-                throw new NotImplementedException();
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                            _FormData.BaseName + ".fld";
             }
         }
-
-        public string MeshFilePath
+        public string FlownetFilePath
         {
             get
             {
-                throw new NotImplementedException();
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                            _FormData.BaseName + ".net";
             }
         }
+        
         public string SummaryFilePath
         {
             get
@@ -814,7 +854,6 @@ namespace RFEM_Software.Forms
                     _FormData.BaseName + ".stt";
             }
         }
-
         public Program Type
         {
             get
@@ -823,9 +862,9 @@ namespace RFEM_Software.Forms
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
-        public Rdam2dViewModel()
+        public RDam2DViewModel()
         {
 
             _FormData = new RDam2D();
@@ -839,15 +878,16 @@ namespace RFEM_Software.Forms
 
             
         }
-        public Rdam2dViewModel(RDam2D formData)
+        public RDam2DViewModel(RDam2D formData)
         {
             _FormData = formData;
 
             _FormData.PropertyChanged += NotifyFormDataPropertyChanged;
 
-            foreach (NodeNumber n in _NodesForGradientOutput)
+            for(int i = 0; i <= 5; i++)
             {
-                n.PropertyChanged += NodeNumberCollectionChanged;
+                _NodesForGradientOutput[i].Value = _FormData.NodesForGradientOutput[i];
+                _NodesForGradientOutput[i].PropertyChanged += NodeNumberCollectionChanged;
             }
         }
         public Task<string> RunSimAsync(CancellationToken token)
@@ -905,13 +945,120 @@ namespace RFEM_Software.Forms
 
         public void ShowField()
         {
-            throw new  NotImplementedException();
+            var pInfo = new ProcessStartInfo();
+            pInfo.UseShellExecute = false;
+            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                        "\\RFEM_Software";
+            string appFileDir = Environment.GetCommandLineArgs()[0];
+            string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
+            displayFilePath += "\\Executables\\display.exe";
+            pInfo.FileName = displayFilePath;
+            pInfo.CreateNoWindow = true;
+            pInfo.Arguments = FieldFilePath;
+            var p = new Process { StartInfo = pInfo };
+
+
+            p.Start();
+            p.WaitForExit();
+
+            pInfo = new ProcessStartInfo();
+            pInfo.UseShellExecute = false;
+            pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
+            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                        "\\RFEM_Software";
+            pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
+            pInfo.CreateNoWindow = true;
+
+            p = new Process { StartInfo = pInfo };
+            p.Start();
         }
-       public void ShowMesh()
+        public void ShowFlownet()
         {
-            throw new NotImplementedException();
+            var pInfo = new ProcessStartInfo();
+            pInfo.UseShellExecute = false;
+            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                        "\\RFEM_Software";
+            string appFileDir = Environment.GetCommandLineArgs()[0];
+            string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
+            displayFilePath += "\\Executables\\display.exe";
+            pInfo.FileName = displayFilePath;
+            pInfo.CreateNoWindow = true;
+            pInfo.Arguments = FlownetFilePath;
+            var p = new Process { StartInfo = pInfo };
+
+
+            p.Start();
+            p.WaitForExit();
+
+            pInfo = new ProcessStartInfo();
+            pInfo.UseShellExecute = false;
+            pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
+            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                        "\\RFEM_Software";
+            pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
+            pInfo.CreateNoWindow = true;
+
+            p = new Process { StartInfo = pInfo };
+            p.Start();
+        }
+        public void ShowGradientMeanField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath= Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".gpm";
+
+            GstView.Show(FilePath);
+        }
+        public void ShowGradientStdDevField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".gps";
+
+            GstView.Show(FilePath);
+        }
+        public void ShowFluxMeanField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".fpm";
+
+            GstView.Show(FilePath);
+        }
+        public void ShowFluxStdDevField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".fps";
+
+            GstView.Show(FilePath);
+        }
+        public void ShowPotentialMeanField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".hpm";
+
+            GstView.Show(FilePath);
+        }
+        public void ShowPotentialStdDevField()
+        {
+            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
+                    _FormData.BaseName + ".hps";
+
+            GstView.Show(FilePath);
         }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
         protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
             _ChangesHaveBeenMade = true;
@@ -928,43 +1075,73 @@ namespace RFEM_Software.Forms
         }
         private void NodeNumberCollectionChanged(object sender, PropertyChangedEventArgs e) 
         {
-            _FormData.NodesForGradientOutput = new List<int?>();
+            
+        }
 
-            foreach (NodeNumber n in _NodesForGradientOutput)
+        public RDam2DFlowRateHist CreateNewFlowRateHistForm()
+        {
+
+            string FlowFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + 
+                                "\\RFEM_Software\\" + _FormData.BaseName + ".flo";
+
+            return new RDam2DFlowRateHist(_FormData.NumberOfRealizations, FlowFilePath, _FormData.BaseName);
+        }
+        public RDam2DConductivityHist CreateNewConducivityHistForm()
+        {
+            string ConductivityFilePath= Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                "\\RFEM_Software\\" + _FormData.BaseName + ".cnd";
+
+            return new RDam2DConductivityHist(_FormData.NumberOfRealizations,
+                                                ConductivityFilePath,
+                                                _FormData.BaseName,
+                                                _FormData.OutputBlockConductivities,
+                                                _FormData.OutputConductivityAverages);
+        }
+        public RDam2DNodalGradientHist CreateNewNodalGradientHistForm()
+        {
+            string NodalFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                "\\RFEM_Software\\" + _FormData.BaseName + ".grd";
+
+            return new RDam2DNodalGradientHist(_FormData.NodesForGradientOutput.Where(x => x!=null).
+                                                                                Select(x => x.Value).
+                                                                                ToList<int>(),
+                                                NodalFilePath,
+                                                _FormData.BaseName,
+                                                _FormData.NumberOfRealizations);
+        }
+    }
+
+
+
+    public class NodeNumber : INotifyPropertyChanged
+    {
+        private int? _Value;
+        public int Index { get; set; }
+        public int? Value
+        {
+            get { return _Value; }
+            set
             {
-                _FormData.NodesForGradientOutput.Add(n.Value);
+                if (_Value != value)
+                {
+                    _Value = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
-        public class NodeNumber: INotifyPropertyChanged
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            private int? _Value;
-            public int Index { get; set; }
-            public int? Value
+
+            if (PropertyChanged != null)
             {
-                get { return _Value; }
-                set
-                {
-                    if (_Value != value)
-                    {
-                        _Value = value;
-                        NotifyPropertyChanged();
-                    }
-                }
-            }
-
-
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-            {
-
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
-    
-    
+
+
 }

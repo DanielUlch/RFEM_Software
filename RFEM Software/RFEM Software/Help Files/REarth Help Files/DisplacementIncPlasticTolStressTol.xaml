@@ -1,0 +1,61 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The program computes the plane strain deformation and resulting stresses
+of an elastic-plastic Von-Mises solid (ie the soil) using 8-node
+quadrilateral elements via the viscoplastic strain method. The soil
+mass is restrained by a wall on the left face which is either moved
+into (passive) or away (active) from the soil. Statistics of the
+resultant total soil reaction are computed by Monte Carlo simulation.
+The soil model appears as follows;
+
+    </Paragraph>
+    <Paragraph>
+        INSERT PICTURE HERE
+    </Paragraph>
+    <Paragraph>
+
+        The wall, which extends nwe elements down the left hand side, is rigid
+and is translated horizontally into (passive) or away from (active) the
+soil mass. It may be either `smooth' or `rough', allowing or not allowing
+the soil to slide along its surface, respectively. NOTE: to allow the
+formation of a proper failure mechanism, the wall should not extend to
+the bottom of the soil mass. That is, nwe should not exceed about
+(nye - 5).
+
+The horizontal load exerted on the wall by the soil is determined by
+gradually displacing the wall into (passive) or away (active) from the
+soil mass. In either case, the load is deemed to have achieved its
+final value when the soil is in a state of plastic failure. To determine
+this, three parameters are needed, as specified on this line;
+
+   1) the horizontal displacement increment: The wall reaction analysis
+      involves a displacement controlled loading, and displacement is
+      incremented in a series (see next) of displacement steps each of
+      size equal to the prescribed value. Positive displacement increments
+      results in displacement into the soil mass (passive loading). Note
+      that because passive loading generally takes a greater displacement
+      to achieve plastic failure than does active loading, it is normal to
+      make the displacement increment in the passive case larger than that
+      in the active case. The size of the increment is normally determined
+      by trial and error, perhaps by running the deterministic analysis
+      (all soil properties spatially constant) and aiming for a
+      displacement increment which gives about 10 displacement steps until
+      soil failure. The number of displacement steps taken in the
+      deterministic case is reported to the output *.stt file (see
+      Summary, after running the program).
+
+   2) The convergence tolerance for the plasticity algorithm: When the nodal
+      displacement state from one iteration to the next has a relative
+      change (max-norm) of less than this convergence tolerance the soil
+      is assumed to have achieved plastic equilibrium and iterations are
+      halted.
+
+   3) The convergence tolerance on the computed wall reaction: When the
+      stress state from one increment to the next has a relative change
+      (max-norm) of less than this tolerance the soil failure load is
+      assumed to have been reached and the displacement steps are
+      discontinued.
+    </Paragraph>
+</FlowDocument>

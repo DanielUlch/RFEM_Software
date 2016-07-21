@@ -1,0 +1,47 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        A Monte Carlo simulation involves analyzing a sequence of possible
+realizations of the random soil field. Estimated response
+quantities, such as the probability of wall failure (i.e. that
+the wall load is greater than some specified resistance), become more
+accurate as the number of realizations is increased. For example,
+the probability of failure is estimated by the proportion of
+failures, p = Nf/n, where Nf is the number of wall failures and
+n is the total number of realizations. This estimate has an
+(estimated) standard deviation, s, of
+
+    s = sqrt[p(1-p)/n]                                           (1)
+
+This relationship allows the number of realizations required to
+achieve a certain level of accuracy in the estimate of p to be
+estimated. For example, suppose the target reliability of a
+certain wall design is (1-p) = 0.999, that is, the probability
+of failure of the wall is intended to be p = 0.001. Suppose
+further that the actual failure probability of the designed
+footing is to be estimated to within 0.0001 with 95% probability.
+Then, if p = 0.001, the number of realizations, n, must be
+
+         z^2 * p * (1-p)    (1.96)^2 (0.001) (0.999)
+    n = ---------------- = -------------------------- = 383776  (2)
+           (0.0001)^2               (0.0001)^2
+
+which is to say, a very large number of realizations. In terms
+of computing power near the beginning of the 21'st century, this
+number of realizations would probably take too long to render.
+
+When estimating the required number of realizations, it is also
+important to consider the accuracy of the other parameters entering
+the analysis (eg. the means, standard deviations and scales of
+fluctuations of all soil properties, the fact that the analysis
+assumes a statistically homogeneous soil, etc). There is probably
+little point in trying to estimate p to accuracy 0.0001 if any of
+these parameters are not well known. Note that if an accuracy of
+only 0.001 is required above, then only n = 3838 realizations are
+required (although it is to be also noted that the normal
+approximation of Eq. 2 becomes less accurate when np
+        &lt;about 5).
+
+    </Paragraph>
+</FlowDocument>

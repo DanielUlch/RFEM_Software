@@ -1,0 +1,30 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The program computes the plane strain deformation and resulting stresses
+of an elastic-plastic Von-Mises solid (ie the soil) using 8-node
+quadrilateral elements via the viscoplastic strain method. The soil
+mass is restrained by a wall on the left face which is either moved
+into (passive) or away (active) from the soil. Statistics of the
+resultant total soil reaction are computed by Monte Carlo simulation.
+The soil model appears as follows;
+    </Paragraph>
+    <Paragraph>
+        INSERT PICTURE HERE
+    </Paragraph>
+    <Paragraph>
+        The wall, which extends nwe elements down the left hand side, is rigid
+and is translated horizontally into (passive) or away from (active) the
+soil mass. It may be either `smooth' or `rough', allowing or not allowing
+the soil to slide along its surface, respectively. NOTE: to allow the
+formation of a proper failure mechanism, the wall should not extend to
+the bottom of the soil mass. That is, nwe should not exceed about
+(nye - 5).
+
+On this line, the number of elements that the wall extends down the
+left hand face, nwe, is specified. In addition, the interface between
+the wall may be selected is being either rough, a no-slip condition, or
+smooth, where the soil is allowed to slide across the wall.
+    </Paragraph>
+</FlowDocument>

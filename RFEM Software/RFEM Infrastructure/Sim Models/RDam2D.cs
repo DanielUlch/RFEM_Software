@@ -11,14 +11,18 @@ using System.Threading.Tasks;
 
 namespace RFEM_Infrastructure
 {
-    public class RDam2D: IHasDataFile, INotifyPropertyChanged
+    public class RDam2D: ISimModel, INotifyPropertyChanged
     {
 
-        private bool _CanDisplaySummaryStats;
-        private bool _CanDisplayMesh;
-        private bool _CanDisplayField;
-        private bool _CanDisplayBearingHist;
-        
+        private bool _CanDisplaySummaryStats = false;
+        private bool _CanDisplayField = false;
+        private bool _CanDisplayFlownet = false;
+        private bool _CanDisplayGradientMeanAndStdDevFields = false;
+        private bool _CanDisplayFlowRateHist = false;
+        private bool _CanDisplayEffectiveConductivityHist = false;
+        private bool _CanDisplayNodeGradientHist = false;
+
+        private List<int?> _NodesForGradientOutput;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,7 +50,21 @@ namespace RFEM_Infrastructure
         public bool ShowTitlesOnFlownet { get; set; }
         public double FlownetWidth { get; set; }
         public bool OutputGradientMeanAndStdDev { get; set; }
-        public List<int?> NodesForGradientOutput { get; set; }
+        public List<int?> NodesForGradientOutput
+        {
+            get
+            {
+                return _NodesForGradientOutput;
+            }
+            set
+            {
+                if(_NodesForGradientOutput != value)
+                {
+                    _NodesForGradientOutput = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         public bool OutputFlowRate { get; set; }
         public bool OutputBlockConductivities { get; set; }
         public bool OutputConductivityAverages { get; set; }
@@ -87,6 +105,78 @@ namespace RFEM_Infrastructure
                 if (_CanDisplaySummaryStats != value)
                 {
                     _CanDisplaySummaryStats = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayFlownet
+        {
+            get { return _CanDisplayFlownet; }
+            set
+            {
+                if(_CanDisplayFlownet != value)
+                {
+                    _CanDisplayFlownet = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayField
+        {
+            get { return _CanDisplayField; }
+            set
+            {
+                if(_CanDisplayField != value)
+                {
+                    _CanDisplayField = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayGradientMeanAndStdDevFields
+        {
+            get { return _CanDisplayGradientMeanAndStdDevFields; }
+            set
+            {
+                if(_CanDisplayGradientMeanAndStdDevFields != value)
+                {
+                    _CanDisplayGradientMeanAndStdDevFields = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayFlowRateHist
+        {
+            get { return _CanDisplayFlowRateHist; }
+            set
+            {
+                if(_CanDisplayFlowRateHist != value)
+                {
+                    _CanDisplayFlowRateHist = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayEffectiveConductivityHist
+        {
+            get { return _CanDisplayEffectiveConductivityHist; }
+            set
+            {
+                if(_CanDisplayEffectiveConductivityHist != value)
+                {
+                    _CanDisplayEffectiveConductivityHist = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayNodeGradientHist
+        {
+            get { return _CanDisplayNodeGradientHist; }
+            set
+            {
+                if(_CanDisplayNodeGradientHist != value)
+                {
+                    _CanDisplayNodeGradientHist = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -277,6 +367,19 @@ namespace RFEM_Infrastructure
             }
 
             CanDisplaySummaryStats = true;
+
+            if (ProducePSPlotOfFirstFlownet)
+                CanDisplayFlownet = true;
+            if(ProduceDisplayFile)
+                CanDisplayField = true;
+            if (OutputGradientMeanAndStdDev)
+                CanDisplayGradientMeanAndStdDevFields = true;
+            if (OutputFlowRate)
+                CanDisplayFlowRateHist = true;
+            if (OutputBlockConductivities)
+                CanDisplayEffectiveConductivityHist = true;
+            if (OutputGradientMeanAndStdDev & NodesForGradientOutput.Where((x) => x != null).Count() > 0)
+                CanDisplayNodeGradientHist = true;
 
             currentOp.Report("Finished");
 

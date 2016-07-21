@@ -26,17 +26,13 @@ namespace RFEM_Software
 
             if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
             {
-                MessageBox.Show("Windows 7");
+                //Windows 7 textboxes need to be large for some reason.
                 app.Resources["TBHeight"] = (double)22;
             }
             else
             {
-                MessageBox.Show("Not windows 7");
                 app.Resources["TBHeight"] = (double)18;
             }
-            MessageBox.Show(Environment.OSVersion.ToString());
-            
-            
             app.Run();
         }
     }

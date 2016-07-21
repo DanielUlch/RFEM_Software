@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace RFEM_Infrastructure
 {
     public static class FileReader
     {
-        public static IHasDataFile Read(Program type, string filePath)
+        public static ISimModel Read(Program type, string filePath)
         {
             switch (type)
             {
@@ -16,6 +17,8 @@ namespace RFEM_Infrastructure
                     return ReadRBearFile(filePath);
                 case Program.RDam2D:
                     return ReadRDamFile(filePath);
+                case Program.REarth2D:
+                    return ReadREarth2DFile(filePath);
                 default:
                     throw new NotImplementedException("A read function has not been implemented for the selected data file.");
             }
@@ -185,7 +188,7 @@ namespace RFEM_Infrastructure
                     throw new FormatException("Unable to read Poisson's Ratio distribution data from data file.");
 
                 Line = reader.ReadLine();
-                formData.NSimulations = Line.Substring(LHSLength).Trim().Split(' ')[0].ToNullableInt32();
+                formData.NumberOfRealizations = int.Parse(Line.Substring(LHSLength).Trim().Split(' ')[0]);
 
                 Line = reader.ReadLine();
                 formData.GeneratorSeed = Line.Substring(LHSLength).Trim().Split(' ')[0].ToNullableInt32();
@@ -239,6 +242,7 @@ namespace RFEM_Infrastructure
             string Line;
             string[] LineFragments;
             int LHSLength = 50;
+            List<int?> Nodes = new List<int?>();
 
             using (var reader = new System.IO.StreamReader(filePath))
             {
@@ -281,19 +285,23 @@ namespace RFEM_Infrastructure
                 formData.NumElementsInYDir = int.Parse(LineFragments[1]);
 
                 Line = reader.ReadLine();
-                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                if (Line.Length <= LHSLength)
+                    LineFragments = new string[0];
+                else
+                    LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
                 
                 for(int i = 1; i <= 6; i++)
                 {
                     if(i<= LineFragments.Length)
                     {
-                        formData.NodesForGradientOutput.Add(int.Parse((LineFragments[i - 1])));
+                        formData.NodesForGradientOutput[i - 1] = int.Parse((LineFragments[i - 1]));
                     }
                     else
                     {
-                        formData.NodesForGradientOutput.Add(null);
+                        formData.NodesForGradientOutput[i - 1] = null;
                     }
                 }
+                
 
                 Line = reader.ReadLine();
                 LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
@@ -371,10 +379,329 @@ namespace RFEM_Infrastructure
 
                 Line = reader.ReadLine();
                 formData.ShowCentroidsOnMesh = TFInverse(Line.Substring(LHSLength));
-
+                
                 return formData;
             }
         }
+        private static REarth2D ReadREarth2DFile(string filePath)
+        {
+            var formData = new REarth2D();
+            string Line;
+            string[] LineFragments;
+            int LHSLength = 50;
+
+            using (var reader = new System.IO.StreamReader(filePath))
+            {
+                formData.JobTitle = reader.ReadLine();
+                formData.BaseName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+
+                formData.EchoInputDataToOutputFile = reader.ReadLine().Substring(LHSLength).ToBool();
+
+                reader.ReadLine();
+
+                formData.WriteDebugDataToOutputFile = reader.ReadLine().Substring(LHSLength).ToBool();
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.PlotFirstRandomField = LineFragments[0].ToBool();
+                formData.FirstRFPropertyToPlot = LineFragments[2].PropertyCharInv();
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.ProducePSPlotOfFirstFEM = LineFragments[0].ToBool();
+
+                formData.StoreWallReactionSamples = reader.ReadLine().Substring(LHSLength).ToBool();
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.NElementsInXDir = int.Parse(LineFragments[0]);
+                formData.NElementsInYDir = int.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.ElementSizeInXDir = double.Parse(LineFragments[0]);
+                formData.ElementSizeInYDir = double.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.WallExtension = int.Parse(LineFragments[0]);
+                formData.RoughWallSurface = LineFragments[1].ToBool();
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.DisplacementIncrement = double.Parse(LineFragments[0]);
+                formData.PlasticTol = double.Parse(LineFragments[1]);
+                formData.StressTol = double.Parse(LineFragments[2]);
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.MaxNumSteps = int.Parse(LineFragments[0]);
+                formData.MaxNumIterations = int.Parse(LineFragments[1]);
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.Cohesion.Mean = double.Parse(LineFragments[0]);
+                formData.Cohesion.StdDev = double.Parse(LineFragments[1]);
+                formData.Cohesion.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+                    
+                }
+                else if(LineFragments.Length == 6)
+                {
+                    formData.Cohesion.Intercept = double.Parse(LineFragments[3]);
+                    formData.Cohesion.Slope = double.Parse(LineFragments[4]);
+                    formData.Cohesion.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if(LineFragments.Length == 7)
+                {
+                    formData.Cohesion.LowerBound = double.Parse(LineFragments[3]);
+                    formData.Cohesion.UpperBound = double.Parse(LineFragments[4]);
+                    formData.Cohesion.Location = double.Parse(LineFragments[5]);
+                    formData.Cohesion.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+
+                //Friction angle distribution prefixed by t when the rv is tan(phi)
+                if (LineFragments[2].ToCharArray()[0] == 't')
+                {
+                    formData.FrictionAngleType = FrictionAngle.TanPhi;
+                    LineFragments[2] = LineFragments[2].Substring(1);
+                }
+
+                formData.FrictionAngle.Mean = double.Parse(LineFragments[0]);
+                formData.FrictionAngle.StandardDev = double.Parse(LineFragments[1]);
+                formData.FrictionAngle.Type = LineFragments[2].DistCharInv();
+                
+
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.FrictionAngle.LowerBound = double.Parse(LineFragments[3]);
+                    formData.FrictionAngle.UpperBound = double.Parse(LineFragments[4]);
+                    formData.FrictionAngle.Location = double.Parse(LineFragments[5]);
+                    formData.FrictionAngle.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.DilationAngle.Mean = double.Parse(LineFragments[0]);
+                formData.DilationAngle.StdDev = double.Parse(LineFragments[1]);
+                formData.DilationAngle.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 6)
+                {
+                    formData.DilationAngle.Intercept = double.Parse(LineFragments[3]);
+                    formData.DilationAngle.Slope = double.Parse(LineFragments[4]);
+                    formData.DilationAngle.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.DilationAngle.LowerBound = double.Parse(LineFragments[3]);
+                    formData.DilationAngle.UpperBound = double.Parse(LineFragments[4]);
+                    formData.DilationAngle.Location = double.Parse(LineFragments[5]);
+                    formData.DilationAngle.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.ElasticModulus.Mean = double.Parse(LineFragments[0]);
+                formData.ElasticModulus.StdDev = double.Parse(LineFragments[1]);
+                formData.ElasticModulus.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 6)
+                {
+                    formData.ElasticModulus.Intercept = double.Parse(LineFragments[3]);
+                    formData.ElasticModulus.Slope = double.Parse(LineFragments[4]);
+                    formData.ElasticModulus.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.ElasticModulus.LowerBound = double.Parse(LineFragments[3]);
+                    formData.ElasticModulus.UpperBound = double.Parse(LineFragments[4]);
+                    formData.ElasticModulus.Location = double.Parse(LineFragments[5]);
+                    formData.ElasticModulus.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.PoissonsRatio.Mean = double.Parse(LineFragments[0]);
+                formData.PoissonsRatio.StdDev = double.Parse(LineFragments[1]);
+                formData.PoissonsRatio.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 6)
+                {
+                    formData.PoissonsRatio.Intercept = double.Parse(LineFragments[3]);
+                    formData.PoissonsRatio.Slope = double.Parse(LineFragments[4]);
+                    formData.PoissonsRatio.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.PoissonsRatio.LowerBound = double.Parse(LineFragments[3]);
+                    formData.PoissonsRatio.UpperBound = double.Parse(LineFragments[4]);
+                    formData.PoissonsRatio.Location = double.Parse(LineFragments[5]);
+                    formData.PoissonsRatio.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.UnitWeight.Mean = double.Parse(LineFragments[0]);
+                formData.UnitWeight.StdDev = double.Parse(LineFragments[1]);
+                formData.UnitWeight.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 6)
+                {
+                    formData.UnitWeight.Intercept = double.Parse(LineFragments[3]);
+                    formData.UnitWeight.Slope = double.Parse(LineFragments[4]);
+                    formData.UnitWeight.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.UnitWeight.LowerBound = double.Parse(LineFragments[3]);
+                    formData.UnitWeight.UpperBound = double.Parse(LineFragments[4]);
+                    formData.UnitWeight.Location = double.Parse(LineFragments[5]);
+                    formData.UnitWeight.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.PressureCoefficient.Mean = double.Parse(LineFragments[0]);
+                formData.PressureCoefficient.StdDev = double.Parse(LineFragments[1]);
+                formData.PressureCoefficient.DistributionType = LineFragments[2].REarthDistCharInv();
+                if (LineFragments.Length == 3)
+                {
+
+                }
+                else if (LineFragments.Length == 6)
+                {
+                    formData.PressureCoefficient.Intercept = double.Parse(LineFragments[3]);
+                    formData.PressureCoefficient.Slope = double.Parse(LineFragments[4]);
+                    formData.PressureCoefficient.PhiFunc = LineFragments[5].PhiCharInv();
+                }
+                else if (LineFragments.Length == 7)
+                {
+                    formData.PressureCoefficient.LowerBound = double.Parse(LineFragments[3]);
+                    formData.PressureCoefficient.UpperBound = double.Parse(LineFragments[4]);
+                    formData.PressureCoefficient.Location = double.Parse(LineFragments[5]);
+                    formData.PressureCoefficient.Scale = double.Parse(LineFragments[6]);
+                }
+                else
+                {
+                    throw new FormatException("Unable to read distribution data from data file.");
+                }
+
+                formData.NumberOfRealizations = int.Parse(reader.ReadLine().Substring(LHSLength).Trim());
+                formData.GeneratorSeed = int.Parse(reader.ReadLine().Substring(LHSLength).Trim());
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.CorrelationLengthInXDir = int.Parse(LineFragments[0]);
+                formData.CorrelationLengthInYDir = int.Parse(LineFragments[1]);
+
+                formData.CovFunction = CovFuncCharInv(reader.ReadLine().Substring(LHSLength).Trim());
+
+                reader.ReadLine();
+                reader.ReadLine();
+                reader.ReadLine();
+                reader.ReadLine();
+                reader.ReadLine();
+
+                Line = reader.ReadLine();
+                while (Line.Trim().Length > 0)
+                {
+                    LineFragments = Line.Split(' ').Where(p => p != "").ToArray();
+
+                    int i = (int)PropertyCharInv(LineFragments[0]);
+                    int j = (int)PropertyCharInv(LineFragments[1]);
+
+                    formData.CorrelationMatrix[i, j] = double.Parse(LineFragments[2]);
+                    formData.CorrelationMatrix[j, i] = double.Parse(LineFragments[2]);
+
+                    Line = reader.ReadLine();
+                }
+
+                formData.ShowMeshOnDisplacedMeshPlot = reader.ReadLine().Substring(LHSLength).Trim().ToBool();
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+                formData.ShowRandomFieldOnDisplacedMesh = LineFragments[0].Trim().ToBool();
+                formData.ShowLogRandomField = LineFragments[1].Trim().ToBool();
+                formData.DisplacedMeshPropertyToPlot = LineFragments[2].PropertyCharInv();
+
+                formData.DisplacedMeshWidth = double.Parse(reader.ReadLine().Substring(LHSLength).Trim());
+
+                int NumSamples = int.Parse(reader.ReadLine().Substring(LHSLength).Trim());
+
+                Line = reader.ReadLine();
+                LineFragments = Line.Substring(LHSLength).Trim().Split(' ');
+
+                for (int k = 1; k <= NumSamples; k++)
+                {
+
+                    var sample = new SampleLocation()
+                    {
+                        XCoordinate = (int?)int.Parse(LineFragments[2 * k - 2]),
+                        YCoordinate = int.Parse(LineFragments[2 * k - 1])
+                    };
+
+                    formData.SampleLocations[k - 1] = sample;
+                    
+
+                }
+                
+
+                formData.OutputSampledSoilProperties = reader.ReadLine().Substring(LHSLength).Trim().ToBool();
+            }
+
+            return formData;
+
+            }
         private static CovarianceFunction CovFuncCharInv(string covFuncChar)
         {
             switch (covFuncChar)
@@ -403,7 +730,7 @@ namespace RFEM_Infrastructure
                 case 'n':
                     return DistributionType.Normal;
                 case 'l':
-                    return DistributionType.LogNormal;
+                    return DistributionType.Lognormal;
                 case 'b':
                     return DistributionType.Bounded;
                 default:

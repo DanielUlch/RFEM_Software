@@ -22,10 +22,10 @@ namespace RFEM_Software.Forms
     /// This form is created by the main window and placed in the tab control. This
     /// form is used for data input for the RBear2d.exe application.
     /// </summary>
-    public partial class Rbear2dForm : UserControl, ISimView
+    public partial class Rbear2DForm : UserControl, ISimView
     {
 
-        private RBear2dViewModel _ViewModel;
+        private RBear2DViewModel _ViewModel;
 
         
         private List<FrameworkElement> _HoverHelpControls;
@@ -59,10 +59,10 @@ namespace RFEM_Software.Forms
         /// <summary>
         /// Contsructor for the form
         /// </summary>
-        public Rbear2dForm()
+        public Rbear2DForm()
         {
 
-            _ViewModel = new RBear2dViewModel();
+            _ViewModel = new RBear2DViewModel();
 
             this.DataContext = _ViewModel;
 
@@ -80,9 +80,9 @@ namespace RFEM_Software.Forms
             
 
         }
-        public Rbear2dForm(RBear2D formData)
+        public Rbear2DForm(RBear2D formData)
         {
-            _ViewModel = new RBear2dViewModel(formData);
+            _ViewModel = new RBear2DViewModel(formData);
 
             this.DataContext = _ViewModel;
 
@@ -237,28 +237,7 @@ namespace RFEM_Software.Forms
         }
 
 
-        /// <summary>
-        /// This method changes the namescope of all context menus in the form. This is done
-        /// so that their root controls can be passed in the command parameters. This method
-        /// uses an extension method to recursively search the visual tree for each control
-        /// in this form. Because context menus do not show up in the visual tree themselves, 
-        /// we must check the context menus of every control. This must happen after the loaded 
-        /// event because the tree is not availabile during initialization.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Form_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Initialize Context Menus
-            foreach (var ctrl in this.GetChildren())
-            {
-                var CastCtrl = ctrl as FrameworkElement;
-                if (CastCtrl != null && CastCtrl.ContextMenu != null)
-                {
-                    NameScope.SetNameScope(CastCtrl.ContextMenu, NameScope.GetNameScope(this));
-                }
-            }
-        }
+        
        
         #region CompilerTricks
         /// <summary>
@@ -361,7 +340,7 @@ namespace RFEM_Software.Forms
             lbFootingGap.Visibility = Visibility.Visible;
             txtFootingGap.Visibility = Visibility.Visible;
 
-            ((RBear2dViewModel)DataContext).NumberOfFootings = 2;
+            ((RBear2DViewModel)DataContext).NumberOfFootings = 2;
         }
 
         /// <summary>
@@ -375,7 +354,7 @@ namespace RFEM_Software.Forms
             lbFootingGap.Visibility = Visibility.Collapsed;
             txtFootingGap.Visibility = Visibility.Collapsed;
 
-            ((RBear2dViewModel)DataContext).NumberOfFootings = 1;
+            ((RBear2DViewModel)DataContext).NumberOfFootings = 1;
         }
 
         /// <summary>
@@ -426,7 +405,7 @@ namespace RFEM_Software.Forms
                     lbCohesionScale.Visibility = Visibility.Collapsed;
                     txtCohesionScale.Visibility = Visibility.Collapsed;
                     break;
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     lbCohesionMean.Visibility = Visibility.Visible;
                     txtCohesionMean.Visibility = Visibility.Visible;
 
@@ -517,7 +496,7 @@ namespace RFEM_Software.Forms
                     txtFrictionAngleScale.Visibility = Visibility.Collapsed;
                     break;
 
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     lbFrictionAngleMean.Visibility = Visibility.Visible;
                     txtFrictionAngleMean.Visibility = Visibility.Visible;
 
@@ -608,7 +587,7 @@ namespace RFEM_Software.Forms
                     lbDilationAngleScale.Visibility = Visibility.Collapsed;
                     txtDilationAngleScale.Visibility = Visibility.Collapsed;
                     break;
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     lbDilationAngleMean.Visibility = Visibility.Visible;
                     txtDilationAngleMean.Visibility = Visibility.Visible;
 
@@ -701,7 +680,7 @@ namespace RFEM_Software.Forms
                     txtElasticModScale.Visibility = Visibility.Collapsed;
                     break;
 
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     lbElasticModMean.Visibility = Visibility.Visible;
                     txtElasticModMean.Visibility = Visibility.Visible;
 
@@ -794,7 +773,7 @@ namespace RFEM_Software.Forms
                     txtPoissonRatioScale.Visibility = Visibility.Collapsed;
                     break;
 
-                case DistributionType.LogNormal:
+                case DistributionType.Lognormal:
                     lbPoissonRatioMean.Visibility = Visibility.Visible;
                     txtPoissonRatioMean.Visibility = Visibility.Visible;
 

@@ -1,0 +1,32 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        This entry is used to specify whether virtual samples of the friction
+angle, unit weight, and cohesion are to be taken from the appropriate
+random fields. What this means is that a site investigation process
+is emulated by 'investigating' the simulated soil properties at one or
+more locations. In particular soil properties are 'sampled' by
+examining one or more finite element properties within the mesh.
+
+If this option is enabled, the location(s) at which the samples are to
+be taken must be entered in the subsequent edit box. An option is also
+provided to record the (average) sampled soil properties in an output
+file (*.sam) for each realization.
+
+In addition, if this option is enabled, then earth forces are predicted,
+in either the active and passive cases, using Rankine's theory. If the
+fields are sampled at more than one location, a geometric average of the
+sample values is used in the Rankine earth force predictions. The
+predicted lateral load and resulting overturning moments are output to
+the *.cap output file. The predicted lateral loads and overturning
+moments are also compared to those obtained via the FEM analysis.
+If the predicted load (or moment), multiplied by a factor-of-safety, is
+less than the FEM load (or moment), then a design failure is deemed to
+have occurred. The estimated probability of design failure is output to
+*.stt, for various factors-of-safety.
+
+If this option is not enabled, then Rankine load prediction (and design
+reliability calculation) is turned off. This is the default.
+    </Paragraph>
+</FlowDocument>

@@ -1,0 +1,63 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The following discussion refers to random processes having `short memory'
+correlation structures (see, for example, dlavx2, dlsep2, or dlspx2).  The
+class of random processes having infinite correlation lengths, such as fractal
+processes (see, for example, dlafr2 and dlsfr2), are characterized by
+parameters other than the correlation length, also called the `scale of
+fluctuation'.  However, `short memory' random processes are preferable because
+they have finite variance, and so are physically realizable.
+
+   A `correlation length' or `scale of fluctuation' is, roughly speaking,
+the separation distance beyond which soil properties at two points are
+negligibly correlated. For example, if the correlation length is 5.0 m,
+then the soil properties at two points separated by 10 m are pretty well
+statistically independent (ie, one does not affect the other). On the other
+hand, the soil properties at two points separated by only 1.0 m will be
+reasonably highly correlated, so that if one is large, for example, the
+other will also tend to be large.
+
+   Small correlation lengths result in random fields which are very erratic,
+while large correlation lengths result in random fields which are `smoother'
+and more slowly varying (at least at some resolutions).
+
+   In general, the correlation lengths can be different in the two orthogonal
+directions (horizontally and vertically). Since soils are often layered
+horizontally, the correlation length in the horizontal direction is generally
+larger than in the vertical direction (that is, soil properties will often be
+more `persistent' in the horizontal direction). Note that the Local Average
+Subdivision simulation method used by this program involves an approximation
+to the true joint distribution that tends to be reasonably accurate only when
+the ratio of the larger correlation length to the smaller is less than about
+10.
+
+   Because there is some evidence that soil properties are actually fractal in
+nature (statistically self-similar at a variety of scales), then, if in doubt,
+one rule of thumb is to choose correlation lengths which are about 1/10 to
+1/4 of the size of the soil regime in each direction. For example, if the soil
+mass being modeled is of depth 5.0 m and width 40.0 m, one might choose the
+vertical correlation length to be 0.5 m, and the horizontal scale of
+fluctuation to be 10.0 m.
+
+   Notes:
+        1) the mathematical definition of the correlation length used in
+           this program is the area under the correlation function from
+           minus infinity to plus infinity. Some definitions of `correlation
+           length' involve only the positive half of the area, and so
+           differ from this definition by a factor of 2.
+        2) setting a correlation length to zero results (theoretically)
+           in a white noise process. Such a process is physically
+           unrealizable, since it has infinite variance, and the numerical
+           simulation will fail. If independence between properties in each
+           finite element is desired, it is generally sufficient to set the
+           correlation length to some value quite a bit smaller than the
+           element size. Remember, however, that the variance of the local
+           average over the element size is very dependent on the correlation
+           length (as the length decreases, the variance of the average
+           also decreases). Thus, setting the correlation length to a
+           very small number may result in a simulation with very little
+           variability at the finite element scale.
+    </Paragraph>
+</FlowDocument>

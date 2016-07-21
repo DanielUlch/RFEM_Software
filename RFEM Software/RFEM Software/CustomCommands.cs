@@ -8,8 +8,6 @@ namespace RFEM_Software.Commands
     /// </summary>
     public static class CustomCommands
     {
-        public static readonly RoutedUICommand HelpClick = new RoutedUICommand("Help", "HelpClick",
-                           typeof(CustomCommands));
         public static readonly RoutedUICommand NewHelpClick = new RoutedUICommand("Help", "NewHelpClick", typeof(CustomCommands));
     }
 }

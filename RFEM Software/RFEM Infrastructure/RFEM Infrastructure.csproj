@@ -58,9 +58,14 @@
   <ItemGroup>
     <Compile Include="DistributionInfo.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="FileWriter.cs" />
-    <Compile Include="IHasDataFile.cs" />
+    <Compile Include="Sim Models\REarth2D.cs" />
+    <Compile Include="Wrappers\GhostViewWrapper.cs" />
+    <Compile Include="ISimModel.cs" />
+    <Compile Include="Wrappers\HistogramExeWrapper.cs" />
+    <Compile Include="Wrappers\PlotPSWrapper.cs" />
     <Compile Include="Sim Models\RBear2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sim Models\RDam2D.cs" />
@@ -72,6 +77,9 @@
     <Content Include="Executables\hist_bear2d.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Executables\hist_dam2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Executables\plotps.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -79,6 +87,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Executables\rdam2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rearth2d.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

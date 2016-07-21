@@ -1,0 +1,18 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEM_Software.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        The `output wall reaction samples' flag, when checked, results in a sequence
+of (nsim) computed horizontal wall reaction and overturning moment
+realizations to be written to the output file *.cap. The wall reaction is
+equal to the load imposed on the wall by the plastic failure of the soil
+and the overturning moment is the sum of the incremental forces exerted on
+the wall by the soil times the distance to the base of the wall.
+
+This flag is usually worth enabling when the number of simulations, nsim, is
+greater than 1, since the output file can then be postprocessed to estimate
+distributions and probabilities associated with wall loads. See the Results
+menu after the program has completed.
+
+    </Paragraph>
+</FlowDocument>

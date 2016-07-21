@@ -76,8 +76,6 @@ namespace RFEM_Software {
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main() {
-            SplashScreen splashScreen = new SplashScreen("images/splashscreen.png");
-            splashScreen.Show(true);
             RFEM_Software.App app = new RFEM_Software.App();
             app.InitializeComponent();
             app.Run();

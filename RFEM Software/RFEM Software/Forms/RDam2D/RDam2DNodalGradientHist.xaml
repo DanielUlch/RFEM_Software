@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="RFEM_Software.Forms.RDam2DNodalGradientHist"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RFEM_Software.Forms"
+             xmlns:cc="clr-namespace:RFEM_Software.Custom_Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Border Name="HistElement" Height="500" Width="500" Margin="15" BorderThickness="3" Grid.Column="1" HorizontalAlignment="Left">
+
+        </Border>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+
+            <DockPanel>
+
+                <TextBlock Name="tbHistTitle" 
+                           Style="{StaticResource HelpEnabled}"
+                           Text="Nodal Gradient/Flux/Potential Histogram Options"
+                           Tag="NodalHistograms"
+                           DockPanel.Dock="Left">
+                    <TextBlock.ToolTip>
+                        <cc:RFEMToolTip Title="Nodal Histograms"
+                                        ToolTipMessage="This histogram will plot realizations from the RDam simulation."/>
+                    </TextBlock.ToolTip>
+                </TextBlock>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <Button Name="btnUpdateHistogram"
+                            Click="btnUpdateHistogram_Click"
+                            Margin="5"
+                            Height="25"
+                            Width="25">
+                        <Button.Background>
+                            <ImageBrush ImageSource="pack://application:,,,/Images/Refresh.png" Stretch="UniformToFill" />
+
+                        </Button.Background>
+                        <Button.ToolTip>
+                            <cc:RFEMToolTip Title="Refresh Histogram"
+                                ToolTipMessage="Apply changes to embedded histogram."/>
+                        </Button.ToolTip>
+                    </Button>
+
+                    <Button Name="btnPopOutHistogram"
+                            Click="btnPopOutHistogram_Click"
+                            Margin="5"
+                            Height="25"
+                            Width="25">
+                        <Button.Background>
+                            <ImageBrush ImageSource="pack://application:,,,/Images/OpenInWindow.png" Stretch="UniformToFill"/>
+                        </Button.Background>
+                        <Button.ToolTip>
+                            <cc:RFEMToolTip Title="Pop Out Histogram"
+                                    ToolTipMessage="Displays the histogram in a separate window."/>
+                        </Button.ToolTip>
+                    </Button>
+
+                </StackPanel>
+
+            </DockPanel>
+
+            <GroupBox Name="gbQuantityToPlot"
+                      Style="{StaticResource HelpEnabled}"
+                      Tag="NodalHistQuantityToPlot">
+                <GroupBox.Header>
+                    <TextBlock Name="tbQuantityToPlot"
+                               Style="{StaticResource HelpEnabled}"
+                               Tag="NodalHistQuantityToPlot"
+                               Text="Histogram Plot Quantity">
+                        <TextBlock.ToolTip>
+                            <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                            ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </GroupBox.Header>
+                <GroupBox.ToolTip>
+                    <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                    ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                </GroupBox.ToolTip>
+                <StackPanel Orientation="Horizontal">
+
+                    <RadioButton Name="rbGradient"
+                                 GroupName="gpHistQuantityToPlot"
+                                 Style="{StaticResource HelpEnabled}"
+                                 Tag="NodalHistQuantityToPlot"
+                                 Content="Gradient"
+                                 IsChecked="{Binding Path=GradientQuantity, UpdateSourceTrigger=PropertyChanged}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                            ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+
+                    <RadioButton Name="rbFlux"
+                                 GroupName="gpHistQuantityToPlot"
+                                 Style="{StaticResource HelpEnabled}"
+                                 Tag="NodalHistQuantityToPlot"
+                                 Content="Flux"
+                                 IsChecked="{Binding Path=FluxQuantity, UpdateSourceTrigger=PropertyChanged}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                            ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+
+                    <RadioButton Name="rbPotential"
+                                 GroupName="gpHistQuantityToPlot"
+                                 Style="{StaticResource HelpEnabled}"
+                                 Tag="NodalHistQuantityToPlot"
+                                 Content="Potential"
+                                 IsChecked="{Binding Path=PotentialQuantity, UpdateSourceTrigger=PropertyChanged}">
+                        <RadioButton.ToolTip>
+                            <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                            ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                        </RadioButton.ToolTip>
+                    </RadioButton>
+                    
+                </StackPanel>
+                
+            </GroupBox>
+
+            <StackPanel Orientation="Horizontal">
+
+                <Label Name="lbNodeNumberToPlot"
+                       Style="{StaticResource HelpEnabled}"
+                       Tag="NodalHistQuantityToPlot"
+                       Content="at node number:">
+                    <Label.ToolTip>
+                        <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                        ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                    </Label.ToolTip>
+                </Label>
+
+                <ComboBox Name="cboNodeNumberToPlot"
+                          Style="{StaticResource HelpEnabled}"
+                          Tag="NodalHistQuantityToPlot"
+                          ItemsSource="{Binding Path=NodesToPlot}"
+                          SelectedValue="{Binding Path=NodeToPlot,UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ToolTip>
+                        <cc:RFEMToolTip Title="Histogram Plot Quantity"
+                                        ToolTipMessage="Plot the gradient, flux or potential at the specified node."/>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+            </StackPanel>
+
+            <local:HistogramFormCore x:Name="HistCore">
+                
+            </local:HistogramFormCore>
+        </StackPanel>
+    </Grid>
+</UserControl>

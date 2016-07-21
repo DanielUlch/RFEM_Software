@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace RFEM_Software.Forms
 {
-    class RBear2dViewModel: INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    class RBear2DViewModel: INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private RBear2D _FormData;
         
@@ -25,7 +25,10 @@ namespace RFEM_Software.Forms
         private List<string> _Errors;
 
         
-
+        public ISimModel Model
+        {
+            get { return _FormData; }
+        }
         public string JobTitle
         {
             get { return _FormData.JobTitle; }
@@ -413,14 +416,14 @@ namespace RFEM_Software.Forms
                 }
             }
         }
-        public int? NSimulations
+        public int NSimulations
         {
-            get { return _FormData.NSimulations; }
+            get { return _FormData.NumberOfRealizations; }
             set
             {
-                if(_FormData.NSimulations != value)
+                if(_FormData.NumberOfRealizations != value)
                 {
-                    _FormData.NSimulations = value;
+                    _FormData.NumberOfRealizations = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -741,13 +744,13 @@ namespace RFEM_Software.Forms
                 return Validate(this, columnName);
             }
         }
-        public RBear2dViewModel()
+        public RBear2DViewModel()
         {
             _FormData = new RBear2D();
             InitializeLists();
 
         }
-        public RBear2dViewModel(RBear2D formData)
+        public RBear2DViewModel(RBear2D formData)
         {
             _FormData = formData;
             InitializeLists();
@@ -879,7 +882,7 @@ namespace RFEM_Software.Forms
                     }
                     break;
                 case "NSimulations":
-                    if(_FormData.NSimulations == null || _FormData.NSimulations < 0)
+                    if(_FormData.NumberOfRealizations == null || _FormData.NumberOfRealizations < 0)
                     {
                         validationMessage = "Number of simulations must be a positive integer.";
                     }
@@ -907,7 +910,7 @@ namespace RFEM_Software.Forms
                     {
                         if((((DistributionInfo)sender).Type == DistributionType.Deterministic ||
                             ((DistributionInfo)sender).Type == DistributionType.Normal ||
-                            ((DistributionInfo)sender).Type == DistributionType.LogNormal)&&
+                            ((DistributionInfo)sender).Type == DistributionType.Lognormal)&&
                             ((DistributionInfo)sender).Mean == null)
                         {
                             validationMessage = "Mean must be specified for " +
@@ -921,7 +924,7 @@ namespace RFEM_Software.Forms
                     if (sender.GetType() == typeof(DistributionInfo))
                     {
                         if ((((DistributionInfo)sender).Type == DistributionType.Normal ||
-                            ((DistributionInfo)sender).Type == DistributionType.LogNormal))
+                            ((DistributionInfo)sender).Type == DistributionType.Lognormal))
                         {
                             if (((DistributionInfo)sender).StandardDev == null)
                             {
@@ -1145,8 +1148,8 @@ namespace RFEM_Software.Forms
                 FileWriter.Write(_FormData);
                 var tsk = Task<string>.Run(() => _FormData.RunSim(new Progress<int>(p =>
                     {
-                        ProgressPercentage = p * 100 / (int)_FormData.NSimulations;
-                        ProgressDetails = string.Format("Realization {0}/{1}", p, _FormData.NSimulations);
+                        ProgressPercentage = p * 100 / (int)_FormData.NumberOfRealizations;
+                        ProgressDetails = string.Format("Realization {0}/{1}", p, _FormData.NumberOfRealizations);
                     }), new Progress<string>(ps =>
                     {
                         CurrentOperation = ps;
@@ -1225,6 +1228,10 @@ namespace RFEM_Software.Forms
 
             p = new Process { StartInfo = pInfo };
             p.Start();
+        }
+        public RBear2DHistForm CreateNewBearingHistForm()
+        {
+            return new RBear2DHistForm((int)NSimulations, NumberOfFootings, BaseName, HistFilePath);
         }
     }
 

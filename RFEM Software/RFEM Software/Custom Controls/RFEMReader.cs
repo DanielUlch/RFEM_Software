@@ -90,7 +90,36 @@ namespace RFEM_Software.Custom_Controls
             {"ModifiedSpacingAlgorithms", "Help Files/RDam Help Files/ModifiedSpacingAlgorithms.xaml" },
             {"UseAlternateAlgoIfFirstFails", "Help Files/RDam Help Files/UseAlternateAlgoIfFirstFails.xaml" },
             {"RestrainFreeSurfaceNonIncreasing", "Help Files/RDam Help Files/RestrainFreeSurfaceNonIncreasing.xaml" },
-            {"DampOscillations", "Help Files/RDam Help Files/DampOscillations.xaml" }
+            {"DampOscillations", "Help Files/RDam Help Files/DampOscillations.xaml" },
+
+            //RDam2D Histogram FIles
+            {"FlowRateHistogram", "Help Files/RDamHist Help Files/FlowRateHistogram.xaml" },
+            {"FlowPropertyToPlot", "Help Files/RDamHist Help Files/FlowPropertyToPlot.xaml" },
+            {"ConductivityHistogram", "Help Files/RDamHist Help Files/ConductivityHistogram.xaml" },
+            {"ConductivityTypeToPlot", "Help Files/RDamHist Help Files/ConductivityTypeToPlot.xaml" },
+            {"NodalHistograms", "Help Files/RDamHist Help Files/NodalHistograms.xaml" },
+            {"NodalHistQuantityToPlot", "Help Files/RDamHist Help Files/NodalHistQuantityToPlot.xaml" },
+
+            //REarth2D Help Files
+            {"REarthOutputDebugInformation", "Help Files/REarth Help Files/REarthOutputDebugInformation.xaml" },
+            {"PlotFirstRandomField", "Help Files/REarth Help Files/PlotFirstRandomField.xaml" },
+            {"REarthProducePSPlotOfFirstFEM","Help Files/REarth Help Files/REarthProducePSPlotOfFirstFEM.xaml" },
+            {"ShowMeshOnDisplacedMeshPlot", "Help Files/REarth Help Files/ShowMeshOnDisplacedMeshPlot.xaml" },
+            {"ShowRandomFieldOnDisplacedMesh", "Help Files/REarth Help Files/ShowRandomFieldOnDisplacedMesh.xaml" },
+            {"REarthDisplacedMeshWidth", "Help Files/REarth Help Files/REarthDisplacedMeshWidth.xaml" },
+            {"StoreWallReactionSamples", "Help Files/REarth Help Files/StoreWallReactionSamples.xaml" },
+            {"VirtuallySampleSoil", "Help Files/REarth Help Files/VirtuallySampleSoil.xaml" },
+            {"SampleLocations", "Help Files/REarth Help Files/SampleLocations.xaml" },
+            {"OutputSampledSoilProperties", "Help Files/REarth Help Files/OutputSampledSoilProperties.xaml" },
+            {"REarthNumberOfElements", "Help Files/REarth Help Files/REarthNumberOfElements.xaml" },
+            {"REarthElementSize", "Help Files/REarth Help Files/REarthElementSize.xaml" },
+            {"WallDepthAndRoughness", "Help Files/REarth Help Files/WallDepthAndRoughness.xaml" },
+            {"DisplacementIncPlasticTolStressTol", "Help Files/REarth Help Files/DisplacementIncPlasticTolStressTol.xaml" },
+            {"REarthMaxNumStepsIterations", "Help Files/REarth Help Files/REarthMaxNumStepsIterations.xaml" },
+            {"REarthNumSimulations", "Help Files/REarth Help Files/REarthNumSimulations.xaml" },
+            {"REarthGeneratorSeed", "Help Files/REarth Help Files/REarthGeneratorSeed.xaml" },
+            {"REarthCorrelationLengths", "Help Files/REarth Help Files/REarthCorrelationLengths.xaml" },
+            {"REarthCovarianceFunction", "Help Files/REarth Help Files/REarthCovarianceFunction.xaml" }
         };
 
         public void LoadHelpTopic(string topic)

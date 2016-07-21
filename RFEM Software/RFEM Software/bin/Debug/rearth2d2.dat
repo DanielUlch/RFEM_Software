@@ -1,0 +1,35 @@
+Active Earth Pressure Analysis
+Echo input data to stats file (t/f)? . . . . . .  t
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to *.stt file (t/f)? . . . . . .  f
+Display a random field to *.fld (t/f)? . . . . .  t 1 c
+Plot displaced FE mesh to *.dis (t/f)? . . . . .  t 1
+Output soil force samples? . . . . . . . . . . .  t
+Number of elements in X and Y directions . . . .  32 32
+Element size in X and Y directions . . . . . . .  0.1 0.1
+Wall depth in elements [rough?]  . . . . . . . .  16 f
+Displacement increment, plastic tol, stress tol.  -1E-05 0.001 0.001
+Max displacement steps, max iterations . . . . .  50 300
+Cohesion mean, SD, dist  . . . . . . . . . . . .  0 0 deterministic
+Friction angle mean, SD, dist  . . . . . . . . .  0.57735 0.173205 tlognormal
+Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Elastic modulus mean, SD, dist . . . . . . . . .  100000 0 deterministic
+Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
+Unit weight mean, SD, dist . . . . . . . . . . .  20 6 lognormal
+Pressure coeff mean/SD, dist, a, b, f(phi) . . .  0 0 f(phi) 1 -1 1
+Number of realizations . . . . . . . . . . . . .  10
+Generator seed (0 for random seed) . . . . . . .  0
+Scale of fluctuation in X [and Y] directions . .  1 1
+Name of covariance function  . . . . . . . . . .  dlavx2
+
+Material Property Correlation Matrix Data
+=========================================
+Property 1    Property 2    Correlation
+----------    ----------    -----------
+
+Show element boundaries  . . . . . . . . . . . .  t
+Show random field as background [log?] [prop?] .  t f c
+Width of displaced mesh output plot in inches  .  4
+Number of soil property samples to take  . . . .  2
+Locations of samples: (x,y) index pairs  . . . .  1 1 2 2
+Output sampled soil properties to *.sam? . . . .  f

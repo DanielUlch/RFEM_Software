@@ -8,7 +8,7 @@ namespace RFEM_Infrastructure
 {
     public static class FileWriter
     {
-        public static void Write(IHasDataFile formData)
+        public static void Write(ISimModel formData)
         {
             using (var fileWriter = new System.IO.StreamWriter(formData.DataFileLocation(), false))
             {
@@ -27,7 +27,7 @@ namespace RFEM_Infrastructure
             }
 
         }
-        public static void Write(IHasDataFile formData, string filePath)
+        public static void Write(ISimModel formData, string filePath)
         {
             using (var fileWriter = new System.IO.StreamWriter(filePath, false))
             {
