@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RFEM_Software.Forms
+namespace RFEMSoftware.Simulation.Desktop.Forms
 {
     /// <summary>
     /// Interaction logic for SettingsForm.xaml

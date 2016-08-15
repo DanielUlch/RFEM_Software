@@ -1,13 +1,13 @@
-﻿using RFEM_Infrastructure;
-using RFEM_Software.Custom_Controls;
-using RFEM_Software.Forms;
+﻿
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     public class FormRepository
     {

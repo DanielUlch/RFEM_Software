@@ -1,23 +1,36 @@
-﻿<UserControl x:Class="RFEM_Software.RFEMRibbon"
+﻿<UserControl x:Class="RFEMSoftware.Simulation.Desktop.RFEMRibbon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:infra="http://courses.engmath.dal.ca/rfem/Infrastructure"
-             xmlns:local="clr-namespace:RFEM_Software"
+             xmlns:infra="clr-namespace:RFEMSoftware.Simulation.Infrastructure;assembly=InfrastructureLib"
+             xmlns:local="clr-namespace:RFEMSoftware.Simulation.Desktop"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
              BorderThickness="5 5 5 0"
              >
     <UserControl.CommandBindings>
-        
+
         <CommandBinding Command="ApplicationCommands.Close"/>
-        
+
     </UserControl.CommandBindings>
     <Grid>
         <Ribbon WindowIconVisibility="collapsed">
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu >
+                <RibbonApplicationMenu Foreground="Black">
+                    
+                    <RibbonApplicationMenu.BorderBrush>
+                        <SolidColorBrush Color="Transparent"/>
+                    </RibbonApplicationMenu.BorderBrush>
+                    <RibbonApplicationMenu.Effect>
+                        <DropShadowEffect ShadowDepth="0.5" />
+                    </RibbonApplicationMenu.Effect>
+                    <RibbonApplicationMenu.Background>
+                        <SolidColorBrush Color="{StaticResource PallateColor5}" 
+                                         Opacity="100"/>
+                    </RibbonApplicationMenu.Background>
+
+
                     <RibbonApplicationMenu.SmallImageSource>
                         <DrawingImage>
                             <DrawingImage.Drawing>
@@ -32,7 +45,7 @@
                                                   DeviceFontName="{x:Null}"
                                                   AdvanceWidths="5.859375 2.90625 2.90625 6.27539025"
                                                   >
-                                            
+
                                             <GlyphRun.GlyphTypeface>
                                                 <GlyphTypeface FontUri="C:\WINDOWS\Fonts\SEGOEUI.TTF"/>
                                             </GlyphRun.GlyphTypeface>
@@ -43,15 +56,15 @@
                             </DrawingImage.Drawing>
                         </DrawingImage>
                     </RibbonApplicationMenu.SmallImageSource>
-                    
+
                     <RibbonApplicationMenuItem Header="Save"
                                                ImageSource="Images/Save.png"
                                                Name="btnSave"/>
-                    
+
                     <RibbonApplicationMenuItem Header="Save As"
                                                ImageSource="Images/SaveAs.png"
                                                Name="btnSaveAs"/>
-                    
+
                     <RibbonApplicationMenuItem Header="Settings"
                                                ImageSource="Images/Settings.png"
                                                Name="btnSettings"/>
@@ -59,8 +72,8 @@
                                                ImageSource="Images/Exit.png"
                                                Command="ApplicationCommands.Close"/>
                 </RibbonApplicationMenu>
-                    
-                    
+
+
             </Ribbon.ApplicationMenu>
 
             <Ribbon.QuickAccessToolBar>
@@ -78,7 +91,7 @@
             <Ribbon.ContextualTabGroups>
                 <RibbonContextualTabGroup x:Name="RunTools"
                                           Header="Run Tools"
-                                          Background="Red">
+                                          Background="{StaticResource PallateBrush1}">
                     <RibbonContextualTabGroup.Style>
                         <Style TargetType="{x:Type RibbonContextualTabGroup}">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -89,59 +102,61 @@
                             </Style.Triggers>
                         </Style>
                     </RibbonContextualTabGroup.Style>
-                    
+
                 </RibbonContextualTabGroup>
             </Ribbon.ContextualTabGroups>
-            
-            
+
+
             <RibbonTab Header="Home">
                 <RibbonGroup Header="Existing Files">
+
                     <RibbonButton Name="btnOpenExisting"
                                   Label="Open Existing Data File"
-                                  LargeImageSource="Images/Open_Folder.png" />
+                                  LargeImageSource="Images/OpenFolder.png" />
                 </RibbonGroup>
 
-                <RibbonGroup Header="Create New Data File">
-                    
+                <RibbonGroup Header="Create New Data File"
+                             Foreground="Black">
+
                     <RibbonButton Label="mrbear2d"
                             Name="btnMRBear2d" 
-                            LargeImageSource="Images/bearing4.png"
+                            LargeImageSource="Images/AddFileNew.png"
                             Click="NewDataFile"
                             />
-                    
+
                     <RibbonButton Label="mrdam2d"
                                   Name="btnMRDam2d"
-                                  LargeImageSource="Images/AddFile.png"
+                                  LargeImageSource="Images/AddFileNew.png"
                                   Click="NewDataFile"
                                   />
-                    
+
                     <RibbonButton Label="mrearth2d"
                                   Name="btnMREarth2d"
-                                  LargeImageSource="Images/AddFile.png"
+                                  LargeImageSource="Images/AddFileNew.png"
                                   Click="NewDataFile"
                                   />
-                    
+
                     <RibbonSplitButton Label="mrflow"
                                   Name="btnMRFlow"
-                                  LargeImageSource="Images/AddFile.png">
-                        
+                                  LargeImageSource="Images/AddFileNew.png">
+
                         <RibbonMenuItem Header="2D" 
-                                        ImageSource="Images/AddFile.png"
+                                        ImageSource="Images/AddFileNew.png"
                                         Name="btnMRFlow2d"
                                         Click="NewDataFile"/>
-                        
+
                         <RibbonMenuItem Header="3D"
                                         ImageSource="Images/3DPlaceHolder.png" 
                                         Name="btnMRFlow3d"
                                         Click="NewDataFile"/>
                     </RibbonSplitButton>
-                    
+
                     <RibbonSplitButton Label="mrpill"
-                                       LargeImageSource="Images/pile_setl.png"
+                                       LargeImageSource="Images/AddFileNew.png"
                                        >
-                        
+
                         <RibbonMenuItem Header="mrpill2d"
-                                        ImageSource="Images/AddFile.png"
+                                        ImageSource="Images/AddFileNew.png"
                                         Name="btnMRPill2d"
                                         Click="NewDataFile"
                                         />
@@ -154,10 +169,10 @@
 
                     </RibbonSplitButton>
                     <RibbonSplitButton Label="mrsetl"
-                                       LargeImageSource="Images/AddFile.png">
-                        
+                                       LargeImageSource="Images/AddFileNew.png">
+
                         <RibbonMenuItem Header="mrsetl2d"
-                                        ImageSource="Images/AddFile.png"
+                                        ImageSource="Images/AddFileNew.png"
                                         Name="btnMRSetl2d"
                                         Click="NewDataFile"
                                           />
@@ -169,14 +184,14 @@
 
                     </RibbonSplitButton>
                     <RibbonButton Label="mrslope2d"
-                                  LargeImageSource="Images/AddFile.png"
+                                  LargeImageSource="Images/AddFileNew.png"
                                   Name="btnMRSlope2d"
                                   Click="NewDataFile"
                                   />
                 </RibbonGroup>
-            
+
             </RibbonTab>
-            
+
             <RibbonTab Header="Export">
                 <RibbonGroup Header="Office Applications">
                     <RibbonButton Label="Export to Excel" LargeImageSource="Images/MSExcel.png" />
@@ -184,139 +199,117 @@
                 </RibbonGroup>
             </RibbonTab>
             <RibbonTab Header="Visualization">
-                
+
             </RibbonTab>
-            
+
             <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="RunControlTab">
-                
+
                 <RibbonGroup Header="Simulation">
-                    
+
                     <!--               Buttons common accross all simulations                                -->
 
-                    <RibbonButton Name="btn_RunSim" >
-                        <RibbonButton.Style>
-                            <Style TargetType="{x:Type RibbonButton}">
-                                
-                                <Setter Property="LargeImageSource" Value="Images/Start.png" />
-                                <Setter Property="Label" Value="Run Sim"/>
-                                <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.Run}"/>
-
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToCancel}">
-                                        <Setter Property="LargeImageSource" Value="Images/Cancel.png" />
-                                        <Setter Property="Label" Value="Cancel Run" />
-                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.CancelRun}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToRemoveFromQueue}">
-                                        <Setter Property="LargeImageSource" Value="Images/RemoveFromQueue.png" />
-                                        <Setter Property="Label" Value="Remove From Queue" />
-                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.RemoveFromQueue}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=RunButtonState}" Value="{x:Static local:RunSimButtonState.ReadyToQueue}">
-                                        <Setter Property="LargeImageSource" Value="Images/AddToQueue.png" />
-                                        <Setter Property="Label" Value="Add to Queue" />
-                                        <Setter Property="Tag" Value="{x:Static local:RunSimButtonCommand.AddToQueue}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                
-                            </Style>
-                        </RibbonButton.Style>
+                    <RibbonButton Name="btn_RunSim"
+                                  DataContext="{Binding Path=RunButton}"
+                                  LargeImageSource="{Binding Path=ButtonImage, Mode=OneWay}"
+                                  Label="{Binding Path=Label, Mode=OneWay}"
+                                  Tag="{Binding Path=Tag, Mode=OneWay}">
+                       
                     </RibbonButton>
 
                     <RibbonButton Name="btnShowSummaryStats" 
                                   Label="Summary Statistics" 
                                   LargeImageSource="Images/Accounting.png"
                                   IsEnabled="{Binding Path=SummaryStatsEnabled}"/>
-                    
+
                     <!--                  RBear2D Buttons                                                -->
-                    
+
                     <RibbonButton Name="btnRBear2DShowMesh" 
                                   Label="Displaced Mesh" 
                                   LargeImageSource="Images/Grid.png" 
                                   IsEnabled="{Binding Path=CanDisplayRBear2DMesh}"
                                   Visibility="{Binding Path=RBear2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRBear2DShowField" 
                                   Label="Random Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRBear2DField}"
                                   Visibility="{Binding Path=RBear2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRBear2DShowBearingHist" 
                                   Label="Histogram" 
                                   LargeImageSource="Images/NormalHist.png" 
                                   IsEnabled="{Binding Path=CanDisplayRBear2DHist}"
                                   Visibility="{Binding Path=RBear2DButtonVisibility}"/>
-                    
-                    
+
+
                     <!--                  RDam2D Buttons                         -->
-                    
+
                     <RibbonButton Name="btnRDamFlownet" 
                                   Label="Flownet" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DFlownet}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamField" 
                                   Label="Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DField}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamMeanGradientField" 
                                   Label="Mean Gradient Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamStdDevGradientField" 
                                   Label="Standard Deviation Gradient Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamMeanFluxField" 
                                   Label="Mean Flux Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamStdDevFluxField" 
                                   Label="Standard Deviation Flux Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamMeanPotentialField" 
                                   Label="Mean Potential Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamStdDevPotentialField" 
                                   Label="Standard Deviation Potential Field" 
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DMeanFields}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamFlowHist" 
                                   Label="Flow Histogram" 
                                   LargeImageSource="Images/NormalHist.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DFlowHist}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamCondHist" 
                                   Label="Conductivity Histogram" 
                                   LargeImageSource="Images/NormalHist.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DConductivityHist}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <RibbonButton Name="btnRDamGradHist" 
                                   Label="Gradient Histogram" 
                                   LargeImageSource="Images/NormalHist.png" 
                                   IsEnabled="{Binding Path=CanDisplayRDam2DNodalGradientHist}"
                                   Visibility="{Binding Path=RDam2DButtonVisibility}"/>
-                    
+
                     <!--                     REarth2D Buttons                         -->
 
                     <RibbonButton Name="btnREarth2DShowMesh" 
@@ -330,12 +323,43 @@
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayREarth2DField}"
                                   Visibility="{Binding Path=REarth2DButtonVisibility}"/>
+                    
+                    <!--                   RFlow2D Buttons                             -->
 
+                    <RibbonButton Name="btnRFlow2DShowFlownet" 
+                                  Label="Flownet" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRFlow2DFlownet}"
+                                  Visibility="{Binding Path=RFlow2DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnRFlow2dShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRFlow2DField}"
+                                  Visibility="{Binding Path=RFlow2DButtonVisibility}"/>
+                    
+                    <!--                      RFlow3D Buttons                          -->
+                    
+                    
+                    
+                    <!--                      RPill2D Buttons                          -->
+
+                    <RibbonButton Name="btnRPill2DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRPill2DMesh}"
+                                  Visibility="{Binding Path=RPill2DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnRPill2DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRPill2DField}"
+                                  Visibility="{Binding Path=RPill2DButtonVisibility}"/>
                 </RibbonGroup>
-                
+
             </RibbonTab>
-         
-            
+
+
         </Ribbon>
     </Grid>
 </UserControl>

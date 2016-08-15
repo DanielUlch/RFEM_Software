@@ -17,7 +17,7 @@ Elastic modulus mean, SD, dist . . . . . . . . .  100000 0 deterministic
 Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
 Unit weight mean, SD, dist . . . . . . . . . . .  20 6 lognormal
 Pressure coeff mean/SD, dist, a, b, f(phi) . . .  0 0 f(phi) 1 -1 1
-Number of realizations . . . . . . . . . . . . .  10
+Number of realizations . . . . . . . . . . . . .  30
 Generator seed (0 for random seed) . . . . . . .  0
 Scale of fluctuation in X [and Y] directions . .  1 1
 Name of covariance function  . . . . . . . . . .  dlavx2
@@ -26,6 +26,7 @@ Material Property Correlation Matrix Data
 =========================================
 Property 1    Property 2    Correlation
 ----------    ----------    -----------
+   c            phi           0.2
 
 Show element boundaries  . . . . . . . . . . . .  t
 Show random field as background [log?] [prop?] .  t f c

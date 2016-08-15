@@ -1,18 +1,20 @@
 ﻿using Microsoft.Win32;
-using RFEM_Infrastructure;
-using RFEM_Software.Custom_Controls;
-using RFEM_Software.Forms;
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Desktop.Forms;
+using RFEMSoftware.Simulation.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using System.Windows.Media;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     public class MainViewModel
     {
@@ -43,6 +45,8 @@ namespace RFEM_Software
             _Repository = new FormRepository(_FormFactory);
 
             WireMainWindow();
+
+            
         }
 
 
@@ -103,7 +107,8 @@ namespace RFEM_Software
             _TabItems = _Repository.LoadStoredTabs();
             _MainWindow.tabControl.DataContext = null;
             _MainWindow.tabControl.DataContext = _TabItems;
-            _MainWindow.tabControl.SelectedItem = _TabItems.Last();
+            if(_TabItems.Count() > 0 && _TabItems.Last() != null)
+                _MainWindow.tabControl.SelectedItem = _TabItems.Last();
         }
         private void MainWindowClosing(object sender, CancelEventArgs e)
         {
@@ -143,6 +148,14 @@ namespace RFEM_Software
         {
             try
             {
+                //string appFileName = Environment.GetCommandLineArgs()[0];
+                //string directory = System.IO.Path.GetDirectoryName(appFileName);
+
+                //directory += "\\DJ_.wav";
+                //var x = new SoundPlayer(directory);
+                
+                //x.Play();
+
                 switch ((RunSimButtonCommand)((RibbonButton)sender).Tag)
                 {
                     case RunSimButtonCommand.Run:
@@ -359,25 +372,25 @@ namespace RFEM_Software
                         AddAndSelectTab(_FormFactory.CreateNewForm(Program.REarth2D));
                         break;
                     case "btnMRFlow2d":
-                        MessageBox.Show("MRFlow2d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RFlow2D));
                         break;
                     case "btnMRFlow3d":
-                        MessageBox.Show("MRFlow3d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RFlow3D));
                         break;
                     case "btnMRPill2d":
-                        MessageBox.Show("MRPill2d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RPill2D));
                         break;
                     case "btnMRPill3d":
-                        MessageBox.Show("MRPill3d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RPill3D));
                         break;
                     case "btnMRSetl2d":
-                        MessageBox.Show("MRSetl2d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSetl2D));
                         break;
                     case "btnMRSetl3d":
-                        MessageBox.Show("MRSetl3d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSetl3D));
                         break;
                     case "btnMRSlope2d":
-                        MessageBox.Show("MRSlope2d Stub");
+                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSlope2D));
                         break;
                     default:
                         MessageBox.Show("Unknown Sender");

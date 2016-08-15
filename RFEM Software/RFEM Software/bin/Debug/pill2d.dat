@@ -1,0 +1,31 @@
+2D Pillar capacity
+Echo input data to stats file (t/f)? . . . . . .  f
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  t
+Display a random field (t/f)?  . . . . . . . . .  f 1 c
+Display displaced FE mesh (t/f)? . . . . . . . .  f 1
+Normalize pillar capacity (/det)?. . . . . . . .  f
+Output pillar capacity samples?. . . . . . . . .  t
+Number of elements in X and Y directions . . . .  25 10
+Element size in X and Y directions . . . . . . .  0.2 0.2
+Rough loading conditions (t/f)?  . . . . . . . .  f
+Displacement increment, plastic tol, bearing tol  0.001 0.001 0.001
+Max displacement steps, max iterations . . . . .  80 300
+Cohesion mean, SD, dist  . . . . . . . . . . . .  100 10 lognormal
+Friction angle mean, SD, dist  . . . . . . . . .  0.57735 0.25 tlognormal
+Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Elastic modulus mean, SD, dist . . . . . . . . .  100000 0 deterministic
+Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
+Number of realizations . . . . . . . . . . . . .  10
+Generator seed (0 for random seed) . . . . . . .  0
+Correlation length in X [and Y] directions . . .  1 1
+Name of covariance function  . . . . . . . . . .  dlavx2
+
+Material Property Correlation Matrix Data
+=========================================
+Property 1    Property 2    Correlation
+----------    ----------    -----------
+
+Show element boundaries  . . . . . . . . . . . .  t
+Show random field as background [log?] [prop?] .  t t c
+Width of displaced mesh output plot in inches  .  4

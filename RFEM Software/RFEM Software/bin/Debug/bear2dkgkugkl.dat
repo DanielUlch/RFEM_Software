@@ -14,7 +14,7 @@ Max displacement steps, max iterations . . . . .  50 300
 Cohesion mean, SD, dist  . . . . . . . . . . . .  100 10 lognormal
 Friction mean/SD, dist, lower/upper/loc/scale  .  0 0 bounded 20 40 0 1
 Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
-Elastic modulus mean, SD, dist . . . . . . . . .  3000 0 deterministic
+Elastic modulus mean, SD, dist . . . . . . . . .  300000 0 deterministic
 Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
 Number of realizations . . . . . . . . . . . . .  10
 Generator seed (0 for random seed) . . . . . . .  0

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
-using RFEM_Infrastructure;
-using RFEM_Software.Custom_Controls;
-using RFEM_Software.Forms;
+using RFEMSoftware.Simulation.Desktop.CustomControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     /// <summary>
     /// This window is the main application window. User's create tabs and run simulations 
@@ -51,6 +49,8 @@ namespace RFEM_Software
         /// </summary>
         public MainWindow()
         {
+            
+
             //Required by framework
             InitializeComponent();
 
@@ -284,7 +284,7 @@ namespace RFEM_Software
         private void btnBottomCollapser_Click(object sender, RoutedEventArgs e)
         {
             BottomSplitterRow.Height = new GridLength(0);
-            ExpanderRow.Height = new GridLength(15);
+            ExpanderRow.Height = new GridLength(0);
             BottomGrid.Visibility = Visibility.Collapsed;
             btnBottomExpander.Visibility = Visibility.Visible;
             BottomStatusBar.Visibility = Visibility.Visible;

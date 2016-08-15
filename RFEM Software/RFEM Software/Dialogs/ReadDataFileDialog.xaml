@@ -1,11 +1,11 @@
-﻿<Window x:Class="RFEM_Software.Dialogs.ReadDataFileDialog"
+﻿<Window x:Class="RFEMSoftware.Simulation.Desktop.Dialogs.ReadDataFileDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RFEM_Software.Dialogs"
+        xmlns:local="clr-namespace:RFEMSoftware.Simulation.Desktop"
         mc:Ignorable="d"
-        Title="ReadDataFileDialog" Height="275" Width="400">
+        Title="ReadDataFileDialog" Height="500" Width="400">
 
     <Grid Height="245" Width="370">
         <Grid.ColumnDefinitions>
@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.Column="0">
             <Label Content="Data File Type" />
-            <ListView Name="lvDataFileTypes" ItemsSource="{Binding Path=ProgramTypes}" Height="Auto"/>
+            <ListView Name="lvDataFileTypes" ItemsSource="{Binding Path=ProgramTypes}" Height="250"/>
         </StackPanel>
         
         <Grid Grid.Column="1">

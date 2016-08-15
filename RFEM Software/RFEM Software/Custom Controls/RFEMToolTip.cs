@@ -18,7 +18,7 @@ using System.Windows.Controls.Primitives;
 
 
 
-namespace RFEM_Software.Custom_Controls
+namespace RFEMSoftware.Simulation.Desktop.CustomControls
 {
     /// <summary>
     /// Interaction logic for RFEMToolTip.xaml
@@ -34,7 +34,7 @@ namespace RFEM_Software.Custom_Controls
 
         static RFEMToolTip()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RFEMToolTip), 
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(RFEMToolTip),
                 new FrameworkPropertyMetadata(typeof(RFEMToolTip)));
 
             ToolTipMessageProperty = DependencyProperty.Register("ToolTipMessage", typeof(string), typeof(RFEMToolTip));
@@ -60,7 +60,7 @@ namespace RFEM_Software.Custom_Controls
             get { return (string)GetValue(TitleProperty); }
             set
             {
-                if((string)GetValue(TitleProperty) != value)
+                if ((string)GetValue(TitleProperty) != value)
                 {
                     SetValue(TitleProperty, value);
                     PropertyChanged(this, new PropertyChangedEventArgs("Title"));

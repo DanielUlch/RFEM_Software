@@ -11,10 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using RFEM_Infrastructure;
 using System.ComponentModel;
+using RFEMSoftware.Simulation.Infrastructure;
 
-namespace RFEM_Software.Dialogs
+namespace RFEMSoftware.Simulation.Desktop.Dialogs
 {
     /// <summary>
     /// Interaction logic for ReadDataFileDialog.xaml

@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RFEM_Infrastructure;
 using System.ComponentModel;
-using RFEM_Software.Custom_Controls;
 using System.Windows;
-using RFEM_Software.Forms;
 using System.Collections.ObjectModel;
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
+using RFEMSoftware.Simulation.Desktop.Forms;
+using RFEMSoftware.Simulation.Infrastructure.Models;
+using System.Windows.Media.Imaging;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     public class StateManager: INotifyPropertyChanged 
     {
 
-        private RFEMTabItem _ActiveTab;
-
         private SimManager _SimManager;
+
+        private RunSimButton _RunButton = new RunSimButton();
 
         private ISimViewModel _ActiveScreenViewModel;
 
@@ -50,30 +52,18 @@ namespace RFEM_Software
 
         #region Ribbon Visibility and Enabled Binders
 
-        public RunSimButtonState RunButtonState
+        public SimRunState RunButtonState
         {
             get
             {
-                if(_SimManager.State == SimManagerState.Idle)
-                {
-                    return RunSimButtonState.ReadyToRun;
-                }
-                else if(_SimManager.ActiveSim == _ActiveScreenViewModel.Model)
-                {
-                    return RunSimButtonState.ReadyToCancel;
-                }
-                else if (_SimManager.QueueContainsSim(_ActiveScreenViewModel.Model))
-                {
-                    return RunSimButtonState.ReadyToRemoveFromQueue;
-                }
-                else
-                {
-                    return RunSimButtonState.ReadyToQueue;
-                }
+                return _SimManager.QueryManager(_ActiveScreenViewModel.Model);
 
             }
         }
-
+        public RunSimButton RunButton
+        {
+            get { return _RunButton; }
+        }
         public bool SummaryStatsEnabled
         {
             get
@@ -214,6 +204,69 @@ namespace RFEM_Software
                         ((REarth2D)_ActiveScreenViewModel.Model).CanDisplayMesh);
             }
         }
+
+        //RFlow2D bidnings
+
+        public Visibility RFlow2DButtonVisibility
+        {
+            get
+            {
+                if (ActiveProgram == Program.RFlow2D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+        public bool CanDisplayRFlow2DFlownet
+        {
+            get
+            {
+                return (ActiveProgram == Program.RFlow2D &&
+                        ((RFlow2D)_ActiveScreenViewModel.Model).CanDisplayFlownet);
+            }
+        }
+        public bool CanDisplayRFlow2DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RFlow2D &&
+                        ((RFlow2D)_ActiveScreenViewModel.Model).CanDisplayField);
+            }
+        }
+
+        //RFlow3D Bindings
+
+
+        //RPill2D Bindings
+        
+        public Visibility RPill2DButtonVisibility
+        {
+            get
+            {
+                if(ActiveProgram == Program.RPill2D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
+        public bool CanDisplayRPill2DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RPill2D &&
+                        ((RPill2D)_ActiveScreenViewModel.Model).CanDisplayField);
+            }
+        }
+        public bool CanDisplayRPill2DMesh
+        {
+            get
+            {
+                return (ActiveProgram == Program.RPill2D &&
+                        ((RPill2D)_ActiveScreenViewModel.Model).CanDisplayMesh);
+            }
+        }
+
         #endregion
 
 
@@ -230,6 +283,9 @@ namespace RFEM_Software
         public void SetActiveScreen(ISimViewModel activeScreenViewModel)
         {
             _ActiveScreenViewModel = activeScreenViewModel;
+
+            if(_ActiveScreenViewModel != null && ActiveScreenViewModel.Model != null)
+                _RunButton.State = _SimManager.QueryManager(_ActiveScreenViewModel.Model);
 
             NotifyAllChanged();
         }
@@ -255,6 +311,14 @@ namespace RFEM_Software
             NotifyPropertyChanged("CanDisplayREarth2DField");
             NotifyPropertyChanged("CanDisplayREarth2DMesh");
 
+
+            NotifyPropertyChanged("RFlow2DButtonVisibility");
+            NotifyPropertyChanged("CanDisplayRFlow2DFlownet");
+            NotifyPropertyChanged("CanDisplayRFlow2DField");
+
+            NotifyPropertyChanged("RPill2DButtonVisibility");
+            NotifyPropertyChanged("CanDisplayRPill2DField");
+            NotifyPropertyChanged("CanDisplayRPill2DMesh");
         }
         private void UpdateEnabledState()
         {
@@ -281,6 +345,21 @@ namespace RFEM_Software
                     NotifyPropertyChanged("CanDisplayREarth2DField");
                     NotifyPropertyChanged("CanDisplayREarth2DMesh");
                     return;
+                case Program.RFlow2D:
+                    NotifyPropertyChanged("CanDisplayRFlow2DFlownet");
+                    NotifyPropertyChanged("CanDisplayRFlow2DField");
+                    return;
+                case Program.RFlow3D:
+                    return;
+                case Program.RPill2D:
+                    NotifyPropertyChanged("CanDisplayRPill2DField");
+                    NotifyPropertyChanged("CanDisplayRPill2DMesh");
+                    return;
+                case Program.RPill3D:
+                case Program.RSetl2D:
+                case Program.RSetl3D:
+                case Program.RSlope2D:
+                    return;
                 default:
                     throw new NotImplementedException();
             }
@@ -296,29 +375,118 @@ namespace RFEM_Software
 
         private void SimManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            NotifyPropertyChanged("RunButtonState");
+            if(_ActiveScreenViewModel != null)
+                _RunButton.State = _SimManager.QueryManager(_ActiveScreenViewModel.Model);
         }
 
         private void SimCompleted()
         {
             UpdateEnabledState();
-            NotifyPropertyChanged("RunButtonState");
+            _RunButton.State = _SimManager.QueryManager(_ActiveScreenViewModel.Model);
         }
         private void SimQueueChanged()
         {
-            NotifyPropertyChanged("RunButtonState");
+            _RunButton.State = _SimManager.QueryManager(_ActiveScreenViewModel.Model);
         }
 
 
         
     }
-    public enum RunSimButtonState
+    public class RunSimButton: INotifyPropertyChanged
     {
-        ReadyToRun,
-        ReadyToQueue,
-        ReadyToCancel,
-        ReadyToRemoveFromQueue
+        private BitmapImage _ButtonImage;
+        private string _Label;
+        private RunSimButtonCommand _Tag;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public SimRunState State
+        {
+            set
+            {
+                switch (value)
+                {
+                    case SimRunState.CanRunSim:
+                        ButtonImage = new BitmapImage(new Uri("Images/Start.png", UriKind.Relative));
+                        Label = "Run Sim";
+                        Tag = RunSimButtonCommand.Run;
+                        break;
+                    case SimRunState.CanCancelSim:
+                        ButtonImage = new BitmapImage(new Uri("Images/Cancel.png", UriKind.Relative));
+                        Label = "Cancel Run";
+                        Tag = RunSimButtonCommand.CancelRun;
+                        break;
+                    case SimRunState.CanUnQueueSim:
+                        ButtonImage = new BitmapImage(new Uri("Images/RemoveFromQueue.png", UriKind.Relative));
+                        Label = "Remove From Queue";
+                        Tag = RunSimButtonCommand.RemoveFromQueue;
+                        break;
+                    case SimRunState.CanQueueSim:
+                        ButtonImage = new BitmapImage(new Uri("Images/AddToQueue.png", UriKind.Relative));
+                        Label = "Add to Queue";
+                        Tag = RunSimButtonCommand.AddToQueue;
+                        break;
+                }
+            }
+        }
+        public BitmapImage ButtonImage
+        {
+            get { return _ButtonImage; }
+            private set
+            {
+                if(_ButtonImage != value)
+                {
+                    _ButtonImage = value;
+                    NotifyPropertyChanged();
+                }
+
+            }
+        }
+        public string Label
+        {
+            get { return _Label; }
+            private set
+            {
+                if(_Label != value)
+                {
+                    _Label = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public RunSimButtonCommand Tag
+        {
+            get { return _Tag; }
+            private set
+            {
+                if(_Tag != value)
+                {
+                    _Tag = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
+
+        private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+        {
+
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+
     }
+    //public enum RunSimButtonState
+    //{
+    //    ReadyToRun,
+    //    ReadyToQueue,
+    //    ReadyToCancel,
+    //    ReadyToRemoveFromQueue
+    //}
     public enum RunSimButtonCommand
     {
         Run,

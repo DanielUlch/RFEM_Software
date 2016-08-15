@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     /// <summary>
     /// Ribbon control used in the main window.

@@ -4,10 +4,92 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFEM_Infrastructure
+namespace RFEMSoftware.Simulation.Infrastructure
 {
     public static class Extensions
     {
+        public static string ToDataFileString(this SoilProperty property)
+        {
+            switch (property)
+            {
+                case SoilProperty.Cohesion:
+                    return "c";
+                case SoilProperty.FrictionAngle:
+                    return "phi";
+                case SoilProperty.DilationAngle:
+                    return "psi";
+                case SoilProperty.ElasticModulus:
+                    return "e";
+                case SoilProperty.PoissonsRatio:
+                    return "v";
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+        public static string ToUIString(this SoilProperty property)
+        {
+            switch (property)
+            {
+                case SoilProperty.Cohesion:
+                    return "Cohesion";
+                case SoilProperty.DilationAngle:
+                    return "Dilation Angle";
+                case SoilProperty.ElasticModulus:
+                    return "Elastic Modulus";
+                case SoilProperty.FrictionAngle:
+                    return "Friction Angle";
+                case SoilProperty.PoissonsRatio:
+                    return "Poisson's Ratio";
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+        public static string ToUIString(this RSlopeSoilProperty property)
+        {
+            switch (property)
+            {
+                case RSlopeSoilProperty.Cohesion:
+                    return "Cohesion";
+                case RSlopeSoilProperty.DilationAngle:
+                    return "Dilation Angle";
+                case RSlopeSoilProperty.ElasticModulus:
+                    return "Elastic Modulus";
+                case RSlopeSoilProperty.FrictionAngle:
+                    return "Friction Angle";
+                case RSlopeSoilProperty.PoissonsRatio:
+                    return "Poisson's Ratio";
+                case RSlopeSoilProperty.UnitWeight:
+                    return "Unit Weight";
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+        public static string ToUIString(this Axis axis)
+        {
+            switch (axis)
+            {
+                case Axis.XAxis:
+                    return "x-axis";
+                case Axis.YAxis:
+                    return "y-axis";
+                case Axis.ZAxis:
+                    return "z-axis";
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+        public static string ToUIString(this RPill3DElementType type)
+        {
+            switch (type)
+            {
+                case RPill3DElementType.EightNode:
+                    return "8-node";
+                case RPill3DElementType.TwentyNode:
+                    return "20-node";
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
         public static string ToUIString(this REarthSoilProperties property)
         {
             switch (property)
@@ -141,17 +223,17 @@ namespace RFEM_Infrastructure
                     throw new IndexOutOfRangeException();
             }
         }
-        public static string ToDataFileString(this DistributionType dist)
+        public static string ToDataFileString(this Distribution dist)
         {
             switch (dist)
             {
-                case DistributionType.Deterministic:
+                case Distribution.Deterministic:
                     return "deterministic";
-                case DistributionType.Normal:
+                case Distribution.Normal:
                     return "normal";
-                case DistributionType.Lognormal:
+                case Distribution.Lognormal:
                     return "lognormal";
-                case DistributionType.Bounded:
+                case Distribution.Bounded:
                     return "bounded";
                 default:
                     throw new IndexOutOfRangeException();
@@ -166,6 +248,46 @@ namespace RFEM_Infrastructure
             else
             {
                 return "f";
+            }
+        }
+        public static string ToDataFileString(this RSlopeSoilProperty property)
+        {
+            switch (property)
+            {
+                case RSlopeSoilProperty.Cohesion:
+                    return "c";
+                case RSlopeSoilProperty.FrictionAngle:
+                    return "phi";
+                case RSlopeSoilProperty.DilationAngle:
+                    return "psi";
+                case RSlopeSoilProperty.UnitWeight:
+                    return "gam";
+                case RSlopeSoilProperty.ElasticModulus:
+                    return "e";
+                case RSlopeSoilProperty.PoissonsRatio:
+                    return "v";
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+        public static RSlopeSoilProperty RSlopePropertyInv(this string s)
+        {
+            switch (s.Trim())
+            {
+                case "c":
+                    return RSlopeSoilProperty.Cohesion;
+                case "phi":
+                    return RSlopeSoilProperty.FrictionAngle;
+                case "psi":
+                    return RSlopeSoilProperty.DilationAngle;
+                case "gam":
+                    return RSlopeSoilProperty.UnitWeight;
+                case "e":
+                    return RSlopeSoilProperty.ElasticModulus;
+                case "v":
+                    return RSlopeSoilProperty.PoissonsRatio;
+                default:
+                    throw new ArgumentException();
             }
         }
 
@@ -184,7 +306,7 @@ namespace RFEM_Infrastructure
                 throw new ArgumentException("Invalid true/false character read.");
             }
         }
-        public static REarthSoilProperties PropertyCharInv(this string s)
+        public static REarthSoilProperties REarthPropertyCharInv(this string s)
         {
             switch (s.Trim())
             {
@@ -206,6 +328,24 @@ namespace RFEM_Infrastructure
                     throw new ArgumentException();
             }
         }
+        public static SoilProperty PropertyCharInv(this string s)
+        {
+            switch (s.Trim())
+            {
+                case "c":
+                    return SoilProperty.Cohesion;
+                case "phi":
+                    return SoilProperty.FrictionAngle;
+                case "psi":
+                    return SoilProperty.DilationAngle;
+                case "e":
+                    return SoilProperty.ElasticModulus;
+                case "v":
+                    return SoilProperty.PoissonsRatio;
+                default:
+                    throw new ArgumentException("Invalid property character read.");
+            }
+        }
         public static REarthDistributions REarthDistCharInv(this string s)
         {
 
@@ -225,18 +365,19 @@ namespace RFEM_Infrastructure
                     throw new ArgumentException();
             }
         }
-        public static DistributionType DistCharInv(this string s)
+        
+        public static Distribution DistCharInv(this string s)
         {
             switch (s.Trim().First())
             {
                 case 'd':
-                    return DistributionType.Deterministic;
+                    return Distribution.Deterministic;
                 case 'n':
-                    return DistributionType.Normal;
+                    return Distribution.Normal;
                 case 'l':
-                    return DistributionType.Lognormal;
+                    return Distribution.Lognormal;
                 case 'b':
-                    return DistributionType.Bounded;
+                    return Distribution.Bounded;
                 default:
                     throw new ArgumentException();
             }
@@ -255,6 +396,21 @@ namespace RFEM_Infrastructure
                 default:
                     throw new ArgumentException();
             }
+        }
+    }
+    public static class InfrastructureExtensions
+    {
+        public static int? ToNullableInt32(this string s)
+        {
+            int i;
+            if (Int32.TryParse(s, out i)) return i;
+            return null;
+        }
+        public static double? ToNullableDouble(this string s)
+        {
+            double x;
+            if (double.TryParse(s, out x)) return x;
+            return null;
         }
     }
 }

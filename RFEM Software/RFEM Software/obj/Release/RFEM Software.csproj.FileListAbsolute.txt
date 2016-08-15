@@ -1,0 +1,50 @@
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Release\RFEMDesktopClient.exe.config
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEM Software.csprojResolveAssemblyReference.cache
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\REarthSoilDistribution.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\SoilDistribution.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\TabItemHeader.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Dialogs\ReadDataFileDialog.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RPill2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RPill3DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RSetl2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RSetl3DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RSlope2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Core\HistogramFormCore.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RBear2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RBear2DHistForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DConductivityHist.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DFlowRateHist.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RDam2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DNodalGradientHist.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\REarth2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RFlow2DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RFlow3DForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\SettingsForm.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\MainWindow.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMRibbon.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\App.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMDesktopClient_MarkupCompile.cache
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMDesktopClient_MarkupCompile.lref
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\App.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\REarthSoilDistribution.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\SoilDistribution.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Custom Controls\TabItemHeader.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Dialogs\ReadDataFileDialog.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RSetl2DForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RSetl3DForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Core\HistogramFormCore.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RBear2DHistForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DConductivityHist.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DFlowRateHist.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RDam2DForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Histogram Views\RDam2DNodalGradientHist.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RFlow2DForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\Form Views\RFlow3DForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Forms\SettingsForm.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Help Files\RBearHist Help Files\ChiSquareHelp.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\MainWindow.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMRibbon.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\Themes\Generic.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMDesktopClient.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Release\RFEMDesktopClient.pdb

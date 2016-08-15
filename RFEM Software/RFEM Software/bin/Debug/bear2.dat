@@ -2,7 +2,7 @@ Bearing capacity of a single rigid footing
 Echo input data to stats file (t/f)? . . . . . .  t
 Report progress to standard output (t/f)?. . . .  t
 Dump debug data to *.stt file (t/f)? . . . . . .  t
-Display a random field (t/f)?  . . . . . . . . .  t 1 c
+Display a random field (t/f)?  . . . . . . . . .  t 1 phi
 Display displaced FE mesh (t/f)? . . . . . . . .  t 1
 Normalize bearing capacity (/det)? . . . . . . .  t
 Output bearing capacity samples? . . . . . . . .  t
@@ -11,8 +11,8 @@ Element size in X and Y directions . . . . . . .  0.2 0.2
 Number of footings, width  . . . . . . . . . . .  1 5
 Displacement increment, plastic tol, bearing tol  0.001 0.001 0.001
 Max displacement steps, max iterations . . . . .  50 300
-Cohesion mean, SD, dist  . . . . . . . . . . . .  100 10 lognormal
-Friction mean/SD, dist, lower/upper/loc/scale  .  0 0 bounded 20 40 0 1
+Cohesion mean, SD, dist  . . . . . . . . . . . .  1000 10 lognormal
+Friction mean/SD, dist, lower/upper/loc/scale  .  0 0 tbounded 20 40 0 1
 Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
 Elastic mean/SD, dist, lower/upper/loc/scale . .  0 0 bounded 50000 300000 0 1
 Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
@@ -25,9 +25,9 @@ Material Property Correlation Matrix Data
 =========================================
 Property 1    Property 2    Correlation
 ----------    ----------    -----------
-   c            phi           0.2
+   c            phi           0.5
 
 Show element boundaries  . . . . . . . . . . . .  t
-Show random field as background [log?] [prop?] .  t f c
+Show random field as background [log?] [prop?] .  t f e
 Width of displaced mesh output plot in inches  .  4
 Plot offset in x- [and y-] directions (inches) .  1.5

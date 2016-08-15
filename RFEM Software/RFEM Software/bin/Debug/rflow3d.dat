@@ -1,0 +1,19 @@
+Stochastic Analysis of Steady State 3-D Flow
+Echo input data to stats file (t/f)? . . . . . .  t
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  t
+Output flow, grads, uplifts (t/f)? . . . . . . .  t
+Output block conductivity values (t/f)?  . . . .  f
+Output arith, geom, harm cond. values (t/f)? . .  f
+Generate uniform conductivity field (t/f)? . . .  t
+Number of walls  . . . . . . . . . . . . . . . .  0
+Number of elements in the X direction  . . . . .  20
+Number of elements in the Y direction  . . . . .  20
+Number of elements in the Z direction  . . . . .  20
+Element size . . . . . . . . . . . . . . . . . .  0.05 0.05 0.05
+Number of realizations . . . . . . . . . . . . .  1000
+Generator seed (0 for random seed) . . . . . . .  0
+Conductivity mean  . . . . . . . . . . . . . . .  1
+Conductivity standard deviation  . . . . . . . .  0.3
+Correlation length in X, Y, and Z directions . .  1 1 1
+Name of covariance function used by simulator  .  dlavx3

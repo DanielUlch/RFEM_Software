@@ -1,0 +1,61 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEMSoftware.Simulation.Desktop.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        Here phi, the soil friction angle, mean, standard deviation,
+distribution type, and other parameters are specified. The
+`distribution type' is one of
+
+	1) deterministic, requiring only one parameter, the 'mean',
+	   ie, the property value.
+
+	2) normal, requiring two parameters, the mean and standard
+	   deviation of the property.
+
+	3) lognormal, requiring two parameters, the mean and standard
+	   deviation of the property. This is probably the most
+	   appropriate distribution to use for tan(phi), see below.
+
+	4) bounded, requiring 4 parameters (see below for a more
+	   detailed description);
+		- the lower bound, a
+		- the upper bound, b
+		- the location parameter, m
+		- the scale parameter, s
+	   This is probably the most appropriate distribution to use
+	   for phi since it provides for an upper bound on the
+	   friction angle.
+
+The bounded distribution requires 4 parameters, namely the lower and
+upper bounds on the distribution and the location and scale
+parameters. Realizations of this bounded distribution are derived
+from the transformation
+
+   U = a + 0.5*(b-a)*[ 1 + tanh((m + s*G)/2*pi) ]		(1)
+
+where G is a Gaussian random field with mean zero and unit variance,
+(a,b) are the lower and upper bounds of the distribution, and (m,s)
+are the distribution parameters controlling its shape. When m = 0,
+the distribution is symmetric about the midpoint, 0.5*(a + b), with
+smaller values of s yielding a narrower unimodal peak. Note that using
+m = 0 implies that the mean value is centered on the range. Other
+values of m have not been investigated. See also Fenton, G.A.,
+Simulation and Analysis of Random Fields, Ph.D. Thesis, Princeton
+University, 1990, pg 139, and Spatial Variation in Liquefaction
+Risk, Geotechnique, Vol 48(6), 1998, pgs 821 and 822 for further
+details on this bounded distribution. The Local Average Subdivision
+(LAS) algorithm used to generate sample fields in this program replaces
+the G field in Eq.(1) with the local average of G, G_e, over the
+element domains (and so the variance of G_e will be less than or equal
+to unity, depending on the correlation length and the element size).
+
+The friction angle, phi, is often represented by the bounded
+distribution, since it is bounded both below and above (eg, by 0 and 90
+degrees). However, it is often desirable to deal with tan(phi), rather
+than phi, so the option is given here to specify the distribution
+of tan(phi) rather than phi directly. If the distribution on tan(phi)
+is specified, then tan(phi) becomes the simulated random field. Since
+tan(phi) varies from 0 to infinity as phi varies from 0 to 90 degrees,
+a reasonable distribution on tan(phi) is the lognormal.
+    </Paragraph>
+</FlowDocument>

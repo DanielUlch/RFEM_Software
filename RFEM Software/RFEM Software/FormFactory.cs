@@ -1,6 +1,9 @@
-﻿using RFEM_Infrastructure;
-using RFEM_Software.Custom_Controls;
-using RFEM_Software.Forms;
+﻿
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Desktop.Forms;
+using RFEMSoftware.Simulation.Infrastructure;
+using RFEMSoftware.Simulation.Infrastructure.Models;
+using RFEMSoftware.Simulation.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     public class FormFactory
     {
@@ -36,7 +39,7 @@ namespace RFEM_Software
             {
                 case Program.RBear2D:
 
-                    view = new Rbear2DForm();
+                    view = new RBear2DForm();
                     return new DataEntryTab(RFEMTabType.DataInput,
                                             _CloseTab,
                                             _CloseAllTabs,
@@ -48,7 +51,7 @@ namespace RFEM_Software
                                             Program.RBear2D);
                 case Program.RDam2D:
 
-                    view = new Rdam2dForm();
+                    view = new RDam2DForm();
                     return new DataEntryTab(RFEMTabType.DataInput,
                                             _CloseTab,
                                             _CloseAllTabs,
@@ -71,26 +74,139 @@ namespace RFEM_Software
                                             (UserControl)view,
                                             "REarth2D",
                                             Program.REarth2D);
+
+                case Program.RFlow2D:
+
+                    view = new RFlow2DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RFlow2D",
+                                            Program.RFlow2D);
+
+                case Program.RFlow3D:
+
+                    view = new RFlow3DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RFlow3D",
+                                            Program.RFlow3D);
+
+                case Program.RPill2D:
+
+                    view = new RPill2DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RPill2D",
+                                            Program.RPill2D);
+
+                case Program.RPill3D:
+
+                    view = new RPill3DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RPill3D",
+                                            Program.RPill3D);
+
+                case Program.RSetl2D:
+
+                    view = new RSetl2DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RSetl2D",
+                                            Program.RSetl2D);
+
+                case Program.RSetl3D:
+
+                    view = new RSetl3DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RSetl3D",
+                                            Program.RSetl3D);
+
+                case Program.RSlope2D:
+
+                    view = new RSlope2DForm();
+                    return new DataEntryTab(RFEMTabType.DataInput,
+                                            _CloseTab,
+                                            _CloseAllTabs,
+                                            view,
+                                            view.ViewModel,
+                                            _CommandBindings,
+                                            (UserControl)view,
+                                            "RSlope2D",
+                                            Program.RSlope2D);
+
             }
 
             throw new NotImplementedException();
         }
         public DataEntryTab CreateForm(Program formType, string filePath)
         {
-            ISimModel formData = FileReader.Read(formType, filePath);
+            ISimModel formData = ModelRepository.Retrieve(filePath, formType);
 
             ISimView view;
 
             switch (formType)
             {
                 case Program.RBear2D:
-                    view = new Rbear2DForm((RBear2D)formData);
+                    view = new RBear2DForm((RBear2D)formData);
                     break;
                 case Program.RDam2D:
-                    view = new Rdam2dForm((RDam2D)formData);
+                    view = new Forms.RDam2DForm((RDam2D)formData);
                     break;
                 case Program.REarth2D:
                     view = new REarth2DForm((REarth2D)formData);
+                    break;
+                case Program.RFlow2D:
+                    view = new RFlow2DForm((RFlow2D)formData);
+                    break;
+                case Program.RFlow3D:
+                    view = new RFlow3DForm((RFlow3D)formData);
+                    break;
+                case Program.RPill2D:
+                    view = new RPill2DForm((RPill2D)formData);
+                    break;
+                case Program.RPill3D:
+                    view = new RPill3DForm((RPill3D)formData);
+                    break;
+                case Program.RSetl2D:
+                    view = new RSetl2DForm((RSetl2D)formData);
+                    break;
+                case Program.RSetl3D:
+                    view = new RSetl3DForm((RSetl3D)formData);
+                    break;
+                case Program.RSlope2D:
+                    view = new RSlope2DForm((RSlope2D)formData);
                     break;
                 default:
                     throw new NotImplementedException();

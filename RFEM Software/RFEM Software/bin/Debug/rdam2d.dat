@@ -15,7 +15,7 @@ Drain X, Y dimensions [conductivity] . . . . . .  0 0 0
 Width of top of dam  . . . . . . . . . . . . . .  1.2
 Width of base of dam . . . . . . . . . . . . . .  4.8
 Height of dam  . . . . . . . . . . . . . . . . .  3.2
-Number of realizations [max iter., tol]. . . . .  100 500 0.005
+Number of realizations [max iter., tol]. . . . .  1000 500 0.005
 Generator seed (0 for random seed) . . . . . . .  0
 Correlation length in X [and Y] directions . . .  1 1
 Conductivity mean  . . . . . . . . . . . . . . .  1

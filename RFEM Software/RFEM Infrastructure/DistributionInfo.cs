@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 
-namespace RFEM_Infrastructure
+namespace RFEMSoftware.Simulation.Infrastructure
 {
     public class DistributionInfo: INotifyPropertyChanged, IDataErrorInfo
     {
@@ -23,14 +23,14 @@ namespace RFEM_Infrastructure
         public delegate string ValidationDelegate(object sender, string propertyName);
 
         public SoilProperty SoilProp { get; private set; }
-        public DistributionType Type
+        public Distribution DistributionType
         {
-            get { return _Dist.Value; }
+            get { return _Dist; }
             set
             {
-                if(_Dist.Value != value)
+                if(_Dist != value)
                 {
-                    _Dist.Value = value;
+                    _Dist = value;
                     NotifyPropertyChanged("Mean");
                     NotifyPropertyChanged("StandardDev");
                     NotifyPropertyChanged("LowerBound");
@@ -54,7 +54,7 @@ namespace RFEM_Infrastructure
                 }
             }
         }
-        public double? StandardDev
+        public double? StandardDeviation
         {
             get { return _StandardDev; }
             set
@@ -114,15 +114,11 @@ namespace RFEM_Infrastructure
                 }
             }
         }
-        public Distribution Dist
-        {
-            get { return _Dist; }
-        }
 
         public DistributionInfo(SoilProperty property)
         {
             SoilProp = property;
-            _Dist = new Distribution(DistributionType.Deterministic);
+            _Dist = Distribution.Deterministic;
         }
 
         public string Error
@@ -234,7 +230,7 @@ namespace RFEM_Infrastructure
                 }
             }
         }
-        public double? StdDev
+        public double? StandardDeviation
         {
             get { return _StdDev; }
             set

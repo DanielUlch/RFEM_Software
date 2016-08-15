@@ -1,0 +1,40 @@
+Stochastic Settlement Under Two Rigid Footings
+Echo input data to stats file (t/f)? . . . . . .  t
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  f
+Display first log-E field (t/f)? . . . . . . . .  f
+Display first displaced FE mesh (t/f)? . . . . .  f
+Use K-G Selective Reduced Integration (t/f)? . .  t
+Output settlement statistics (t/f)?  . . . . . .  t
+Output effective (block) E values (t/f)? . . . .  f
+Output arith/geom/harm ave E-field stats (t/f)?.  f
+Generate uniform E-fields (t/f)? . . . . . . . .  f
+Number of elements in the X direction  . . . . .  60
+Number of elements in the Y direction  . . . . .  20
+Element size . . . . . . . . . . . . . . . . . .  0.05 0.05
+Number of realizations . . . . . . . . . . . . .  1000
+Generator seed (0 for random seed) . . . . . . .  0
+Poisson's ratio  . . . . . . . . . . . . . . . .  0.25
+Elastic modulus mean and S.D.  . . . . . . . . .  1 0.3
+Correlation lengths in X [and Y] directions  . .  1 1
+Name of covariance function  . . . . . . . . . .  dlavx2
+Settlement stats node list . . . . . . . . . . .   21 41
+Diff. sett. stats node pair list . . . . . . . .   21-41
+
+LOADING:
+--------
+
+Number of rigid footings (max 5) . . . . . . . .  2
+Footing #1: left, right nodes, value, type . . .  18 24 1 1
+Footing #2: left, right nodes, value, type . . .  38 44 1 1
+Number of uniformly distributed loads (max 5). .  0
+Number of line loads (max 5) . . . . . . . . . .  0
+
+PLOTTING INFORMATION:
+---------------------
+
+Show log-E field on displaced mesh plot (t/f)? .  t
+Show problem dimensions on displaced mesh plot?.  t
+Show plot titles on displaced mesh plot? . . . .  t
+Displacement magnification factors (x, y dir). .  0.05 0.05
+Width of displaced mesh output plot in inches  .  4

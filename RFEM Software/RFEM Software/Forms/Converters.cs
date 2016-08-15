@@ -1,4 +1,5 @@
-﻿using RFEM_Infrastructure;
+﻿
+using RFEMSoftware.Simulation.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace RFEM_Software.Forms
+namespace RFEMSoftware.Simulation.Desktop.Forms
 {
     public class DoubleConverter : IValueConverter
     {
@@ -47,6 +48,18 @@ namespace RFEM_Software.Forms
             else if(value.GetType() == typeof(FrictionAngle))
             {
                 return ((FrictionAngle)value).ToUIString();
+            }
+            else if(value.GetType() == typeof(Axis))
+            {
+                return ((Axis)value).ToUIString();
+            }
+            else if(value.GetType() == typeof(RPill3DElementType))
+            {
+                return ((RPill3DElementType)value).ToUIString();
+            }
+            else if(value.GetType() == typeof(RSlopeSoilProperty))
+            {
+                return ((RSlopeSoilProperty)value).ToUIString();
             }
             else
             {

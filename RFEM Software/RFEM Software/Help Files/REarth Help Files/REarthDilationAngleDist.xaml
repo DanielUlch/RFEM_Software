@@ -1,0 +1,104 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:RFEMSoftware.Simulation.Desktop.Help_Files.REarth_Help_Files"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Paragraph>
+        Here the soil dilation angle mean, standard deviation, distribution
+type, and other parameters are specified. The `distribution type' is
+one of
+
+	1) deterministic, requiring only one parameter, the 'mean',
+	   ie, the property value.
+
+	2) normal, requiring two parameters, the mean and standard
+	   deviation of the property.
+
+	3) lognormal, requiring two parameters, the mean and standard
+	   deviation of the property.
+
+	4) bounded, requiring 4 parameters (see below for a more
+	   detailed description);
+		- the lower bound, a
+		- the upper bound, b
+		- the location parameter, m
+		- the scale parameter, s
+	   This is probably the most appropriate distribution to use
+	   for phi since it provides for an upper bound on the
+	   dilation angle.
+
+	5) f(phi). This specifies that the soil property is to be
+	   expressed as a function of the friction angle having the
+	   following form;
+
+		property = a + b*f(phi)
+
+	   where f(phi) is either 1.0, sin(phi), or tan(phi) and a
+	   and b are parameters.
+
+The bounded distribution requires 4 parameters, namely the lower and
+upper bounds on the distribution and the location and scale
+parameters. Realizations of this bounded distribution are derived
+from the transformation
+
+   U = a + 0.5*(b-a)*[ 1 + tanh((m + s*G)/2*pi) ]		(1)
+
+where G is a Gaussian random field with mean zero and unit variance,
+(a,b) are the lower and upper bounds of the distribution, and (m,s)
+are the distribution parameters controlling its shape. When m = 0,
+the distribution is symmetric about the midpoint, 0.5*(a + b), with
+smaller values of s yielding a narrower unimodal peak. Note that using
+m = 0 implies that the mean value is centered on the range. Other
+values of m have not been investigated. See also Fenton, G.A.,
+Simulation and Analysis of Random Fields, Ph.D. Thesis, Princeton
+University, 1990, pg 139, and Spatial Variation in Liquefaction
+Risk, Geotechnique, Vol 48(6), 1998, pgs 821 and 822 for further
+details on this bounded distribution. The Local Average Subdivision
+(LAS) algorithm used to generate sample fields in this program replaces
+the G field in Eq.(1) with the local average of G, G_e, over the
+element domains (and so the variance of G_e will be less than or equal
+to unity, depending on the correlation length and the element size).
+
+If the distribution type is `f(phi)', then the soil property is assumed
+to be functionally related to the friction angle, phi, according to the
+relationship
+
+	property = a + b*f(phi)
+
+where `f' is a function selected from the following possibilities,
+
+	f(phi) = phi   gives
+
+			property = a + b*phi
+
+	f(phi) = sin(phi) gives the function sin(), ie
+
+			property = a + b*sin(phi)
+
+	f(phi) = tan(phi) gives the function tan(), ie
+
+			property = a + b*tan(phi)
+
+This 'distribution type' is most commonly used for the 'at rest' earth
+pressure coefficient, k0. For example, using a = 1, b = -1, and f = sin,
+gives
+
+	k0 = 1 - sin(phi)
+
+which is Jaky's formula for the lateral earth pressure at rest.
+
+Note that if phi is random, then so too is the soil property
+being set by the 'f(phi)' option. This presents a difficulty, because
+the first thing the Random Finite Element Method (RFEM) algorithm does
+is a deterministic analysis where all properties are set to their
+means. In order to compute this deterministic response, the mean
+soil values must all be known, which, in the case where the property
+is a non-linear function of phi, is not trivial to find. In this
+program, when the function f is 'sin' or 'tan', the mean of the
+property is estimated using a 2nd-order Taylor series expansion of
+the function and this value is used in the deterministic analysis.
+The variance of the property is computed for interest, although its
+computation is via a 1st order Taylor's series representation and
+is a `point' variance, that is, the effect of local averaging is
+not included. The mean and variance of the function f = 1.0 is
+computed exactly.
+    </Paragraph>
+</FlowDocument>

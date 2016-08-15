@@ -1,0 +1,27 @@
+3D Pillar capacity
+Echo input data to stats file (t/f)? . . . . . .  t
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  f
+Display random field? [realization][prop][plane]  f 1 c 8 0 0
+Normalize pillar capacity (/det)?. . . . . . . .  f
+Output pillar capacity samples?. . . . . . . . .  t
+Number of elements in X, Y, Z directions . . . .  16 16 20
+Element size in X, Y, and Z directions . . . . .  0.1 0.1 0.1
+Number of nodes per element (8 or 20)  . . . . .  8
+Displacement increment, plastic tol, bearing tol  0.001 0.001 0.001
+Max displacement steps, max iterations . . . . .  80 300
+Cohesion mean, SD, dist  . . . . . . . . . . . .  100 10 lognormal
+Friction angle mean, SD, dist  . . . . . . . . .  0.57735 0.25 tlognormal
+Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Elastic modulus mean, SD, dist . . . . . . . . .  100000 0 deterministic
+Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0 deterministic
+Number of realizations . . . . . . . . . . . . .  1000
+Generator seed (0 for random seed) . . . . . . .  0
+Correlation length in X, Y, and Z directions . .  1 1 1
+Name of covariance function  . . . . . . . . . .  dlavx3
+
+Material Property Correlation Matrix Data
+=========================================
+Property 1    Property 2    Correlation
+----------    ----------    -----------
+

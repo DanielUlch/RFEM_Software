@@ -7,14 +7,15 @@
     <ProjectGuid>{C1D0D931-4F3F-4270-BA7A-EB615FA197F5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RFEM_Software</RootNamespace>
-    <AssemblyName>RFEM Software</AssemblyName>
+    <RootNamespace>RFEMSoftware.Simulation.Desktop</RootNamespace>
+    <AssemblyName>RFEMDesktopClient</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -55,7 +55,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>RFEM_Software.EntryPoint</StartupObject>
+    <StartupObject>RFEMSoftware.Simulation.Desktop.EntryPoint</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\Icon2.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>RFEMSoftware.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,64 +91,92 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Custom Controls\DataGridMatrixHelper.cs" />
+    <Compile Include="Custom Controls\REarthSoilDistribution.xaml.cs">
+      <DependentUpon>REarthSoilDistribution.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Custom Controls\RFEMReader.cs" />
     <Compile Include="Custom Controls\RFEMToolTip.cs" />
+    <Compile Include="Custom Controls\SoilDistribution.xaml.cs">
+      <DependentUpon>SoilDistribution.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom Controls\TabItemHeader.xaml.cs">
+      <DependentUpon>TabItemHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Dialogs\ReadDataFileDialog.xaml.cs">
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions.cs" />
     <Compile Include="FormFactory.cs" />
     <Compile Include="FormRepository.cs" />
     <Compile Include="Forms\Converters.cs" />
-    <Compile Include="Forms\Histogram\HistogramCoreViewModel.cs" />
-    <Compile Include="Forms\Histogram\HistogramFormCore.xaml.cs">
+    <Compile Include="Forms\Form ViewModels\RPill2DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RPill3DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RSetl2DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RSetl3DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RSlope2DViewModel.cs" />
+    <Compile Include="Forms\Form Views\RPill2DForm.xaml.cs">
+      <DependentUpon>RPill2DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form Views\RPill3DForm.xaml.cs">
+      <DependentUpon>RPill3DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form Views\RSetl2DForm.xaml.cs">
+      <DependentUpon>RSetl2DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form Views\RSetl3DForm.xaml.cs">
+      <DependentUpon>RSetl3DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form Views\RSlope2DForm.xaml.cs">
+      <DependentUpon>RSlope2DForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Core\HistogramCoreViewModel.cs" />
+    <Compile Include="Forms\Histogram Core\HistogramFormCore.xaml.cs">
       <DependentUpon>HistogramFormCore.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Histogram\HistogramHost.cs" />
-    <Compile Include="Forms\RBear2D\Rbear2DForm.xaml.cs">
-      <DependentUpon>Rbear2DForm.xaml</DependentUpon>
+    <Compile Include="Forms\Histogram Core\HistogramHost.cs" />
+    <Compile Include="Forms\Form Views\RBear2DForm.xaml.cs">
+      <DependentUpon>RBear2DForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RBear2D\RBear2DHistForm.xaml.cs">
+    <Compile Include="Forms\Histogram Views\RBear2DHistForm.xaml.cs">
       <DependentUpon>RBear2DHistForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RBear2D\RBear2DHistViewModel.cs" />
-    <Compile Include="Forms\RBear2D\RBear2DViewModel.cs" />
-    <Compile Include="Forms\RDam2D\RDam2DConductivityHist.xaml.cs">
+    <Compile Include="Forms\Histogram ViewModels\RBear2DHistViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RBear2DViewModel.cs" />
+    <Compile Include="Forms\Histogram Views\RDam2DConductivityHist.xaml.cs">
       <DependentUpon>RDam2DConductivityHist.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RDam2D\RDam2DConductivityHistViewModel.cs" />
-    <Compile Include="Forms\RDam2D\RDam2DFlowRateHist.xaml.cs">
+    <Compile Include="Forms\Histogram ViewModels\RDam2DConductivityHistViewModel.cs" />
+    <Compile Include="Forms\Histogram Views\RDam2DFlowRateHist.xaml.cs">
       <DependentUpon>RDam2DFlowRateHist.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RDam2D\RDam2DFlowRateHistViewModel.cs" />
-    <Compile Include="Forms\RDam2D\Rdam2dForm.xaml.cs">
-      <DependentUpon>Rdam2dForm.xaml</DependentUpon>
+    <Compile Include="Forms\Histogram ViewModels\RDam2DFlowRateHistViewModel.cs" />
+    <Compile Include="Forms\Form Views\RDam2DForm.xaml.cs">
+      <DependentUpon>RDam2DForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RDam2D\RDam2DNodalGradientHist.xaml.cs">
+    <Compile Include="Forms\Histogram Views\RDam2DNodalGradientHist.xaml.cs">
       <DependentUpon>RDam2DNodalGradientHist.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RDam2D\RDam2DNodalGradientHistViewModel.cs" />
-    <Compile Include="Forms\RDam2D\RDam2DViewModel.cs" />
-    <Compile Include="Forms\REarth2D\REarth2DForm.xaml.cs">
+    <Compile Include="Forms\Histogram ViewModels\RDam2DNodalGradientHistViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RDam2DViewModel.cs" />
+    <Compile Include="Forms\Form Views\REarth2DForm.xaml.cs">
       <DependentUpon>REarth2DForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\REarth2D\REarth2DViewModel.cs" />
-    <Compile Include="Forms\RFlow2D\RFlow2DForm.xaml.cs">
+    <Compile Include="Forms\Form ViewModels\REarth2DViewModel.cs" />
+    <Compile Include="Forms\Form Views\RFlow2DForm.xaml.cs">
       <DependentUpon>RFlow2DForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RFlow2D\RFlow2DViewModel.cs" />
-    <Compile Include="Forms\RFlow3D\RFlow3DForm.xaml.cs">
+    <Compile Include="Forms\Form ViewModels\RFlow2DViewModel.cs" />
+    <Compile Include="Forms\Form Views\RFlow3DForm.xaml.cs">
       <DependentUpon>RFlow3DForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RFlow3D\RFlow3DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\RFlow3DViewModel.cs" />
     <Compile Include="Forms\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IHistView.cs" />
-    <Compile Include="Interfaces\IHistViewModel.cs" />
-    <Compile Include="Interfaces\ISimView.cs" />
-    <Compile Include="Interfaces\ISimViewModel.cs" />
+    <Compile Include="Forms\Interfaces\IHistView.cs" />
+    <Compile Include="Forms\Interfaces\IHistViewModel.cs" />
+    <Compile Include="Forms\Interfaces\ISimView.cs" />
+    <Compile Include="Forms\Interfaces\ISimViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -150,8 +187,8 @@
       <DependentUpon>RFEMRibbon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Custom Controls\RFEMTabItem.cs" />
-    <Compile Include="SimManager.cs" />
     <Compile Include="StateManager.cs" />
+    <Compile Include="Utils.cs" />
     <Resource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -264,43 +301,79 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Page Include="Custom Controls\REarthSoilDistribution.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\SoilDistribution.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\TabItemHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\ReadDataFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Histogram\HistogramFormCore.xaml">
+    <Page Include="Forms\Form Views\RPill2DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RBear2D\RBear2DHistForm.xaml">
+    <Page Include="Forms\Form Views\RPill3DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RDam2D\RDam2DConductivityHist.xaml">
+    <Page Include="Forms\Form Views\RSetl2DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RDam2D\RDam2DFlowRateHist.xaml">
+    <Page Include="Forms\Form Views\RSetl3DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RDam2D\Rdam2dForm.xaml">
+    <Page Include="Forms\Form Views\RSlope2DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RDam2D\RDam2DNodalGradientHist.xaml">
+    <Page Include="Forms\Histogram Core\HistogramFormCore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\REarth2D\REarth2DForm.xaml">
+    <Page Include="Forms\Form Views\RBear2DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RFlow2D\RFlow2DForm.xaml">
+    <Page Include="Forms\Histogram Views\RBear2DHistForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\RFlow3D\RFlow3DForm.xaml">
+    <Page Include="Forms\Histogram Views\RDam2DConductivityHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RDam2DFlowRateHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Form Views\RDam2DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RDam2DNodalGradientHist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Form Views\REarth2DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Form Views\RFlow2DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Form Views\RFlow3DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -576,6 +649,38 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthCohesionDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthCorrelationMatrix.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthDilationAngleDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthElasticModulusDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthFrictionAngleDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthPoissonsRatioDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthPressureCoefficientDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Help Files\REarth Help Files\REarthUnitWeightDist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -588,10 +693,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\RBear2D\Rbear2DForm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="RFEMRibbon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -620,6 +721,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="RFEMSoftware.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -655,12 +757,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Unpin.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RFEM Infrastructure\RFEM Infrastructure.csproj">
-      <Project>{efefad51-0aa4-44f1-9efd-8520bf35ce07}</Project>
-      <Name>RFEM Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Cancel.png" />
@@ -779,6 +875,33 @@
   <ItemGroup>
     <Resource Include="Images\RemoveFromQueue.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RFEM Infrastructure\RFEM Infrastructure.csproj">
+      <Project>{efefad51-0aa4-44f1-9efd-8520bf35ce07}</Project>
+      <Name>RFEM Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CollapseArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExpandArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HistogramBrown.png" />
+    <Resource Include="Images\AccountingBrown.png" />
+    <Resource Include="Images\SettingsForm.png" />
+    <Resource Include="Images\DataForm.png" />
+    <Resource Include="Images\Expand.png" />
+    <Resource Include="Images\Collapse.png" />
+    <Resource Include="Images\OpenFolder.png" />
+    <Resource Include="Images\AddFileNew.png" />
+    <Resource Include="Images\SplashScreen2.png" />
+    <Resource Include="Images\Icon2.png" />
+    <Resource Include="Images\Icon2.ico" />
+    <Resource Include="Images\IconWork.ico" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

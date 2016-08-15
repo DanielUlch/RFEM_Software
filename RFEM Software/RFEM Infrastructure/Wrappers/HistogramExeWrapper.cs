@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFEM_Infrastructure
+namespace RFEMSoftware.Simulation.Infrastructure.Wrappers
 {
     public static class HistogramExeWrapper
     {

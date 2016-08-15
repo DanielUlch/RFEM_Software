@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace RFEM_Software.Commands
+namespace RFEMSoftware.Simulation.Desktop.Commands
 {
     /// <summary>
     /// Custom HelpClick command that allows differentiation between an F1 press and a context menu

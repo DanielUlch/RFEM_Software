@@ -1,0 +1,34 @@
+Stability of a 2:1 slope
+Echo input data to stats file (t/f)? . . . . . .  t
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  f
+Display a random field (t/f)?  . . . . . . . . .  f 1 c
+Display displaced FE mesh (t/f)? . . . . . . . .  f 1
+Number of x-elements to left of embankment . . .  20
+Number of x-elements to right of embankment  . .  20
+Number of y-elements in embankment . . . . . . .  10
+Number of y-elements in foundation . . . . . . .  5
+Slope gradient (x/y) . . . . . . . . . . . . . .  2
+Element size . . . . . . . . . . . . . . . . . .  0.05 0.05
+Convergence tolerance  . . . . . . . . . . . . .  0.0001
+Maximum number of iterations . . . . . . . . . .  500
+Cohesion mean, SD, dist  . . . . . . . . . . . .  4 2 lognormal
+Friction mean/SD, dist, lower/upper/loc/scale  .  30 5 bounded 20 40 0 1
+Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Unit weight mean, SD, dist . . . . . . . . . . .  20 2 lognormal
+Elastic modulus mean, SD, dist . . . . . . . . .  100000 50000 lognormal
+Poisson's ratio mean, SD, dist . . . . . . . . .  0.3 0.1 deterministic
+Deterministic strength reduction factors . . . .  1 1.1 1.2 1.3 1.4 1.5 2 2.5 3
+Number of realizations . . . . . . . . . . . . .  1000
+Generator seed (0 for random seed) . . . . . . .  0
+Correlation length in X [and Y] directions . . .  1 1
+Name of covariance function  . . . . . . . . . .  dlavx2
+
+Material Property Correlation Matrix Data
+=========================================
+Property 1    Property 2    Correlation
+----------    ----------    -----------
+
+Show element boundaries  . . . . . . . . . . . .  t
+Show random field as background [log?] [prop?] .  t t c
+Width of displaced mesh output plot in inches  .  4

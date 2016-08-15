@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace RFEM_Software.Custom_Controls
+namespace RFEMSoftware.Simulation.Desktop.CustomControls
 {
     public class RFEMReader: FlowDocumentReader
     {
@@ -20,7 +20,7 @@ namespace RFEM_Software.Custom_Controls
             {"JobTitle", "/Help Files/RBear Help Files/JobTitle.xaml" },
             {"BaseName", "/Help Files/RBear Help Files/BaseName.xaml" },
             {"EchoInputToOutputFile", "/Help Files/RBear Help Files/EchoInputToOutputFile.xaml" },
-            
+            {"OutputDebugInformation", "Help Files/RDam Help Files/OutputDebugInformation.xaml" },
 
             //RBear2D Files
             {"CohesionDistribution", "/Help Files/RBear Help Files/CohesionDistribution.xaml" },
@@ -65,7 +65,7 @@ namespace RFEM_Software.Custom_Controls
             { "LineKeyHelp", "/Help Files/RBearHist Help Files/LineKeyHelp.xaml"},
 
             //RDam2D Files
-            {"OutputDebugInformation", "Help Files/RDam Help Files/OutputDebugInformation.xaml" },
+            
             {"ProduceDisplayFile", "Help Files/RDam Help Files/ProduceDisplayFile.xaml" },
             {"ShowStreamlinesOrDrops", "Help Files/RDam Help Files/ShowStreamlinesOrDrops.xaml" },
             {"ShowMeshOnFlownet", "Help Files/RDam Help Files/ShowMeshOnFlownet.xaml" },
@@ -119,7 +119,20 @@ namespace RFEM_Software.Custom_Controls
             {"REarthNumSimulations", "Help Files/REarth Help Files/REarthNumSimulations.xaml" },
             {"REarthGeneratorSeed", "Help Files/REarth Help Files/REarthGeneratorSeed.xaml" },
             {"REarthCorrelationLengths", "Help Files/REarth Help Files/REarthCorrelationLengths.xaml" },
-            {"REarthCovarianceFunction", "Help Files/REarth Help Files/REarthCovarianceFunction.xaml" }
+            {"REarthCovarianceFunction", "Help Files/REarth Help Files/REarthCovarianceFunction.xaml" },
+            {"REarthCohesionDist", "Help Files/REarth Help Files/REarthCohesionDist.xaml" },
+            {"REarthFrictionAngleDist", "Help Files/REarth Help Files/REarthFrictionAngleDist.xaml" },
+            {"REarthDilationAngleDist", "Help Files/REarth Help Files/REarthDilationAngleDist.xaml" },
+            {"REarthElasticModulusDist", "Help Files/REarth Help Files/REarthElasticModulusDist.xaml" },
+            {"REarthPoissonsRatioDist", "Help Files/REarth Help Files/REarthPoissonsRatioDist.xaml" },
+            {"REarthUnitWeightDist", "Help Files/REarth Help Files/REarthUnitWeightDist.xaml" },
+            {"REarthPressureCoefficientDist", "Help Files/REarth Help Files/REarthPressureCoefficientDist.xaml" },
+            {"REarthCorrelationMatrix", "Help Files/REarth Help Files/REarthCorrelationMatrix.xaml" }
+
+            //RFlow2D Help Files
+
+
+
         };
 
         public void LoadHelpTopic(string topic)

@@ -7,8 +7,8 @@
     <ProjectGuid>{EFEFAD51-0AA4-44F1-9EFD-8520BF35CE07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RFEM_Infrastructure</RootNamespace>
-    <AssemblyName>RFEM Infrastructure</AssemblyName>
+    <RootNamespace>RFEMSoftware.Simulation.Infrastructure</RootNamespace>
+    <AssemblyName>InfrastructureLib</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -59,16 +59,26 @@
     <Compile Include="DistributionInfo.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="FileWriter.cs" />
-    <Compile Include="Sim Models\REarth2D.cs" />
+    <Compile Include="Models\RFlow2D.cs" />
+    <Compile Include="Models\RFlow3D.cs" />
+    <Compile Include="Models\RPill2D.cs" />
+    <Compile Include="Models\RPill3D.cs" />
+    <Compile Include="Models\RSetl2D.cs" />
+    <Compile Include="Models\RSetl3D.cs" />
+    <Compile Include="Models\RSlope2D.cs" />
+    <Compile Include="Orchistrators\SimWorker.cs" />
+    <Compile Include="Persistence\FileReader.cs" />
+    <Compile Include="Persistence\FileWriter.cs" />
+    <Compile Include="Models\REarth2D.cs" />
+    <Compile Include="Orchistrators\SimManager.cs" />
+    <Compile Include="Persistence\ModelRepository.cs" />
     <Compile Include="Wrappers\GhostViewWrapper.cs" />
-    <Compile Include="ISimModel.cs" />
+    <Compile Include="Models\ISimModel.cs" />
     <Compile Include="Wrappers\HistogramExeWrapper.cs" />
     <Compile Include="Wrappers\PlotPSWrapper.cs" />
-    <Compile Include="Sim Models\RBear2D.cs" />
+    <Compile Include="Models\RBear2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sim Models\RDam2D.cs" />
+    <Compile Include="Models\RDam2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Executables\display.exe">
@@ -91,6 +101,27 @@
     </Content>
     <Content Include="Executables\rearth2d.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rflow2d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rflow3d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rpill2d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rpill3d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rsetl2d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rsetl3d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\rslope2d.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

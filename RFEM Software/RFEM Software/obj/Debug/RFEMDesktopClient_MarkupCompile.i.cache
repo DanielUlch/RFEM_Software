@@ -1,0 +1,20 @@
+﻿RFEMDesktopClient
+
+
+winexe
+C#
+.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\
+RFEMSoftware.Simulation.Desktop
+none
+false
+DEBUG;TRACE
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml
+24369392343
+
+61-1980700544
+171920227209
+Custom Controls\REarthSoilDistribution.xaml;Custom Controls\SoilDistribution.xaml;Custom Controls\TabItemHeader.xaml;Dialogs\ReadDataFileDialog.xaml;Forms\Form Views\RPill2DForm.xaml;Forms\Form Views\RPill3DForm.xaml;Forms\Form Views\RSetl2DForm.xaml;Forms\Form Views\RSetl3DForm.xaml;Forms\Form Views\RSlope2DForm.xaml;Forms\Histogram Core\HistogramFormCore.xaml;Forms\Form Views\RBear2DForm.xaml;Forms\Histogram Views\RBear2DHistForm.xaml;Forms\Histogram Views\RDam2DConductivityHist.xaml;Forms\Histogram Views\RDam2DFlowRateHist.xaml;Forms\Form Views\RDam2DForm.xaml;Forms\Histogram Views\RDam2DNodalGradientHist.xaml;Forms\Form Views\REarth2DForm.xaml;Forms\Form Views\RFlow2DForm.xaml;Forms\Form Views\RFlow3DForm.xaml;Forms\SettingsForm.xaml;Help Files\RBearHist Help Files\ChiSquareHelp.xaml;MainWindow.xaml;RFEMRibbon.xaml;Themes\Generic.xaml;
+
+False
+

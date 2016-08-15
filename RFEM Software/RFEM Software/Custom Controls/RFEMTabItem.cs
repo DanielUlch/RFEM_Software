@@ -1,5 +1,7 @@
-﻿using RFEM_Infrastructure;
-using RFEM_Software.Forms;
+﻿
+using RFEMSoftware.Simulation.Desktop.Forms;
+using RFEMSoftware.Simulation.Infrastructure;
+using RFEMSoftware.Simulation.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
-namespace RFEM_Software.Custom_Controls
+namespace RFEMSoftware.Simulation.Desktop.CustomControls
 {
     /// <summary>
     /// Adds a TabType field to tabs to determine which type of tab it is
@@ -35,6 +39,10 @@ namespace RFEM_Software.Custom_Controls
         private RFEMTabType _Type;
         private ContextMenu _HeaderMenu;
         private ScrollViewer _ScrollViewer;
+        
+       
+                
+            
 
         public RFEMTabType Type
         {
@@ -77,14 +85,31 @@ namespace RFEM_Software.Custom_Controls
             //Place the scrollviewer in the new tab
             this.Content = _ScrollViewer;
             
+            this.Padding = new Thickness() { Left = 0, Right = 0, Top = 0, Bottom = 0 };
+
         }
         protected void SetTabHeader(string headerName)
         {
-            this.Header = new ContentControl
+            
+
+            var header = new TabItemHeader();
+            switch (_Type)
             {
-                Content = headerName,
-                ContextMenu = _HeaderMenu
-            };
+                case RFEMTabType.DataInput:
+                    header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/DataForm.png"));
+                    break;
+                case RFEMTabType.Settings:
+                    header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/SettingsForm.png"));
+                    break;
+                case RFEMTabType.Results:
+                    header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/AccountingBrown.png"));
+                    break;
+            }
+            
+            header.Text = headerName;
+            header.ContextMenu = _HeaderMenu;
+
+            this.Header = header;
         }
         protected void AddToContextMenu(MenuItem item)
         {

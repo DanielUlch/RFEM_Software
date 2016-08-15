@@ -2,20 +2,44 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace RFEM_Software
+namespace RFEMSoftware.Simulation.Desktop
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-     
-     
-    }
+        private const int MinSplashTime = 1500;
+        private const int SplashFadeTime = 500;
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var splashScreen = new SplashScreen("Images/SplashScreen2.png");
+            splashScreen.Show(false, true);
+
+            var timer = new Stopwatch();
+            timer.Start();
+
+            base.OnStartup(e);
+            var MainWindow = new MainWindow();
+
+            timer.Stop();
+
+            int remainingTime = MinSplashTime - (int)timer.ElapsedMilliseconds;
+            if (remainingTime > 0)
+                Thread.Sleep(remainingTime);
+
+            splashScreen.Close(TimeSpan.FromMilliseconds(SplashFadeTime));
+
+            MainWindow.Show();
+        }
+
+        }
     public class EntryPoint
     {
         [STAThread]
@@ -33,7 +57,15 @@ namespace RFEM_Software
             {
                 app.Resources["TBHeight"] = (double)18;
             }
-            app.Run();
+
+            try
+            {
+                app.Run();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 

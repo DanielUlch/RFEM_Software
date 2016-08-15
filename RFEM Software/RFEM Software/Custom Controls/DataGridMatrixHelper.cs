@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFEM_Software.Custom_Controls
+namespace RFEMSoftware.Simulation.Desktop.CustomControls
 {
     //I got this code almost directly from http://stackoverflow.com/questions/276808/how-to-populate-a-wpf-grid-based-on-a-2-dimensional-array
     //so i thought I would cite
