@@ -16,3 +16,4 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Release\InfrastructureLib.pdb
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Release\InfrastructureLib.dll
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Release\InfrastructureLib.pdb
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Release\RFEM Infrastructure.csprojResolveAssemblyReference.cache

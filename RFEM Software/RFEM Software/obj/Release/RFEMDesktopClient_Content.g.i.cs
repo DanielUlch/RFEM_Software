@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dj.mp3")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dj_.wav")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("rfemsoftware.pfx")]
 
 
