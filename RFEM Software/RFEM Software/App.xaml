@@ -11,12 +11,12 @@
         <sys:Double x:Key="TBHeight" >20</sys:Double>
 
 
-        <Color x:Key="PallateColor1">#FFFFA969</Color>
-        <Color x:Key="PallateColor2">#FFFF8932</Color>
-        <Color x:Key="PallateColor3">#FFFD740F</Color>
-        <Color x:Key="PallateColor4">#FFC55400</Color>
-        <Color x:Key="PallateColor5">#FFA74700</Color>
-        <Color x:Key="PallateColor6">#FF471E00</Color>
+        <Color x:Key="PallateColor1">#FFFFC6A6</Color>
+        <Color x:Key="PallateColor2">#FFDB7941</Color>
+        <Color x:Key="PallateColor3">#FFBF581F</Color>
+        <Color x:Key="PallateColor4">#FF9C3F0A</Color>
+        <Color x:Key="PallateColor5">#FF8A3200</Color>
+        <Color x:Key="PallateColor6">#FF461C03</Color>
 
         <Color x:Key="NeutralColor1">White</Color>
 

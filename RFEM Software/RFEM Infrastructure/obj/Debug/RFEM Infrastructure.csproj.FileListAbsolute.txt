@@ -1,0 +1,19 @@
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\display.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\hist_bear2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\hist_dam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\plotps.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rbear2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rdam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rearth2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rflow2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rflow3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rpill2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rpill3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rsetl2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rsetl3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\Executables\rslope2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\InfrastructureLib.dll
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\bin\Debug\InfrastructureLib.pdb
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\RFEM Infrastructure.csprojResolveAssemblyReference.cache
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\InfrastructureLib.dll
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Infrastructure\obj\Debug\InfrastructureLib.pdb
