@@ -113,13 +113,6 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 }
             }
         }
-        public string AppDataFileLocation
-        {
-            get
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat";
-            }
-        }
         public RPill2D()
         {
             Cohesion = new DistributionInfo(SoilProperty.Cohesion);
@@ -137,14 +130,15 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 {0,0,0,0,1}
             };
         }
-        
 
-        public string DataFileLocation()
+
+        public string OutputDirectory
         {
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-
-            return directory + "\\" + BaseName + ".dat";
+            get; set;
+        }
+        public string DataLocation
+        {
+            get { return OutputDirectory + "\\" + BaseName + ".dat"; }
         }
 
         public string RunSim(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token)
@@ -178,7 +172,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
+            pInfo.Arguments = "\"" + DataLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
             p = new Process() { StartInfo = pInfo };
@@ -224,6 +218,10 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             CanDisplaySummaryStats = true;
 
+            if (ProducePSPlotOfFirstDisplacedMesh)
+                CanDisplayMesh = true;
+            if (PlotFirstRF)
+                CanDisplayField = true;
 
             currentOp.Report("Finished");
 

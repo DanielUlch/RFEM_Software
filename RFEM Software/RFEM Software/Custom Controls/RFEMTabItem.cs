@@ -9,29 +9,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace RFEMSoftware.Simulation.Desktop.CustomControls
 {
-    /// <summary>
-    /// Adds a TabType field to tabs to determine which type of tab it is
-    /// </summary>
-    //class RFEMTabItem : TabItem
-    //{
-    //    public RFEMTabType TabType { get; set; }
-    //}
 
-    /// <summary>
-    /// Enumeration for different TabTypes
-    /// </summary>
     public enum RFEMTabType
     {
         DataInput,
-        Help,
+        Histogram,
         Settings,
-        Results
+        SummaryStats
     }
 
     public class RFEMTabItem: TabItem
@@ -41,8 +32,6 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
         private ScrollViewer _ScrollViewer;
         
        
-                
-            
 
         public RFEMTabType Type
         {
@@ -88,7 +77,7 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
             this.Padding = new Thickness() { Left = 0, Right = 0, Top = 0, Bottom = 0 };
 
         }
-        protected void SetTabHeader(string headerName)
+        protected void SetTabHeader(ISimViewModel viewModel, string BaseNameExtension)
         {
             
 
@@ -101,12 +90,19 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
                 case RFEMTabType.Settings:
                     header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/SettingsForm.png"));
                     break;
-                case RFEMTabType.Results:
+                case RFEMTabType.SummaryStats:
                     header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/AccountingBrown.png"));
                     break;
+                case RFEMTabType.Histogram:
+                    header.Image = new BitmapImage(new Uri("pack://application:,,,/Images/NormalHist.png"));
+                    break;
             }
+            Binding TextBinding = new Binding("BaseName");
+            TextBinding.Source = viewModel;
+            TextBinding.StringFormat = "{0}" + BaseNameExtension;
+
+            header.SetBinding(TabItemHeader.TextProperty, TextBinding);
             
-            header.Text = headerName;
             header.ContextMenu = _HeaderMenu;
 
             this.Header = header;
@@ -128,11 +124,7 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
         private ISimView _View;
         private ISimViewModel _ViewModel;
         private Program _ProgramType;
-
-        public ISimView View
-        {
-            get { return _View; }
-        }
+        
         public ISimViewModel ViewModel
         {
             get { return _ViewModel; }
@@ -141,74 +133,45 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
         {
             get { return _ProgramType; }
         }
-        public DataEntryTab(RFEMTabType type, 
-                            RoutedEventHandler closeTab,
-                            RoutedEventHandler closeAllTabs, 
-                            ISimView view, 
+        public DataEntryTab(RoutedEventHandler closeTab,
+                            RoutedEventHandler closeAllTabs,
                             ISimViewModel viewModel, 
-                            CommandBindingCollection cmdBindings,
-                            UserControl content,
-                            string tabName,
-                            Program programType): base(type, closeTab, closeAllTabs)
+                            CommandBindingCollection cmdBindings): base(RFEMTabType.DataInput, closeTab, closeAllTabs)
         {
-            _View = view;
+            _View = viewModel.View;
             _ViewModel = viewModel;
-            _ProgramType = programType;
+            _ProgramType = viewModel.Type;
 
-            content.CommandBindings.Clear();
-            content.CommandBindings.AddRange(cmdBindings);
+            ((UserControl)_View).CommandBindings.Clear();
+            ((UserControl)_View).CommandBindings.AddRange(cmdBindings);
 
-            base.SetTabHeader(tabName);
-            base.SetTabContent(content);
+            base.SetTabHeader(viewModel, " - Data");
+            base.SetTabContent(((UserControl)_View));
         }
         
     }
     public class SettingsTab : RFEMTabItem
     {
-        public SettingsTab(RFEMTabType type, RoutedEventHandler closeTab,
-            RoutedEventHandler closeAllTabs) : base(type, closeTab, closeAllTabs)
+        public SettingsTab(RoutedEventHandler closeTab,
+                           ISimViewModel viewModel,
+                           RoutedEventHandler closeAllTabs) : base(RFEMTabType.Settings, closeTab, closeAllTabs)
         {
-            base.SetTabContent(new Forms.SettingsForm());
-            base.SetTabHeader("Settings");
+            base.SetTabContent(new ProjectSettings(viewModel.FileInfo));
+            base.SetTabHeader(viewModel, " - Settings");
         }
 
     }
-    public class ResultsTab: RFEMTabItem
+    public class SummaryStatsTab: RFEMTabItem
     {
-        private DataEntryTab _DataTab;
 
-        private string _FilePath;
-
-        private string _TabName;
-
-        public DataEntryTab DataTab
+        public SummaryStatsTab(RoutedEventHandler closeTab,
+                               RoutedEventHandler closeAllTabs,
+                               ISimViewModel viewModel,
+                               FrameworkElement SummaryControl): base(RFEMTabType.SummaryStats, closeTab, closeAllTabs)
         {
-            get { return _DataTab; }
-        }
-        public string FilePath
-        {
-            get { return _FilePath; }
-        }
-        public string TabName
-        {
-            get { return _TabName; }
-        }
-        public ResultsTab(RFEMTabType type,
-                          RoutedEventHandler closeTab,
-                          RoutedEventHandler closeAllTabs,
-                          DataEntryTab dataTab,
-                          string filePath,
-                          string tabName): base(type, closeTab, closeAllTabs)
-        {
-
-            string SummaryStats = FileReader.Read(filePath);
-
-            _DataTab = dataTab;
-            _TabName = tabName;
-            _FilePath = filePath;
-
-            base.SetTabContent(new TextBlock() { Text = SummaryStats });
-            base.SetTabHeader(tabName);
+            
+            base.SetTabContent(SummaryControl);
+            base.SetTabHeader(viewModel, " - Stats");
         }
         
 
@@ -218,14 +181,7 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
     {
         private IHistView _View;
         private IHistViewModel _ViewModel;
-        private DataEntryTab _DataTab;
-        private string _TabName;
-        private Program _ProgramType;
-
-        public DataEntryTab DataTab
-        {
-            get { return _DataTab; }
-        }
+        
         public IHistView View
         {
             get { return _View; }
@@ -234,47 +190,35 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
         {
             get { return _ViewModel; }
         }
-        public string TabName
-        {
-            get { return _TabName; }
-        }
-        public Program ProgramType
-        {
-            get { return _ProgramType; }
-        }
-        public HistogramTab(RFEMTabType type,
-                            RoutedEventHandler closeTab,
+
+        public HistogramTab(RoutedEventHandler closeTab,
                             RoutedEventHandler closeAllTabs,
-                            DataEntryTab dataTab,
                             CommandBindingCollection cmdBindings,
                             double width,
-                            HistogramType histType): base(type, closeTab, closeAllTabs)
+                            ISimViewModel viewModel,
+                            HistogramType histType): base(RFEMTabType.Histogram, closeTab, closeAllTabs)
         {
             UserControl form;
-            switch (dataTab.ProgramType)
+            string tabNameExtension;
+
+            switch (histType)
             {
-                case Program.RBear2D:
-                    RBear2DViewModel vm = (RBear2DViewModel)dataTab.ViewModel;
+                case HistogramType.RBear_Bearing:
+                    RBear2DViewModel vm = (RBear2DViewModel)viewModel;
                     form = vm.CreateNewBearingHistForm();
+                    tabNameExtension = " - Bearing Hist";
                     break;
-                case Program.RDam2D:
-                    RDam2DViewModel RDamVM = (RDam2DViewModel)dataTab.ViewModel;
-
-                    switch (histType)
-                    {
-                        case HistogramType.RDam_FlowRate:
-                            form = RDamVM.CreateNewFlowRateHistForm();
-                            break;
-                        case HistogramType.RDam_Conductivity:
-                            form = RDamVM.CreateNewConducivityHistForm();
-                            break;
-                        case HistogramType.RDam_NodeGradient:
-                            form = RDamVM.CreateNewNodalGradientHistForm();
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-
+                case HistogramType.RDam_FlowRate:
+                    form =((RDam2DViewModel)viewModel).CreateNewFlowRateHistForm();
+                    tabNameExtension = " - Flow Rate Hist";
+                    break;
+                case HistogramType.RDam_Conductivity:
+                    form = ((RDam2DViewModel)viewModel).CreateNewConducivityHistForm();
+                    tabNameExtension = " - Conductivity Hist";
+                    break;
+                case HistogramType.RDam_NodeGradient:
+                    form = ((RDam2DViewModel)viewModel).CreateNewNodalGradientHistForm();
+                    tabNameExtension = " - Nodal Gradient Hist";
                     break;
                     
                 default:
@@ -286,52 +230,12 @@ namespace RFEMSoftware.Simulation.Desktop.CustomControls
 
             _View = (IHistView)form;
             _ViewModel = _View.ViewModel;
-            _DataTab = dataTab;
-            _TabName = _DataTab.ViewModel.BaseName + "-Histogram";
-            _ProgramType = dataTab.ProgramType;
 
             form.CommandBindings.Clear();
             form.CommandBindings.AddRange(cmdBindings);
 
-            base.SetTabHeader(_TabName);
+            base.SetTabHeader(viewModel, tabNameExtension);
             base.SetTabContent(form);
-        }
-        public HistogramTab(RFEMTabType type,
-                            RoutedEventHandler closeTab,
-                            RoutedEventHandler closeAllTabs,
-                            CommandBindingCollection cmdBindings,
-                            double width,
-                            Program programType,
-                            int nSim,
-                            int nFootings,
-                            string baseName,
-                            string filePath): base(type, closeTab, closeAllTabs)
-        {
-            UserControl form;
-
-            switch (programType)
-            {
-                case Program.RBear2D:
-                    form = new RBear2DHistForm(nSim, nFootings, baseName, filePath);
-                    break;
-                default:
-                    throw new NotImplementedException("Histogram tab has not been implemented for this program");
-            }
-
-            form.Width = width;
-
-            _View = (IHistView)form;
-            _ViewModel = _View.ViewModel;
-            _DataTab = null;
-            _TabName = baseName + "-Histogram";
-            _ProgramType = programType;
-
-            form.CommandBindings.Clear();
-            form.CommandBindings.AddRange(cmdBindings);
-
-            base.SetTabHeader(_TabName);
-            base.SetTabContent(form);
-
         }
     }
 

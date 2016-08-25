@@ -1,0 +1,32 @@
+
+Echo input data to stats file (t/f)? . . . . . .  f
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to *.stt file (t/f)? . . . . . .  f
+Display a random field (t/f)?  . . . . . . . . .  f 1 c
+Display displaced FE mesh (t/f)? . . . . . . . .  f 1
+Normalize bearing capacity (/det)? . . . . . . .  f
+Output bearing capacity samples? . . . . . . . .  f
+Number of elements in X and Y directions . . . .   
+Element size in X and Y directions . . . . . . .   
+Number of footings, width  . . . . . . . . . . .  1 
+Displacement increment, plastic tol, bearing tol    
+Max displacement steps, max iterations . . . . .   
+Cohesion mean, SD, dist  . . . . . . . . . . . .  0 0 deterministic
+Friction angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Dilation angle mean, SD, dist  . . . . . . . . .  0 0 deterministic
+Elastic modulus mean, SD, dist . . . . . . . . .  0 0 deterministic
+Poisson's ratio mean, SD, dist . . . . . . . . .  0 0 deterministic
+Number of realizations . . . . . . . . . . . . .  0
+Generator seed (0 for random seed) . . . . . . .  
+Correlation length in X [and Y] directions . . .   
+Name of covariance function  . . . . . . . . . .  dlavx2
+
+Material Property Correlation Matrix Data
+=========================================
+Property 1    Property 2    Correlation
+----------    ----------    -----------
+
+Show element boundaries  . . . . . . . . . . . .  f
+Show random field as background [log?] [prop?] .  f f c
+Width of displaced mesh output plot in inches  .  
+Plot offset in x- [and y-] directions (inches) .  1.5

@@ -1,6 +1,8 @@
-﻿using RFEMSoftware.Simulation.Infrastructure;
+﻿using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
 using RFEMSoftware.Simulation.Infrastructure.Models;
 using RFEMSoftware.Simulation.Infrastructure.Persistence;
+using RFEMSoftware.Simulation.Infrastructure.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,26 +10,91 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace RFEMSoftware.Simulation.Desktop.Forms
 {
-    class RSlope2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    public class RSlope2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade;
 
         private RSlope2D _Model;
 
+        private RSlope2DForm _View;
+
+        private TopLevelTabItem _MasterTab;
+
         private List<string> _Errors = new List<string>();
 
-        public RSlope2DViewModel()
+        public FileManager FileInfo { get; private set; }
+
+        public TopLevelTabItem MasterTab
         {
-            _Model = new RSlope2D();
-        }
-        public RSlope2DViewModel(RSlope2D model)
-        {
-            _Model = model;
+            get { return _MasterTab; }
         }
 
+        public ISimModel Model
+        {
+            get { return _Model; }
+        }
+        public ISimView View
+        {
+            get { return _View; }
+        }
+        public string StorageString
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public RSlope2DViewModel(CommandBindingCollection commandBindings, double width,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+            _Model = new RSlope2D();
+
+            _View = new RSlope2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(null);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+        }
+        public RSlope2DViewModel(CommandBindingCollection commandBindings, double width, RSlope2D model,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+            _Model = model;
+
+            _View = new RSlope2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(model.DataLocation);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+        }
+        public void ShowSummaryStats()
+        {
+            _MasterTab.ShowSummaryStats();
+        }
+        public void ShowDataTab()
+        {
+            _MasterTab.ShowDataTab();
+        }
+
+        private void OutputDirectoryChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+            SaveAs(DataFilePath);
+
+            NotifyPropertyChanged("CanDisplaySummaryStats");
+            NotifyPropertyChanged("CanDisplayMesh");
+            NotifyPropertyChanged("CanDisplayField");
+        }
 
         #region Form Properties
 
@@ -470,7 +537,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _Model.DataFileLocation();
+                return _Model.DataLocation;
             }
         }
 
@@ -478,11 +545,44 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _Model.BaseName + ".stt";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".stt";
             }
         }
-
+        private string FieldPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fld";
+            }
+        }
+        private string MeshPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".dis";
+            }
+        }
+        public bool CanDisplaySummaryStats
+        {
+            get
+            {
+                return _Model.CanDisplaySummaryStats && System.IO.File.Exists(SummaryFilePath);
+            }
+        }
+        public bool CanDisplayMesh
+        {
+            get
+            {
+                return _Model.CanDisplayMesh && System.IO.File.Exists(MeshPath);
+            }
+        }
+        public bool CanDisplayField
+        {
+            get
+            {
+                return _Model.CanDisplayField && System.IO.File.Exists(FieldPath);
+            }
+        }
 
         public Program Type
         {
@@ -491,22 +591,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
                 return Program.RSlope2D;
             }
         }
-
-        public bool CanDisplaySummaryStats
-        {
-            get
-            {
-                return _Model.CanDisplaySummaryStats;
-            }
-        }
-
-        public ISimModel Model
-        {
-            get
-            {
-                return _Model;
-            }
-        }
+        
 
         #region Validation
         private bool HasErrors
@@ -600,6 +685,20 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
                 ModelRepository.Store(_Model, filePath);
                 _ChangesHaveBeenMade = false;
             }
+        }
+        public void ShowMesh()
+        {
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            gView.Show(MeshPath);
+        }
+        public void ShowField()
+        {
+            DisplayWrapper.Run(FieldPath);
+
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            gView.Show(FileInfo.OutputDirectory + "\\graph1.ps");
         }
     }
 }

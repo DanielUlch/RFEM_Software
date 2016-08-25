@@ -1,0 +1,28 @@
+
+Echo input data to stats file (t/f)? . . . . . .  f
+Report progress to standard output (t/f)?. . . .  t
+Dump debug data to stats file (t/f)? . . . . . .  f
+Display first log-conductivity field (t/f)?. . .  f
+Display first stochastic flownet (t/f)?. . . . .  f
+Display total head mean and SD fields (t/f)? . .  f
+Output flow, grads, uplifts (t/f)? all grads?  .  f f
+Output block conductivity values (t/f)?  . . . .  f
+Output arith, geom, harm cond. values (t/f)? . .  f
+Generate uniform conductivity field (t/f)? . . .  f
+Number of walls  . . . . . . . . . . . . . . . .  0
+Number of elements in the X direction  . . . . .  0
+Number of elements in the Y direction  . . . . .  0
+Element size . . . . . . . . . . . . . . . . . .  0 0
+Number of realizations . . . . . . . . . . . . .  0
+Generator seed (0 for random seed) . . . . . . .  0
+Correlation length in X [and Y] directions . . .  0 0
+Conductivity mean  . . . . . . . . . . . . . . .  0
+Conductivity standard deviation  . . . . . . . .  0
+Name of covariance function used by simulator  .  dlavx2
+Number of contours for mean total head . . . . .  0
+Number of contours for total head SD . . . . . .  0
+No. of equipotential drops to use for flownet. .  0
+Show log-conductivity field on flownet (t/f)?. .  f
+Show problem dimensions on flownet (t/f)?. . . .  f
+Show title and subtitles on flownet (t/f)? . . .  f
+Flownet plot width on page in inches . . . . . .  0

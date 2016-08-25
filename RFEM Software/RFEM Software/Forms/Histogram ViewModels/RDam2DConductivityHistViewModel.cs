@@ -109,21 +109,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
         }
 
-        public string BaseName
-        {
-            get
-            {
-                return _BaseName;
-            }
-        }
-
-        public string FilePath
-        {
-            get
-            {
-                return _FilePath;
-            }
-        }
+        
 
         public HistogramCoreViewModel HistogramCore
         {

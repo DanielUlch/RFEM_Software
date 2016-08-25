@@ -24,36 +24,18 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RPill2DForm : UserControl, ISimView 
     {
         private RPill2DViewModel _ViewModel;
-        public RPill2DForm()
+
+        public RPill2DForm(RPill2DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RPill2DViewModel();
-
-            this.DataContext = _ViewModel;
-
-            dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
-
-        }
-
-        public RPill2DForm(RPill2D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RPill2DViewModel(model);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 
             dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
 
         public string GetHoveredHelpTopic()
         {

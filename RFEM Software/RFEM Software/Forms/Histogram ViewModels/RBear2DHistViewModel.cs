@@ -27,18 +27,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get { return HistogramType.RBear_Bearing; }
         }
-        public int NSim
-        {
-            get { return _NSim; }
-        }
-        public int NFootings
-        {
-            get { return _NFooting; }
-        }
-        public string BaseName
-        {
-            get { return _BaseName; }
-        }
+        
 
         public int FootingNum
         {
@@ -53,10 +42,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
         }
        
-        public string FilePath
-        {
-            get { return _InputFilePath; }
-        }
+        
         public HistogramCoreViewModel HistogramCore
         {
             get { return _HistCore; }

@@ -22,31 +22,14 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RFlow2DForm : UserControl, ISimView
     {
         private RFlow2DViewModel _ViewModel;
-        public RFlow2DForm()
+       
+        public RFlow2DForm(RFlow2DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RFlow2DViewModel();
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
-
-        }
-
-        public RFlow2DForm(RFlow2D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RFlow2DViewModel(model);
-
-            this.DataContext = _ViewModel;
-        }
-
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
         }
 
         public string GetHoveredHelpTopic()

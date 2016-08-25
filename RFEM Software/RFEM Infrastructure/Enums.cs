@@ -55,7 +55,23 @@ namespace RFEMSoftware.Simulation.Infrastructure
         RBear_Bearing,
         RDam_FlowRate,
         RDam_Conductivity,
-        RDam_NodeGradient
+        RDam_NodeGradient,
+        REarth2D_EarthForces,
+        REarth2D_SoilSamples,
+        RFlow2D_EffectiveConductivities,
+        RFlow2D_ExitGradients,
+        RFlow2D_FlowRates,
+        RFlow3D_EffectiveConductivities,
+        RFlow3D_ExitGradients,
+        RFlow3D_FlowRates,
+        RPill2D_PillarCapacity,
+        RPill3D_PillarCapacity,
+        RSetl2D_DifferentialSettlements,
+        RSetl2D_EffectiveModuli,
+        RSetl2D_Settlements,
+        RSetl3D_DifferentialSettlements,
+        RSetl3D_EffectiveModuli,
+        RSetl3D_Settlements
     }
 
     /// <summary>

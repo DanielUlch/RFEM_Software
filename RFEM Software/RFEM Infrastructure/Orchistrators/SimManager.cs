@@ -111,7 +111,7 @@ namespace RFEMSoftware.Simulation.Infrastructure
             //}
             _SimWorkers = new List<SimWorker>(2);
 
-            for (int i = 1; i <= 2; i++)
+            for (int i = 1; i <= _NumberOfLogicalProcessors - 1; i++)
             {
                 _SimWorkers.Add(new SimWorker());
             }
@@ -218,7 +218,10 @@ namespace RFEMSoftware.Simulation.Infrastructure
             }
         }
         
-
+        public void ClearSimHistory()
+        {
+            _SimHistory.Clear();
+        }
         public void AddSimToQueue(ISimModel simModel)
         {
             _SimQueue.Add(simModel);

@@ -1,0 +1,20 @@
+﻿RFEMDesktopClient
+
+
+winexe
+C#
+.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\
+RFEMSoftware.Simulation.Desktop
+none
+false
+DEBUG;TRACE
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml
+401122603952
+1652288578
+96-1892635347
+171920227209
+Custom Controls\REarthSoilDistribution.xaml;Custom Controls\SoilDistribution.xaml;Custom Controls\TabItemHeader.xaml;Dialogs\ReadDataFileDialog.xaml;Forms\Form Views\RPill2DForm.xaml;Forms\Form Views\RPill3DForm.xaml;Forms\Form Views\RSetl2DForm.xaml;Forms\Form Views\RSetl3DForm.xaml;Forms\Form Views\RSlope2DForm.xaml;Forms\Histogram Core\HistogramFormCore.xaml;Forms\Form Views\RBear2DForm.xaml;Forms\Histogram Views\RBear2DHistForm.xaml;Forms\Histogram Views\RDam2DConductivityHist.xaml;Forms\Histogram Views\RDam2DFlowRateHist.xaml;Forms\Form Views\RDam2DForm.xaml;Forms\Histogram Views\RDam2DNodalGradientHist.xaml;Forms\Form Views\REarth2DForm.xaml;Forms\Form Views\RFlow2DForm.xaml;Forms\Form Views\RFlow3DForm.xaml;Forms\Histogram Views\REarth2DEarthForces.xaml;Forms\Histogram Views\REarth2DSoilSamples.xaml;Forms\Histogram Views\RFlow2DEffectiveConductivities.xaml;Forms\Histogram Views\RFlow2DExitGradients.xaml;Forms\Histogram Views\RFlow2DFlowRates.xaml;Forms\Histogram Views\RFlow3DEffectiveConductivities.xaml;Forms\Histogram Views\RFlow3DFlowRates.xaml;Forms\Histogram Views\RPill2DPillarCapacities.xaml;Forms\Histogram Views\RPill3DPillarCapacity.xaml;Forms\Histogram Views\RSetl2DDifferentialSettlements.xaml;Forms\Histogram Views\RSetl2DEffectiveModuli.xaml;Forms\Histogram Views\RSetl2DSettlements.xaml;Forms\Histogram Views\RSetl3DDifferentialSettlements.xaml;Forms\Histogram Views\RSetl3DEffectiveModuli.xaml;Forms\Histogram Views\RSetl3DSettlements.xaml;Forms\ProjectSettings.xaml;Forms\SettingsForm.xaml;Help Files\RBearHist Help Files\ChiSquareHelp.xaml;MainWindow.xaml;RFEMRibbon.xaml;Themes\Generic.xaml;
+
+True
+

@@ -21,7 +21,7 @@
             <DockPanel>
 
                 <TextBlock Name="tbHistTitle" 
-                           Style="{StaticResource HelpEnabled}"
+                           Style="{StaticResource HelpEnabledFrameworkElement}"
                            Text="Nodal Gradient/Flux/Potential Histogram Options"
                            Tag="NodalHistograms"
                            DockPanel.Dock="Left">
@@ -71,7 +71,7 @@
                       Tag="NodalHistQuantityToPlot">
                 <GroupBox.Header>
                     <TextBlock Name="tbQuantityToPlot"
-                               Style="{StaticResource HelpEnabled}"
+                               Style="{StaticResource HelpEnabledFrameworkElement}"
                                Tag="NodalHistQuantityToPlot"
                                Text="Histogram Plot Quantity">
                         <TextBlock.ToolTip>

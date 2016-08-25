@@ -19,7 +19,11 @@ namespace RFEMSoftware.Simulation.Infrastructure.Persistence
         }
         public static ISimModel Retrieve(string filePath, Program type)
         {
-            return FileReader.Read(type, filePath);
+            ISimModel model = FileReader.Read(type, filePath);
+
+            model.OutputDirectory = System.IO.Path.GetDirectoryName(filePath);
+
+            return model;
         }
         //static string GetContainingFolder(ISimModel model)
         //{

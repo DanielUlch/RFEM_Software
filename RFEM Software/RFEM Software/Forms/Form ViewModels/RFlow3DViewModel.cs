@@ -1,4 +1,5 @@
-﻿using RFEMSoftware.Simulation.Infrastructure;
+﻿using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
 using RFEMSoftware.Simulation.Infrastructure.Models;
 using RFEMSoftware.Simulation.Infrastructure.Persistence;
 using System;
@@ -8,26 +9,91 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace RFEMSoftware.Simulation.Desktop.Forms
 {
-    class RFlow3DViewModel: INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    public class RFlow3DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade;
 
         private RFlow3D _Model;
 
+        private RFlow3DForm _View;
+
+        private TopLevelTabItem _MasterTab;
+
         private List<string> _Errors = new List<string>();
 
-        public RFlow3DViewModel()
+        public FileManager FileInfo { get; private set; }
+
+        public TopLevelTabItem MasterTab
         {
-            _Model = new RFlow3D();
-        }
-        public RFlow3DViewModel(RFlow3D model)
-        {
-            _Model = model;
+            get { return _MasterTab; }
         }
 
+        public ISimModel Model
+        {
+            get { return _Model; }
+        }
+        public ISimView View
+        {
+            get { return _View; }
+        }
+        public string StorageString
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public RFlow3DViewModel(CommandBindingCollection commandBindings, double width,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+            _Model = new RFlow3D();
+
+            _View = new RFlow3DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(null);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+        }
+        public RFlow3DViewModel(CommandBindingCollection commandBindings, double width, RFlow3D model,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+            _Model = model;
+
+            _View = new RFlow3DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(model.DataLocation);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+        }
+
+        public void ShowSummaryStats()
+        {
+            _MasterTab.ShowSummaryStats();
+        }
+        public void ShowDataTab()
+        {
+            _MasterTab.ShowDataTab();
+        }
+
+        private void OutputDirectoryChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+            SaveAs(DataFilePath);
+
+            NotifyPropertyChanged("CanDisplaySummaryStats");
+        }
         #region Form Properties
 
 
@@ -420,7 +486,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _Model.DataFileLocation();
+                return _Model.DataLocation;
             }
         }
 
@@ -428,8 +494,15 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _Model.BaseName + ".stt";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".stt";
+            }
+        }
+
+        public bool CanDisplaySummaryStats
+        {
+            get
+            {
+                return _Model.CanDisplaySummaryStats && System.IO.File.Exists(SummaryFilePath);
             }
         }
 
@@ -441,22 +514,8 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
                 return Program.RFlow3D;
             }
         }
-
-        public bool CanDisplaySummaryStats
-        {
-            get
-            {
-                return _Model.CanDisplaySummaryStats;
-            }
-        }
-
-        public ISimModel Model
-        {
-            get
-            {
-                return _Model;
-            }
-        }
+        
+        
 
         #region Validation
         private bool HasErrors

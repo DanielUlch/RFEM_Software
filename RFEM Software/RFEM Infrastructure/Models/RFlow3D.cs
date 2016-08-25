@@ -71,21 +71,13 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 }
             }
         }
-        public string AppDataFileLocation
+        public string OutputDirectory
         {
-            get
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat";
-            }
+            get; set;
         }
-        
-
-        public string DataFileLocation()
+        public string DataLocation
         {
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-
-            return directory + "\\" + BaseName + ".dat";
+            get { return OutputDirectory + "\\" + BaseName + ".dat"; }
         }
 
         public Program Type
@@ -129,7 +121,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
+            pInfo.Arguments = "\"" + DataLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
             p = new Process() { StartInfo = pInfo };

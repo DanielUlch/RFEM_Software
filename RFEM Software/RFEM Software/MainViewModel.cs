@@ -19,17 +19,17 @@ namespace RFEMSoftware.Simulation.Desktop
     public class MainViewModel
     {
         
-        private List<RFEMTabItem> _TabItems = new List<RFEMTabItem>();
-
+        private List<ISimViewModel> _ViewModels = new List<ISimViewModel>();
+        
         private MainWindow _MainWindow;
 
         private StateManager _StateManager;
 
         private SimManager _SimManager = new SimManager();
 
-        private FormFactory _FormFactory;
+        private ViewModelFactory _Factory;
 
-        private FormRepository _Repository;
+        private ViewModelRepository _Repository;
 
         public MainViewModel(MainWindow mainWindow)
         {
@@ -37,12 +37,12 @@ namespace RFEMSoftware.Simulation.Desktop
 
             _StateManager = new StateManager(_SimManager);
 
-            _FormFactory = new FormFactory(CloseTab,
+            _Factory = new ViewModelFactory(CloseTab,
                                            CmdCloseAllTabs,
                                            _MainWindow.CommandBindings,
                                            _MainWindow.Width - 10);
 
-            _Repository = new FormRepository(_FormFactory);
+            _Repository = new ViewModelRepository(_Factory);
 
             WireMainWindow();
 
@@ -55,13 +55,14 @@ namespace RFEMSoftware.Simulation.Desktop
             //Set Data Contexts
             _MainWindow.BottomStatusBar.DataContext = _SimManager;
             _MainWindow.mainRibbon.DataContext = _StateManager;
-            _MainWindow.tabControl.DataContext = _TabItems;
+            _MainWindow.tabControl.DataContext = _ViewModels;
             _MainWindow.BottomGrid.DataContext = _SimManager;
 
             //Wire MainWindow Events
             _MainWindow.Loaded += ReloadOpenTabs;
             _MainWindow.Closing += MainWindowClosing;
             _MainWindow.tabControl.SelectionChanged += ActiveTabChanged;
+            _MainWindow.btnClearHistory.Click += ClearSimHistory;
 
             //Wire Ribbon Events
             _MainWindow.mainRibbon.btn_RunSim.Click += RunSim;
@@ -100,20 +101,48 @@ namespace RFEMSoftware.Simulation.Desktop
             //REarth Events
             _MainWindow.mainRibbon.btnREarth2DShowField.Click += PopOutGhostViewWindow;
             _MainWindow.mainRibbon.btnREarth2DShowMesh.Click += PopOutGhostViewWindow;
+
+            //RFlow2D Events
+            _MainWindow.mainRibbon.btnRFlow2dShowField.Click += PopOutGhostViewWindow;
+            _MainWindow.mainRibbon.btnRFlow2DShowFlownet.Click += PopOutGhostViewWindow;
+
+            //RFlow3D Events
+
+            //RPill2D Events
+            _MainWindow.mainRibbon.btnRPill2DShowField.Click += PopOutGhostViewWindow;
+            _MainWindow.mainRibbon.btnRPill2DShowMesh.Click += PopOutGhostViewWindow;
+
+            //RPill3D Events
+            _MainWindow.mainRibbon.btnRPill3DShowField.Click += PopOutGhostViewWindow;
+
+            //RSetl2D Events
+            _MainWindow.mainRibbon.btnRSetl2DShowField.Click += PopOutGhostViewWindow;
+            _MainWindow.mainRibbon.btnRSetl2DShowMesh.Click += PopOutGhostViewWindow;
+
+            //RSetl3D Events
+            _MainWindow.mainRibbon.btnRSetl3DShowField.Click += PopOutGhostViewWindow;
+            _MainWindow.mainRibbon.btnRSetl3DShowMesh.Click += PopOutGhostViewWindow;
+
+            //RSlope2D Events
+            _MainWindow.mainRibbon.btnRSlope2DShowField.Click += PopOutGhostViewWindow;
+            _MainWindow.mainRibbon.btnRSlope2DShowMesh.Click += PopOutGhostViewWindow;
+
+
         }
 
         private void ReloadOpenTabs(object sender, RoutedEventArgs e)
         {
-            _TabItems = _Repository.LoadStoredTabs();
+            _ViewModels = _Repository.LoadStoredTabs();
             _MainWindow.tabControl.DataContext = null;
-            _MainWindow.tabControl.DataContext = _TabItems;
-            if(_TabItems.Count() > 0 && _TabItems.Last() != null)
-                _MainWindow.tabControl.SelectedItem = _TabItems.Last();
+            _MainWindow.tabControl.DataContext = _ViewModels;
+
+            if (_ViewModels.Count() > 0 && _ViewModels.Last() != null)
+                _MainWindow.tabControl.SelectedItem = _ViewModels.Last();
         }
         private void MainWindowClosing(object sender, CancelEventArgs e)
         {
 
-            _Repository.StoreOpenTabs(_TabItems);
+            _Repository.StoreOpenTabs(_ViewModels);
 
             //Close all tabs and request saves for data entry files
             if (CloseAllTabs() == false)
@@ -129,14 +158,8 @@ namespace RFEMSoftware.Simulation.Desktop
             //Notify State Manager
             if (_MainWindow.tabControl.SelectedItem != null)
             {
-                if (((RFEMTabItem)_MainWindow.tabControl.SelectedItem).Type == RFEMTabType.DataInput)
-                {
-                    _StateManager.SetActiveScreen(((DataEntryTab)_MainWindow.tabControl.SelectedItem).ViewModel);
-                }
-                else
-                {
-                    _StateManager.SetActiveScreen(null);
-                }
+                _StateManager.SetActiveScreen((ISimViewModel)_MainWindow.tabControl.SelectedItem);
+                _MainWindow.mainRibbon.RunControlTab.IsSelected = true;
             }
             else
             {
@@ -148,13 +171,6 @@ namespace RFEMSoftware.Simulation.Desktop
         {
             try
             {
-                //string appFileName = Environment.GetCommandLineArgs()[0];
-                //string directory = System.IO.Path.GetDirectoryName(appFileName);
-
-                //directory += "\\DJ_.wav";
-                //var x = new SoundPlayer(directory);
-                
-                //x.Play();
 
                 switch ((RunSimButtonCommand)((RibbonButton)sender).Tag)
                 {
@@ -181,16 +197,7 @@ namespace RFEMSoftware.Simulation.Desktop
         {
             try
             {
-                //Get the path of the 
-                string SummaryFilePath = _StateManager.ActiveScreenViewModel.SummaryFilePath;
-
-                string TabName = _StateManager.ActiveScreenViewModel.BaseName + " - Stats";
-
-                var ParentTab = (DataEntryTab)_MainWindow.tabControl.SelectedItem;
-
-                AddAndSelectTab(_FormFactory.CreateSummaryForm(SummaryFilePath,
-                                                               TabName,
-                                                               ParentTab));
+                _StateManager.ActiveScreenViewModel.ShowSummaryStats();
             }
             catch (Exception ex)
             {
@@ -268,6 +275,106 @@ namespace RFEMSoftware.Simulation.Desktop
                                 return;
                         }
                         break;
+
+                    case Program.RFlow2D:
+
+                        var rFlow2DViewModel = (RFlow2DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRFlow2DShowFlownet":
+                                rFlow2DViewModel.ShowFlownet();
+                                return;
+                            case "btnRFlow2dShowField":
+                                rFlow2DViewModel.ShowField();
+                                return;
+
+                        }
+                        break;
+
+                    case Program.RFlow3D:
+
+                        var rFlow3DViewModel = (RFlow3DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        break;
+
+                    case Program.RPill2D:
+
+                        var rPill2DViewModel = (RPill2DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRPill2DShowMesh":
+                                rPill2DViewModel.ShowMesh();
+                                return;
+                            case "btnRPill2DShowField":
+                                rPill2DViewModel.ShowField();
+                                return;
+                        }
+
+                        break;
+
+                    case Program.RPill3D:
+
+                        var rPill3DViewModel = (RPill3DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRPill3DShowField":
+                                rPill3DViewModel.ShowField();
+                                return;
+                        }
+
+                        break;
+
+                    case Program.RSetl2D:
+
+                        var rSetl2DViewModel = (RSetl2DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRSetl2DShowMesh":
+                                rSetl2DViewModel.ShowMesh();
+                                return;
+                            case "btnRSetl2DShowField":
+                                rSetl2DViewModel.ShowField();
+                                return;
+                        }
+
+                        break;
+
+                    case Program.RSetl3D:
+
+                        var rSetl3DViewModel = (RSetl3DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRSetl3DShowMesh":
+                                rSetl3DViewModel.ShowMesh();
+                                return;
+                            case "btnRSetl3DShowField":
+                                rSetl3DViewModel.ShowField();
+                                return;
+                        }
+
+                        break;
+
+                    case Program.RSlope2D:
+
+                        var rSlope2DViewModel = (RSlope2DViewModel)_StateManager.ActiveScreenViewModel;
+
+                        switch (ButtonName)
+                        {
+                            case "btnRSlope2DShowMesh":
+                                rSlope2DViewModel.ShowMesh();
+                                return;
+                            case "btnRSlope2DShowField":
+                                rSlope2DViewModel.ShowField();
+                                return;
+                        }
+
+                        break;
+                    
                 }
 
                 throw new InvalidOperationException();
@@ -282,41 +389,37 @@ namespace RFEMSoftware.Simulation.Desktop
             try
             {
                 string ButtonName = ((RibbonButton)sender).Name;
-                var ParentTab = (DataEntryTab)_MainWindow.tabControl.SelectedItem;
                 switch (_StateManager.ActiveProgram)
                 {
                     case Program.RBear2D:
+                        var RBearViewModel = (RBear2DViewModel)_StateManager.ActiveScreenViewModel;
 
-                        if(ButtonName == "btnRBear2DShowBearingHist")
+                        switch (ButtonName)
                         {
-                            AddAndSelectTab(_FormFactory.CreateHistogramForm(HistogramType.RBear_Bearing,
-                                                                             ParentTab));
-                            return;
+                            case "btnRBear2DShowBearingHist":
+                                RBearViewModel.ShowBearingHistTab();
+                                return;
                         }
                         break;
-
                     case Program.RDam2D:
+                        var RDamViewModel = (RDam2DViewModel)_StateManager.ActiveScreenViewModel;
 
                         switch (ButtonName)
                         {
                             case "btnRDamFlowHist":
-                                AddAndSelectTab(_FormFactory.CreateHistogramForm(HistogramType.RDam_FlowRate,
-                                                                                 ParentTab));
+                                RDamViewModel.ShowFlowRateHist();
                                 return;
                             case "btnRDamCondHist":
-                                AddAndSelectTab(_FormFactory.CreateHistogramForm(HistogramType.RDam_Conductivity,
-                                                                                 ParentTab));
+                                RDamViewModel.ShowConductivityHist();
                                 return;
                             case "btnRDamGradHist":
-                                AddAndSelectTab(_FormFactory.CreateHistogramForm(HistogramType.RDam_NodeGradient,
-                                                                                 ParentTab));
+                                RDamViewModel.ShowNodalGradientHist();
                                 return;
-
                         }
                         break;
                 }
 
-                throw new InvalidOperationException();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -325,17 +428,15 @@ namespace RFEMSoftware.Simulation.Desktop
         }
         private void OpenSettingsTab(object sender, RoutedEventArgs e)
         {
-            //If the tab control contains no settings tabs
-            if (!_TabItems.OfType<RFEMTabItem>().Any(p => p.Type == RFEMTabType.Settings))
+            try
             {
-                //Add a new settings tab
-                AddAndSelectTab(_FormFactory.CreateSettingsTab());
+                var wind = new Window() { Content = new SettingsForm() };
+                
+                wind.ShowDialog();
             }
-            else
+            catch (Exception ex)
             {
-                //Select the existing settings tab
-                _MainWindow.tabControl.Items.OfType<RFEMTabItem>().
-                    Where(p => p.Type == RFEMTabType.Settings).First().IsSelected = true;
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -363,75 +464,99 @@ namespace RFEMSoftware.Simulation.Desktop
                 switch (ButtonName)
                 {
                     case "btnMRBear2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RBear2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RBear2D));
                         break;
                     case "btnMRDam2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RDam2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RDam2D));
                         break;
                     case "btnMREarth2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.REarth2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.REarth2D));
                         break;
                     case "btnMRFlow2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RFlow2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RFlow2D));
                         break;
                     case "btnMRFlow3d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RFlow3D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RFlow3D));
                         break;
                     case "btnMRPill2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RPill2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RPill2D));
                         break;
                     case "btnMRPill3d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RPill3D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RPill3D));
                         break;
                     case "btnMRSetl2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSetl2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RSetl2D));
                         break;
                     case "btnMRSetl3d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSetl3D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RSetl3D));
                         break;
                     case "btnMRSlope2d":
-                        AddAndSelectTab(_FormFactory.CreateNewForm(Program.RSlope2D));
+                        AddAndSelectTab(_Factory.CreateViewModel(Program.RSlope2D));
                         break;
                     default:
                         MessageBox.Show("Unknown Sender");
                         throw new ArgumentException();
                 }
-            }
+        }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+}
         private void OpenExistingFile(object sender, RoutedEventArgs e)
         {
-            string filePath = "";
-            bool result = false;
-            Program fileType = Program.RBear2D;
+            //string filePath = "";
+            //bool result = false;
+            //Program fileType = _StateManager.ActiveScreenViewModel.Type;
 
-            //Show dialog and retrieve the file path, as well as the type of data file.
-            var Diag = new Dialogs.ReadDataFileDialog((a, b, c) =>
-            {
-                filePath = a;
-                fileType = b;
-                result = c;
-            });
-            Diag.ShowDialog();
+            ////Show dialog and retrieve the file path, as well as the type of data file.
+            //var Diag = new Dialogs.ReadDataFileDialog((a, b, c) =>
+            //{
+            //    filePath = a;
+            //    fileType = b;
+            //    result = c;
+            //});
+            //Diag.ShowDialog();
+
+            string filePath = "";
+            Program fileType = _StateManager.ActiveScreenViewModel.Type;
+
+            //var fileDialog = new OpenFileDialog();
+            //fileDialog.Filter = "Data File|*.dat";
+
+            //if (fileDialog.ShowDialog() == true)
+            //{
+            //    filePath = fileDialog.FileName;
+            //}
+            //else
+            //{
+            //    return;
+            //}
 
             //If the user clicked ok
-            if (result == true)
+            //if (result == true)
+            //{
+            try
             {
-                try
-                {
-                    AddAndSelectTab(_FormFactory.CreateForm(fileType, filePath));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error Processing Data File", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
+                   
+                var fileDialog = new OpenFileDialog();
+                fileDialog.Filter = "Data File|*.dat";
 
-
+                if (fileDialog.ShowDialog() == true)
+                {
+                    filePath = fileDialog.FileName;
+                    AddAndSelectTab(_Factory.CreateViewModel(fileType, filePath));
+                }
+                
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error Processing Data File", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+
+
+            //}
         }
 
         /// <summary>
@@ -504,33 +629,42 @@ namespace RFEMSoftware.Simulation.Desktop
         /// <param name="newTab">
         /// The tab to be added.
         /// </param>
-        private void AddAndSelectTab(RFEMTabItem newTab)
+        private void AddAndSelectTab(ISimViewModel newViewModel)
         {
             //Add the tab to this window's list of tabs
-            _TabItems.Add(newTab);
+            _ViewModels.Add(newViewModel);
 
             //Reset the tab controls data context so it recognizes the new tab
             _MainWindow.tabControl.DataContext = null;
-            _MainWindow.tabControl.DataContext = _TabItems;
+            _MainWindow.tabControl.DataContext = _ViewModels;
 
             //Select the new tab and set focus. The set focus is required to enable
             //the help command of the context menus
-            _MainWindow.tabControl.SelectedItem = newTab;
+            _MainWindow.tabControl.SelectedItem = newViewModel;
             _MainWindow.tabControl.Focus();
         }
 
-
+        private void ClearSimHistory(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _SimManager.ClearSimHistory();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void CloseTab(object sender, RoutedEventArgs e)
         {
 
             MenuItem x = sender as MenuItem;    //The menu item that triggered the event
-            RFEMTabItem owner = null;           //The tab that owns the context menu
+            TopLevelTabItem owner = null;           //The tab that owns the context menu
 
             //The currently selected tab, if this tab is being closed, we must show another tab
-            RFEMTabItem tempSelectedItem = _MainWindow.tabControl.SelectedItem as RFEMTabItem;
+            TopLevelTabItem tempSelectedItem = (_MainWindow.tabControl.SelectedItem as ISimViewModel).MasterTab as TopLevelTabItem;
 
-            //A viewmodel which, if this is a data entry tab, will tell us whether the data needs to be saved
-            ISimViewModel vm = null;
+
 
 
             //Checks to see if a menuitem triggered the event
@@ -538,40 +672,33 @@ namespace RFEMSoftware.Simulation.Desktop
             {
 
                 //Attempts to retrieve the tab to be closed from the tab property of the context menu
-                owner = ((ContextMenu)x.Parent).Tag as RFEMTabItem;
+                owner = ((ContextMenu)x.Parent).Tag as TopLevelTabItem;
 
                 //Checks whether the tag was a tab item
                 if (owner != null)
                 {
-                    //Assigns the viewmodel if the tab is a data input tab
-                    if (owner.Type == RFEMTabType.DataInput)
-                        vm = ((DataEntryTab)owner).ViewModel;
+                    ISimViewModel vm = owner.ViewModel;
 
-                    //if the viewmodel exists and changes have been made since the last save
-                    if (vm != null && vm.ChangesHaveBeenMade)
+                    //Ask the user if they want to save the changes
+                    var result = MessageBox.Show("Changes have been made to the file: '" + vm.BaseName + "'. Would you like to save these changes?",
+                                                    "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                    //if yes, save it and coninue, if cancel, exit the routine, if no, continue
+                    if (result == MessageBoxResult.Yes)
                     {
-                        //Ask the user if they want to save the changes
-                        var result = MessageBox.Show("Changes have been made to the file: '" + vm.BaseName + "'. Would you like to save these changes?",
-                                                        "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-                        //if yes, save it and coninue, if cancel, exit the routine, if no, continue
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            vm.Save();
-                        }
-                        else if (result == MessageBoxResult.Cancel)
-                        {
-                            return;
-                        }
-
+                        vm.Save();
+                    }
+                    else if (result == MessageBoxResult.Cancel)
+                    {
+                        return;
                     }
 
                     //Remove the tab from 
-                    ((List<RFEMTabItem>)_MainWindow.tabControl.ItemsSource).Remove(owner);
+                    _ViewModels.Remove(vm);
 
                     //Reset datacontext
                     _MainWindow.tabControl.DataContext = null;
-                    _MainWindow.tabControl.DataContext = _TabItems;
+                    _MainWindow.tabControl.DataContext = _ViewModels;
 
                     //if the tab being displayed was not the tab being closed
                     if (tempSelectedItem != null && tempSelectedItem != owner)
@@ -592,49 +719,43 @@ namespace RFEMSoftware.Simulation.Desktop
         private void CmdCloseAllTabs(object sender, RoutedEventArgs e)
         {
             CloseAllTabs();
+  
         }
         private bool CloseAllTabs()
         {
-            ISimViewModel vm = null;
 
             //Loop through all open tabs
-            foreach (RFEMTabItem item in _TabItems)
+            foreach (ISimViewModel vm in _ViewModels)
             {
-                //If the tab is a data input tab, check to see if it needs to be saved
-                if (item.Type == RFEMTabType.DataInput)
+                //If the viewmodel exists and changes have been made since the last save
+                if (vm != null && vm.ChangesHaveBeenMade)
                 {
-                    //Explicitly convert to dataentrytab and retrieve viewmodel
-                    vm = ((DataEntryTab)item).ViewModel;
+                    //Prompt user to save
+                    var result = MessageBox.Show("Changes have been made to the file: '" + vm.BaseName + "'. Would you like to save these changes?",
+                                                    "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
-                    //If the viewmodel exists and changes have been made since the last save
-                    if (vm != null && vm.ChangesHaveBeenMade)
+                    //If the user selects yes, save and continue
+                    if (result == MessageBoxResult.Yes)
                     {
-                        //Prompt user to save
-                        var result = MessageBox.Show("Changes have been made to the file: '" + vm.BaseName + "'. Would you like to save these changes?",
-                                                        "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-                        //If the user selects yes, save and continue
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            vm.Save();
-                        }
-                        //if the user selects cancel, exit the routine
-                        else if (result == MessageBoxResult.Cancel)
-                        {
-                            return false;
-                        }
-
+                        vm.Save();
                     }
+                    //if the user selects cancel, exit the routine
+                    else if (result == MessageBoxResult.Cancel)
+                    {
+                        return false;
+                    }
+
                 }
+                
 
             }
 
             //Delete all tabs
-            _TabItems.Clear();
+            _ViewModels.Clear();
 
             //Reset datacontext
             _MainWindow.tabControl.DataContext = null;
-            _MainWindow.tabControl.DataContext = _TabItems;
+            _MainWindow.tabControl.DataContext = _ViewModels;
 
             return true;
         }

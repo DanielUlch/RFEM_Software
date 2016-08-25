@@ -9,9 +9,12 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 {
     public interface ISimModel
     {
-        string DataFileLocation();
+        //string DataFileLocation();
 
-        string AppDataFileLocation { get; }
+        //string AppDataFileLocation { get; }
+
+        string OutputDirectory { get; set; }
+        string DataLocation { get; }
 
         string BaseName { get; }
 

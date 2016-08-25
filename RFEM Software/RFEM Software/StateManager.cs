@@ -193,7 +193,7 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.REarth2D &&
-                        ((REarth2D)_ActiveScreenViewModel.Model).CanDisplayField);
+                        ((REarth2DViewModel)_ActiveScreenViewModel).CanDisplayField);
             }
         }
         public bool CanDisplayREarth2DMesh
@@ -201,7 +201,7 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.REarth2D &&
-                        ((REarth2D)_ActiveScreenViewModel.Model).CanDisplayMesh);
+                        ((REarth2DViewModel)_ActiveScreenViewModel).CanDisplayMesh);
             }
         }
 
@@ -222,7 +222,7 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.RFlow2D &&
-                        ((RFlow2D)_ActiveScreenViewModel.Model).CanDisplayFlownet);
+                        ((RFlow2DViewModel)_ActiveScreenViewModel).CanShowFlownet);
             }
         }
         public bool CanDisplayRFlow2DField
@@ -230,7 +230,7 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.RFlow2D &&
-                        ((RFlow2D)_ActiveScreenViewModel.Model).CanDisplayField);
+                        ((RFlow2DViewModel)_ActiveScreenViewModel).CanShowField);
             }
         }
 
@@ -255,7 +255,7 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.RPill2D &&
-                        ((RPill2D)_ActiveScreenViewModel.Model).CanDisplayField);
+                        ((RPill2DViewModel)_ActiveScreenViewModel).CanDisplayField);
             }
         }
         public bool CanDisplayRPill2DMesh
@@ -263,7 +263,119 @@ namespace RFEMSoftware.Simulation.Desktop
             get
             {
                 return (ActiveProgram == Program.RPill2D &&
-                        ((RPill2D)_ActiveScreenViewModel.Model).CanDisplayMesh);
+                        ((RPill2DViewModel)_ActiveScreenViewModel).CanDisplayMesh);
+            }
+        }
+
+        //RPill3D Bindings
+
+        public Visibility RPill3DButtonVisibility
+        {
+            get
+            {
+                if (ActiveProgram == Program.RPill3D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
+        public bool CanDisplayRPill3DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RPill3D &&
+                        ((RPill3DViewModel)_ActiveScreenViewModel).CanDisplayField);
+            }
+        }
+
+        //RSetl2D Bindings
+
+        public Visibility RSetl2DButtonVisibility
+        {
+            get
+            {
+                if (ActiveProgram == Program.RSetl2D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
+        public bool CanDisplayRSetl2DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSetl2D &&
+                        ((RSetl2DViewModel)_ActiveScreenViewModel).CanDisplayField);
+            }
+        }
+        public bool CanDisplayRSetl2DMesh
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSetl2D &&
+                        ((RSetl2DViewModel)_ActiveScreenViewModel).CanDisplayMesh);
+            }
+        }
+
+        //RSetl3D Bindings
+
+        public Visibility RSetl3DButtonVisibility
+        {
+            get
+            {
+                if (ActiveProgram == Program.RSetl3D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
+        public bool CanDisplayRSetl3DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSetl3D &&
+                        ((RSetl3DViewModel)_ActiveScreenViewModel).CanDisplayField);
+            }
+        }
+        public bool CanDisplayRSetl3DMesh
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSetl3D &&
+                        ((RSetl3DViewModel)_ActiveScreenViewModel).CanDisplayMesh);
+            }
+        }
+
+        //RSlope2D Bindings
+
+        public Visibility RSlope2DButtonVisibility
+        {
+            get
+            {
+                if (ActiveProgram == Program.RSlope2D)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
+        public bool CanDisplayRSlope2DField
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSlope2D &&
+                        ((RSlope2DViewModel)_ActiveScreenViewModel).CanDisplayField);
+            }
+        }
+        public bool CanDisplayRSlope2DMesh
+        {
+            get
+            {
+                return (ActiveProgram == Program.RSlope2D &&
+                        ((RSlope2DViewModel)_ActiveScreenViewModel).CanDisplayMesh);
             }
         }
 

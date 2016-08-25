@@ -1,4 +1,4 @@
-﻿C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\GeneratedInternalTypeHelper.g.cs
+﻿
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\App.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Custom Controls\REarthSoilDistribution.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Custom Controls\SoilDistribution.xaml;;
@@ -19,6 +19,22 @@ FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwa
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Form Views\REarth2DForm.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Form Views\RFlow2DForm.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Form Views\RFlow3DForm.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\REarth2DEarthForces.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\REarth2DSoilSamples.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RFlow2DEffectiveConductivities.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RFlow2DExitGradients.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RFlow2DFlowRates.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RFlow3DEffectiveConductivities.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RFlow3DFlowRates.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RPill2DPillarCapacities.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RPill3DPillarCapacity.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl2DDifferentialSettlements.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl2DEffectiveModuli.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl2DSettlements.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl3DDifferentialSettlements.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl3DEffectiveModuli.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\Histogram Views\RSetl3DSettlements.xaml;;
+FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\ProjectSettings.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Forms\SettingsForm.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\Help Files\RBearHist Help Files\ChiSquareHelp.xaml;;
 FC:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\MainWindow.xaml;;

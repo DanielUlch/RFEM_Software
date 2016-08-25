@@ -22,26 +22,6 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\bin\Debug\He
 C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\obj\Debug\Help Files\RBear Help Files\PlotFirstRF.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\obj\Debug\Help Files\RBear Help Files\NumberOfElementsInXYDirections.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\RFEM Software\RFEM Software\obj\Debug\Help Files\RBear Help Files\GeneratorSeed.baml
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.exe.config
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\display.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\hist_bear2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\hist_dam2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\plotps.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rbear2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rdam2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rearth2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rflow2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rflow3d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rpill2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rpill3d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rsetl2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rsetl3d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rslope2d.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMSoftware.pfx
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.exe
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.pdb
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\InfrastructureLib.dll
-C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\InfrastructureLib.pdb
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software.csprojResolveAssemblyReference.cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Custom Controls\REarthSoilDistribution.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Custom Controls\SoilDistribution.g.cs
@@ -70,6 +50,26 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMDesktopClient_MarkupCompile.cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMDesktopClient_MarkupCompile.lref
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\display.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\hist_bear2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\hist_dam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\plotps.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rbear2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rdam2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rearth2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rflow2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rflow3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rpill2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rpill3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rsetl2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rsetl3d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\Executables\rslope2d.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMSoftware.pfx
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.exe.config
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.exe
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\RFEMDesktopClient.pdb
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\InfrastructureLib.dll
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\bin\Debug\InfrastructureLib.pdb
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\App.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Custom Controls\REarthSoilDistribution.baml
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Custom Controls\SoilDistribution.baml
@@ -100,3 +100,35 @@ C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Softwar
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEM Software.csproj.GenerateResource.Cache
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMDesktopClient.exe
 C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\RFEMDesktopClient.pdb
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\REarth2DEarthForces.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\REarth2DEarthForces.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\REarth2DSoilSamples.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DEffectiveConductivities.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DExitGradients.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DFlowRates.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow3DEffectiveConductivities.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow3DFlowRates.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RPill2DPillarCapacities.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RPill3DPillarCapacity.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DDifferentialSettlements.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DEffectiveModuli.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DSettlements.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DDifferentialSettlements.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DEffectiveModuli.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DSettlements.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\REarth2DSoilSamples.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DEffectiveConductivities.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DExitGradients.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow2DFlowRates.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow3DEffectiveConductivities.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RFlow3DFlowRates.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RPill2DPillarCapacities.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RPill3DPillarCapacity.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DDifferentialSettlements.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DEffectiveModuli.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl2DSettlements.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DDifferentialSettlements.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DEffectiveModuli.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\Histogram Views\RSetl3DSettlements.baml
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\ProjectSettings.g.cs
+C:\Users\Daniel\Desktop\NSERC USRA 2016\GitRepository\RFEM_Software\RFEM Software\RFEM Software\obj\Debug\Forms\ProjectSettings.baml

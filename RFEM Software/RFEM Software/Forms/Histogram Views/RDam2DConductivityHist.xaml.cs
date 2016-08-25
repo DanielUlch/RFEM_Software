@@ -35,7 +35,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
             this.DataContext = _ViewModel;
 
-            this.HistCore.DataContext = _ViewModel;
+            this.HistCore.DataContext = _ViewModel.HistogramCore;
         }
 
         public IHistViewModel ViewModel

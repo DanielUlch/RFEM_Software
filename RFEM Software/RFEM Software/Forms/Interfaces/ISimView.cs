@@ -8,7 +8,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 {
     public interface ISimView
     {
-        ISimViewModel ViewModel { get; }
+        //ISimViewModel ViewModel { get; }
 
         /// <summary>
         /// When a user clicks F1, the main application window will request a help file 

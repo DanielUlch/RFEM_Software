@@ -23,7 +23,7 @@
             <DockPanel>
 
                 <TextBlock Name="tbHistTitle" 
-                           Style="{StaticResource HelpEnabled}"
+                           Style="{StaticResource HelpEnabledFrameworkElement}"
                            Text="Conductivity Histogram Options"
                            Tag="ConductivityHistogram"
                            DockPanel.Dock="Left">
@@ -74,7 +74,7 @@
                 <GroupBox.Header>
                     <TextBlock Name="tbConductivityTypeToPlot"
                                Tag="ConductivityTypeToPlot"
-                               Style="{StaticResource HelpEnabled}"
+                               Style="{StaticResource HelpEnabledFrameworkElement}"
                                Text="Conductivity Type to Plot:">
                         <TextBlock.ToolTip>
                             <cc:RFEMToolTip Title="Conductivity Type to Plot"

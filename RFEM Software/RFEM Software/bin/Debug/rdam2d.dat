@@ -2,8 +2,8 @@ Stochastic Flow Through a 2-D Earth Dam
 Echo input data to stats file (t/f)? . . . . . .  t
 Report progress to standard output (t/f)?. . . .  t
 Debug code (0,1,2,or 3), [realization no.] . . .  1 0
-Display first log-conductivity field (t/f)?. . .  f
-Plot first stochastic flownet (t/f)? . . . . . .  f
+Display first log-conductivity field (t/f)?. . .  t
+Plot first stochastic flownet (t/f)? . . . . . .  t
 Plot gradient statistics fields (t/f)? . . . . .  t
 Output flow rates and free surface pos (t/f)?  .  t
 Output block conductivity values (t/f)?  . . . .  t
@@ -15,7 +15,7 @@ Drain X, Y dimensions [conductivity] . . . . . .  0 0 0
 Width of top of dam  . . . . . . . . . . . . . .  1.2
 Width of base of dam . . . . . . . . . . . . . .  4.8
 Height of dam  . . . . . . . . . . . . . . . . .  3.2
-Number of realizations [max iter., tol]. . . . .  1000 500 0.005
+Number of realizations [max iter., tol]. . . . .  100 500 0.005
 Generator seed (0 for random seed) . . . . . . .  0
 Correlation length in X [and Y] directions . . .  1 1
 Conductivity mean  . . . . . . . . . . . . . . .  1
@@ -28,7 +28,7 @@ Show element mesh on flownet (t/f)?. . . . . . .  f
 Show log-conductivity field on flownet (t/f)?. .  f
 Show problem dimensions on flownet (t/f)?. . . .  f
 Show title and subtitles on flownet (t/f)? . . .  f
-Flownet plot width on page in inches . . . . . .  0
+Flownet plot width on page in inches . . . . . .  4.5
 Proportionate spacing code (off/geom/lin/prop) .  0
 Use alternative spacing if first fails (t/f)?. .  f
 Ensure free surface is non-increasing (t/f)? . .  f

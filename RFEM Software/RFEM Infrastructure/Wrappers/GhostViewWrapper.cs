@@ -10,6 +10,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Wrappers
     public class GhostViewWrapper
     {
         private string _GhostViewPath;
+
         public GhostViewWrapper(string ghostViewPath)
         {
             _GhostViewPath = ghostViewPath;
@@ -18,8 +19,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Wrappers
         {
             var pInfo = new ProcessStartInfo();
             pInfo.UseShellExecute = true;
-            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\RFEM_Software";
+            pInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(filePath);
             pInfo.FileName = "\"" + _GhostViewPath + "\"";
             pInfo.Arguments = "\"" + filePath + "\"";
             pInfo.CreateNoWindow = false;

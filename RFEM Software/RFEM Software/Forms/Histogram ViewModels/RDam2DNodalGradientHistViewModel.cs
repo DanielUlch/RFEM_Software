@@ -41,21 +41,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             NotifyPropertyChanged("PotentialQuantity");
         }
 
-        public string BaseName
-        {
-            get
-            {
-                return _BaseName;
-            }
-        }
-
-        public string FilePath
-        {
-            get
-            {
-                return _FilePath;
-            }
-        }
+       
 
         public HistogramCoreViewModel HistogramCore
         {

@@ -32,230 +32,40 @@ namespace RFEMSoftware.Simulation.Desktop
             _CommandBindings = commandBindings;
             _Width = width;
         }
-        public DataEntryTab CreateNewForm(Program formType)
+        
+        public DataEntryTab CreateDataTab(ISimViewModel viewModel)
         {
-            ISimView view;
-            switch (formType)
-            {
-                case Program.RBear2D:
-
-                    view = new RBear2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RBear2D",
-                                            Program.RBear2D);
-                case Program.RDam2D:
-
-                    view = new RDam2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RDam2D",
-                                            Program.RDam2D);
-
-                case Program.REarth2D:
-
-                    view = new REarth2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "REarth2D",
-                                            Program.REarth2D);
-
-                case Program.RFlow2D:
-
-                    view = new RFlow2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RFlow2D",
-                                            Program.RFlow2D);
-
-                case Program.RFlow3D:
-
-                    view = new RFlow3DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RFlow3D",
-                                            Program.RFlow3D);
-
-                case Program.RPill2D:
-
-                    view = new RPill2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RPill2D",
-                                            Program.RPill2D);
-
-                case Program.RPill3D:
-
-                    view = new RPill3DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RPill3D",
-                                            Program.RPill3D);
-
-                case Program.RSetl2D:
-
-                    view = new RSetl2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RSetl2D",
-                                            Program.RSetl2D);
-
-                case Program.RSetl3D:
-
-                    view = new RSetl3DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RSetl3D",
-                                            Program.RSetl3D);
-
-                case Program.RSlope2D:
-
-                    view = new RSlope2DForm();
-                    return new DataEntryTab(RFEMTabType.DataInput,
-                                            _CloseTab,
-                                            _CloseAllTabs,
-                                            view,
-                                            view.ViewModel,
-                                            _CommandBindings,
-                                            (UserControl)view,
-                                            "RSlope2D",
-                                            Program.RSlope2D);
-
-            }
-
-            throw new NotImplementedException();
-        }
-        public DataEntryTab CreateForm(Program formType, string filePath)
-        {
-            ISimModel formData = ModelRepository.Retrieve(filePath, formType);
-
-            ISimView view;
-
-            switch (formType)
-            {
-                case Program.RBear2D:
-                    view = new RBear2DForm((RBear2D)formData);
-                    break;
-                case Program.RDam2D:
-                    view = new Forms.RDam2DForm((RDam2D)formData);
-                    break;
-                case Program.REarth2D:
-                    view = new REarth2DForm((REarth2D)formData);
-                    break;
-                case Program.RFlow2D:
-                    view = new RFlow2DForm((RFlow2D)formData);
-                    break;
-                case Program.RFlow3D:
-                    view = new RFlow3DForm((RFlow3D)formData);
-                    break;
-                case Program.RPill2D:
-                    view = new RPill2DForm((RPill2D)formData);
-                    break;
-                case Program.RPill3D:
-                    view = new RPill3DForm((RPill3D)formData);
-                    break;
-                case Program.RSetl2D:
-                    view = new RSetl2DForm((RSetl2D)formData);
-                    break;
-                case Program.RSetl3D:
-                    view = new RSetl3DForm((RSetl3D)formData);
-                    break;
-                case Program.RSlope2D:
-                    view = new RSlope2DForm((RSlope2D)formData);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
-            ((UserControl)view).Width = _Width;
-
-            return new DataEntryTab(RFEMTabType.DataInput,
-                                    _CloseTab,
+            return new DataEntryTab(_CloseTab,
                                     _CloseAllTabs,
-                                    view,
-                                    view.ViewModel,
-                                    _CommandBindings,
-                                    (UserControl)view,
-                                    view.ViewModel.BaseName,
-                                    formType);
-            
+                                    viewModel,
+                                    _CommandBindings);
         }
-        public ResultsTab CreateSummaryForm(string filePath, string tabName, DataEntryTab parentTab)
+        public SummaryStatsTab CreateSummaryForm(ISimViewModel viewModel)
+        {
+
+            string Stats = FileReader.Read(viewModel.SummaryFilePath);
+            TextBlock content = new TextBlock() { Text = Stats };
+
+            return new SummaryStatsTab(_CloseTab,
+                                       _CloseAllTabs,
+                                       viewModel,
+                                       content);
+        }
+        public HistogramTab CreateHistogramForm(HistogramType histType, ISimViewModel viewModel)
         {
 
 
-            return new ResultsTab(RFEMTabType.Results,
-                                _CloseTab,
-                                _CloseAllTabs,
-                                parentTab,
-                                filePath,
-                                tabName);
-        }
-        public HistogramTab CreateHistogramForm(HistogramType histType, DataEntryTab parentTab)
-        {
-
-
-            return new HistogramTab(RFEMTabType.Results,
-                                    _CloseTab,
+            return new HistogramTab(_CloseTab,
                                     _CloseAllTabs,
-                                    parentTab,
                                     _CommandBindings,
                                     _Width,
+                                    viewModel,
                                     histType);
         }
-        public RBear2DHistForm CreateRBearHistFromStoredData()
+        public SettingsTab CreateSettingsTab(ISimViewModel viewModel)
         {
-            throw new NotImplementedException();
-        }
-        public SettingsTab CreateSettingsTab()
-        {
-            return new SettingsTab(RFEMTabType.Settings,
-                                   _CloseTab,
+            return new SettingsTab(_CloseTab,
+                                   viewModel,
                                    _CloseAllTabs);
         }
       

@@ -22,7 +22,7 @@
             <DockPanel>
 
                 <TextBlock Name="tbHistTitle" 
-                           Style="{StaticResource HelpEnabled}"
+                           Style="{StaticResource HelpEnabledFrameworkElement}"
                            Text="Flow Rate Histogram Options"
                            Tag="FlowRateHistogram"
                            DockPanel.Dock="Left">
@@ -74,7 +74,7 @@
                     <TextBlock Name="tbQuantityToPlot"
                                Text="Quantity to Plot:"
                                Tag="FlowPropertyToPlot"
-                               Style="{StaticResource HelpEnabled}">
+                               Style="{StaticResource HelpEnabledFrameworkElement}">
                         <TextBlock.ToolTip>
                             <cc:RFEMToolTip Title="Quantity To Plot"
                                             ToolTipMessage="Choose to plot either the flow rate or the downstream free surface elevation."/>

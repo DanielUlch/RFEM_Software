@@ -59,11 +59,20 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <UniformGrid Grid.Column="0">
-                            <TabControl x:Name="tabControl" 
+                        <TabControl x:Name="tabControl" 
                                     Padding="10 0 0 0"
-                        ItemsSource="{Binding}">
+                        ItemsSource="{Binding}"
+                                    Style="{StaticResource styleTabControl}"
+                                    >
 
-                            </TabControl>
+                            <TabControl.ItemContainerStyle>
+                                <Style TargetType="TabItem" >
+                                    <Setter Property="Header" Value="{Binding Path=MasterTab.CustomHeader}"/>
+                                    <Setter Property="Content" Value="{Binding Path=MasterTab.Tab, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <Setter Property="Padding" Value="0 0 0 0"/>
+                                </Style>
+                            </TabControl.ItemContainerStyle>
+                        </TabControl>
                         </UniformGrid>
                     </Grid>
                     <!-- Layer 2-->
@@ -174,7 +183,19 @@
 
                                 <ListView Name="lvSimHistory" ItemsSource="{Binding Path=SimHistory}" />
                             </StackPanel>
-                        </StackPanel>
+
+                        <Button Name="btnClearHistory"
+                                Grid.Row="0"
+                                Height="30"
+                                Width="30"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                BorderBrush="Transparent">
+                            <Button.Content>
+                                <Image Source="Images/Broom.png" />
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
                     </StackPanel>
 
 

@@ -8,27 +8,96 @@ using System.Threading.Tasks;
 using RFEMSoftware.Simulation.Infrastructure;
 using System.Windows;
 using RFEMSoftware.Simulation.Infrastructure.Persistence;
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using System.Windows.Input;
+using RFEMSoftware.Simulation.Infrastructure.Wrappers;
 
 namespace RFEMSoftware.Simulation.Desktop.Forms
 {
-    class RFlow2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    public class RFlow2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade;
 
         private RFlow2D _Model;
 
+        private RFlow2DForm _View;
+
+        private TopLevelTabItem _MasterTab;
+
         private List<string> _Errors = new List<string>();
 
-        public RFlow2DViewModel()
+        public FileManager FileInfo { get; private set; }
+
+        public TopLevelTabItem MasterTab
+        {
+            get { return _MasterTab; }
+        }
+
+        public ISimModel Model
+        {
+            get { return _Model; }
+        }
+        public ISimView View
+        {
+            get { return _View; }
+        }
+        public string StorageString
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public RFlow2DViewModel(CommandBindingCollection commandBindings, double width,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
         {
             _Model = new RFlow2D();
+
+            _View = new RFlow2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(null);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
         }
 
-        public RFlow2DViewModel(RFlow2D model)
+        public RFlow2DViewModel(CommandBindingCollection commandBindings, double width, RFlow2D model,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
         {
             _Model = model;
+
+            _View = new RFlow2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(model.DataLocation);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
         }
 
+        public void ShowSummaryStats()
+        {
+            _MasterTab.ShowSummaryStats();
+        }
+        public void ShowDataTab()
+        {
+            _MasterTab.ShowDataTab();
+        }
+
+        private void OutputDirectoryChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+            SaveAs(DataFilePath);
+
+            NotifyPropertyChanged("CanDisplaySummaryStats");
+            NotifyPropertyChanged("CanShowFlownet");
+            NotifyPropertyChanged("CanShowField");
+        }
         #region Form Properties
 
         public string JobTitle
@@ -567,7 +636,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _Model.DataFileLocation();
+                return _Model.DataLocation;
             }
         }
 
@@ -575,12 +644,45 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _Model.BaseName + ".stt";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".stt";
+            }
+        }
+        private string FlownetPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".net";
+            }
+        }
+        private string FieldPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fld";
             }
         }
 
-
+        public bool CanDisplaySummaryStats
+        {
+            get
+            {
+                return _Model.CanDisplaySummaryStats && System.IO.File.Exists(SummaryFilePath);
+            }
+        }
+        public bool CanShowFlownet
+        {
+            get
+            {
+                return _Model.CanDisplayFlownet && System.IO.File.Exists(FlownetPath);
+            }
+        }
+        public bool CanShowField
+        {
+            get
+            {
+                return _Model.CanDisplayField && System.IO.File.Exists(FieldPath);
+            }
+        }
         public Program Type
         {
             get
@@ -589,21 +691,8 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
         }
 
-        public bool CanDisplaySummaryStats
-        {
-            get
-            {
-                return _Model.CanDisplaySummaryStats;
-            }
-        }
-
-        public ISimModel Model
-        {
-            get
-            {
-                return _Model;
-            }
-        }
+        
+        
 
 
 
@@ -647,6 +736,20 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
 
 
+        }
+        public void ShowField()
+        {
+            DisplayWrapper.Run(FieldPath);
+
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            gView.Show(FileInfo.OutputDirectory + "\\graph1.ps");
+        }
+        public void ShowFlownet()
+        {
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            gView.Show(FlownetPath);
         }
     }
 }

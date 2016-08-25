@@ -24,34 +24,18 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RSlope2DForm : UserControl, ISimView
     {
         private RSlope2DViewModel _ViewModel;
-        public RSlope2DForm()
+
+        public RSlope2DForm(RSlope2DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RSlope2DViewModel();
-
-            this.DataContext = _ViewModel;
-
-            dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
-        }
-        public RSlope2DForm(RSlope2D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RSlope2DViewModel(model);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 
             dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
 
         public string GetHoveredHelpTopic()
         {

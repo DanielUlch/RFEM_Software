@@ -10,8 +10,8 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public interface IHistViewModel
     {
         HistogramType Type { get; }
-        string BaseName { get; }
-        string FilePath { get; }
+        //string BaseName { get; }
+        //string FilePath { get; }
         HistogramCoreViewModel HistogramCore { get; }
         HistogramHost GenerateHistogram();
         void PopOutHistogram();

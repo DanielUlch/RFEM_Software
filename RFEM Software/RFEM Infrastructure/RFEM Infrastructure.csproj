@@ -65,6 +65,7 @@
     <Compile Include="DistributionInfo.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileManager.cs" />
     <Compile Include="Models\RFlow2D.cs" />
     <Compile Include="Models\RFlow3D.cs" />
     <Compile Include="Models\RPill2D.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\REarth2D.cs" />
     <Compile Include="Orchistrators\SimManager.cs" />
     <Compile Include="Persistence\ModelRepository.cs" />
+    <Compile Include="Wrappers\DisplayWrapper.cs" />
     <Compile Include="Wrappers\GhostViewWrapper.cs" />
     <Compile Include="Models\ISimModel.cs" />
     <Compile Include="Wrappers\HistogramExeWrapper.cs" />
@@ -94,6 +96,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Executables\hist_dam2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_earth2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_flow2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_flow3d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_pill2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_pill3d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_set2d.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Executables\hist_set3d.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Executables\plotps.exe">

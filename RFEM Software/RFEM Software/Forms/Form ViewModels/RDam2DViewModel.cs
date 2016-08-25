@@ -13,18 +13,24 @@ using RFEMSoftware.Simulation.Infrastructure.Models;
 using RFEMSoftware.Simulation.Infrastructure;
 using RFEMSoftware.Simulation.Infrastructure.Persistence;
 using RFEMSoftware.Simulation.Infrastructure.Wrappers;
+using RFEMSoftware.Simulation.Desktop.CustomControls;
+using System.Windows.Input;
 
 namespace RFEMSoftware.Simulation.Desktop.Forms
 {
-    class RDam2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    public class RDam2DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade = false;
+        
+        private RDam2D _Model;
 
-       
+        private RDam2DForm _View;
 
-        private RDam2D _FormData;
+        private TopLevelTabItem _MasterTab;
 
         private List<string> _Errors = new List<string>();
+
+        public FileManager FileInfo { get; private set; }
 
         private ObservableCollection<NodeNumber> _NodesForGradientOutput = new ObservableCollection<NodeNumber>()
         {
@@ -36,68 +42,202 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             new NodeNumber {Index=6, Value= null }
         };
 
+        public TopLevelTabItem MasterTab
+        {
+            get { return _MasterTab; }
+        }
+
         public ISimModel Model
         {
-            get { return _FormData; }
+            get { return _Model; }
         }
+        public ISimView View
+        {
+            get { return _View; }
+        }
+        public string StorageString
+        {
+            get
+            {
+                string s = "";
+
+                foreach(RFEMTabItem tab in _MasterTab.SubTabs)
+                {
+                    if(tab.Type == RFEMTabType.DataInput)
+                    {
+                        s += RDam2DItem.DataFile + ",";
+                    }
+                    else if(tab.Type == RFEMTabType.SummaryStats)
+                    {
+                        s += RDam2DItem.SummaryStats + ",";
+                    }
+                    else if(tab.Type == RFEMTabType.Histogram)
+                    {
+                        HistogramType type = ((HistogramTab)tab).ViewModel.Type;
+
+                        if(type == HistogramType.RDam_Conductivity)
+                        {
+                            s += RDam2DItem.ConductivityHist + ",";
+                        }
+                        else if(type == HistogramType.RDam_FlowRate)
+                        {
+                            s += RDam2DItem.FlowRateHist + ",";
+                        }
+                        else if(type == HistogramType.RDam_NodeGradient)
+                        {
+                            s += RDam2DItem.NodalGradientHist + ",";
+                        }
+                    }
+                }
+
+                return s.Substring(0, s.Length - 1);
+            }
+        }
+
+        public RDam2DViewModel(CommandBindingCollection commandBindings, double width,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+
+            _Model = new RDam2D();
+
+            _Model.PropertyChanged += NotifyFormDataPropertyChanged;
+
+            foreach (NodeNumber n in _NodesForGradientOutput)
+            {
+                n.PropertyChanged += NodeNumberCollectionChanged;
+            }
+
+            _View = new RDam2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(null);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+
+
+        }
+        public RDam2DViewModel(CommandBindingCollection commandBindings, double width,RDam2D model,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
+        {
+            _Model = model;
+
+            _Model.PropertyChanged += NotifyFormDataPropertyChanged;
+
+            for (int i = 0; i <= 5; i++)
+            {
+                _NodesForGradientOutput[i].Value = _Model.NodesForGradientOutput[i];
+                _NodesForGradientOutput[i].PropertyChanged += NodeNumberCollectionChanged;
+            }
+
+            _View = new RDam2DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(model.DataLocation);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
+        }
+
+        public void ShowSummaryStats()
+        {
+            _MasterTab.ShowSummaryStats();
+        }
+        public void ShowDataTab()
+        {
+            _MasterTab.ShowDataTab();
+        }
+        public void ShowConductivityHist()
+        {
+            _MasterTab.ShowHistogramTab(HistogramType.RDam_Conductivity);
+        }
+        public void ShowFlowRateHist()
+        {
+            _MasterTab.ShowHistogramTab(HistogramType.RDam_FlowRate);
+        }
+        public void ShowNodalGradientHist()
+        {
+            _MasterTab.ShowHistogramTab(HistogramType.RDam_NodeGradient);
+        }
+
+        private void OutputDirectoryChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+            SaveAs(DataFilePath);
+
+            NotifyPropertyChanged("CanDisplaySummaryStats");
+            NotifyPropertyChanged("CanDisplayFlownet");
+            NotifyPropertyChanged("CanDisplayField");
+            NotifyPropertyChanged("CanDisplayGradientMeanAndStdDevFields");
+            NotifyPropertyChanged("CanDisplayFlowRateHist");
+            NotifyPropertyChanged("CanDisplayEffectiveConductivityHist");
+            NotifyPropertyChanged("CanDisplayNodeGradientHist");
+        }
+
         #region FormProperties
 
         public string JobTitle
         {
-            get { return _FormData.JobTitle; }
+            get { return _Model.JobTitle; }
             set
             {
-                if(_FormData.JobTitle != value)
+                if(_Model.JobTitle != value)
                 {
-                    _FormData.JobTitle = value;
+                    _Model.JobTitle = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public string BaseName
         {
-            get { return _FormData.BaseName; }
+            get { return _Model.BaseName; }
             set
             {
-                if(_FormData.BaseName != value)
+                if(_Model.BaseName != value)
                 {
-                    _FormData.BaseName = value;
+                    _Model.BaseName = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool EchoInputDataToOutputFile
         {
-            get { return _FormData.EchoInputDataToOutputFile; }
+            get { return _Model.EchoInputDataToOutputFile; }
             set
             {
-                if(_FormData.EchoInputDataToOutputFile != value)
+                if(_Model.EchoInputDataToOutputFile != value)
                 {
-                    _FormData.EchoInputDataToOutputFile = value;
+                    _Model.EchoInputDataToOutputFile = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool OutputDebugInfo
         {
-            get { return _FormData.OutputDebugInfo; }
+            get { return _Model.OutputDebugInfo; }
             set
             {
-                if(_FormData.OutputDebugInfo != value)
+                if(_Model.OutputDebugInfo != value)
                 {
-                    _FormData.OutputDebugInfo = value;
+                    _Model.OutputDebugInfo = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int DebugCode
         {
-            get { return _FormData.DebugCode; }
+            get { return _Model.DebugCode; }
             set
             {
-                if(_FormData.DebugCode != value)
+                if(_Model.DebugCode != value)
                 {
-                    _FormData.DebugCode = value;
+                    _Model.DebugCode = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("RealizationNumber");
                 }
@@ -106,12 +246,12 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         public bool ShowCentroidsOnMesh
         {
-            get { return _FormData.ShowCentroidsOnMesh; }
+            get { return _Model.ShowCentroidsOnMesh; }
             set
             {
-                if(_FormData.ShowCentroidsOnMesh != value)
+                if(_Model.ShowCentroidsOnMesh != value)
                 {
-                    _FormData.ShowCentroidsOnMesh = value;
+                    _Model.ShowCentroidsOnMesh = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -119,12 +259,12 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         public int RealizationNumber
         {
-            get { return _FormData.RealizationNumber; }
+            get { return _Model.RealizationNumber; }
             set
             {
-                if(_FormData.RealizationNumber != value)
+                if(_Model.RealizationNumber != value)
                 {
-                    _FormData.RealizationNumber = value;
+                    _Model.RealizationNumber = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -132,24 +272,24 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         public bool ProduceDisplayFile
         {
-            get { return _FormData.ProduceDisplayFile; }
+            get { return _Model.ProduceDisplayFile; }
             set
             {
-                if(_FormData.ProduceDisplayFile != value)
+                if(_Model.ProduceDisplayFile != value)
                 {
-                    _FormData.ProduceDisplayFile = value;
+                    _Model.ProduceDisplayFile = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ProducePSPlotOfFirstFlownet
         {
-            get { return _FormData.ProducePSPlotOfFirstFlownet; }
+            get { return _Model.ProducePSPlotOfFirstFlownet; }
             set
             {
-                if(_FormData.ProducePSPlotOfFirstFlownet != value)
+                if(_Model.ProducePSPlotOfFirstFlownet != value)
                 {
-                    _FormData.ProducePSPlotOfFirstFlownet = value;
+                    _Model.ProducePSPlotOfFirstFlownet = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("NumEquipotentialDrops");
                     NotifyPropertyChanged("FlownetWidth");
@@ -158,12 +298,12 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         }
         public bool ShowStreamlines
         {
-            get { return _FormData.ShowStreamlines; }
+            get { return _Model.ShowStreamlines; }
             set
             {
-                if(_FormData.ShowStreamlines != value)
+                if(_Model.ShowStreamlines != value)
                 {
-                    _FormData.ShowStreamlines = value;
+                    _Model.ShowStreamlines = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("NumEquipotentialDrops");
                 }
@@ -171,96 +311,96 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         }
         public bool ShowEquipotentialDrops
         {
-            get { return _FormData.ShowEquipotentialDrops; }
+            get { return _Model.ShowEquipotentialDrops; }
             set
             {
-                if(_FormData.ShowEquipotentialDrops != value)
+                if(_Model.ShowEquipotentialDrops != value)
                 {
-                    _FormData.ShowEquipotentialDrops = value;
+                    _Model.ShowEquipotentialDrops = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int NumEquipotentialDrops
         {
-            get { return _FormData.NumEquipotentialDrops; }
+            get { return _Model.NumEquipotentialDrops; }
             set
             {
-                if(_FormData.NumEquipotentialDrops != value)
+                if(_Model.NumEquipotentialDrops != value)
                 {
-                    _FormData.NumEquipotentialDrops = value;
+                    _Model.NumEquipotentialDrops = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowMeshOnFlownet
         {
-            get { return _FormData.ShowMeshOnFlownet; }
+            get { return _Model.ShowMeshOnFlownet; }
             set
             {
-                if(_FormData.ShowMeshOnFlownet != value)
+                if(_Model.ShowMeshOnFlownet != value)
                 {
-                    _FormData.ShowMeshOnFlownet = value;
+                    _Model.ShowMeshOnFlownet = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowLogConductivity
         {
-            get { return _FormData.ShowLogConductivity; }
+            get { return _Model.ShowLogConductivity; }
             set
             {
-                if(_FormData.ShowLogConductivity != value)
+                if(_Model.ShowLogConductivity != value)
                 {
-                    _FormData.ShowLogConductivity = value;
+                    _Model.ShowLogConductivity = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowDamDimensionsOnFlownet
         {
-            get { return _FormData.ShowDamDimensionsOnFlownet; }
+            get { return _Model.ShowDamDimensionsOnFlownet; }
             set
             {
-                if(_FormData.ShowDamDimensionsOnFlownet != value)
+                if(_Model.ShowDamDimensionsOnFlownet != value)
                 {
-                    _FormData.ShowDamDimensionsOnFlownet = value;
+                    _Model.ShowDamDimensionsOnFlownet = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ShowTitlesOnFlownet
         {
-            get { return _FormData.ShowTitlesOnFlownet; }
+            get { return _Model.ShowTitlesOnFlownet; }
             set
             {
-                if(_FormData.ShowTitlesOnFlownet != value)
+                if(_Model.ShowTitlesOnFlownet != value)
                 {
-                    _FormData.ShowTitlesOnFlownet = value;
+                    _Model.ShowTitlesOnFlownet = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double FlownetWidth
         {
-            get { return _FormData.FlownetWidth; }
+            get { return _Model.FlownetWidth; }
             set
             {
-                if(_FormData.FlownetWidth != value)
+                if(_Model.FlownetWidth != value)
                 {
-                    _FormData.FlownetWidth = value;
+                    _Model.FlownetWidth = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool OutputGradientMeanAndStdDev
         {
-            get { return _FormData.OutputGradientMeanAndStdDev; }
+            get { return _Model.OutputGradientMeanAndStdDev; }
             set
             {
-                if(_FormData.OutputGradientMeanAndStdDev != value)
+                if(_Model.OutputGradientMeanAndStdDev != value)
                 {
-                    _FormData.OutputGradientMeanAndStdDev = value;
+                    _Model.OutputGradientMeanAndStdDev = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -275,84 +415,84 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         }
         public bool OutputFlowRate
         {
-            get { return _FormData.OutputFlowRate; }
+            get { return _Model.OutputFlowRate; }
             set
             {
-                if(_FormData.OutputFlowRate != value)
+                if(_Model.OutputFlowRate != value)
                 {
-                    _FormData.OutputFlowRate = value;
+                    _Model.OutputFlowRate = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool OutputBlockConductivities
         {
-            get { return _FormData.OutputBlockConductivities; }
+            get { return _Model.OutputBlockConductivities; }
             set
             {
-                if(_FormData.OutputBlockConductivities != value)
+                if(_Model.OutputBlockConductivities != value)
                 {
-                    _FormData.OutputBlockConductivities = value;
+                    _Model.OutputBlockConductivities = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool OutputConductivityAverages
         {
-            get { return _FormData.OutputConductivityAverages; }
+            get { return _Model.OutputConductivityAverages; }
             set
             {
-                if(_FormData.OutputConductivityAverages != value)
+                if(_Model.OutputConductivityAverages != value)
                 {
-                    _FormData.OutputConductivityAverages = value;
+                    _Model.OutputConductivityAverages = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool GenerateUniformConductivity
         {
-            get { return _FormData.GenerateUniformConductivity; }
+            get { return _Model.GenerateUniformConductivity; }
             set
             {
-                if (_FormData.GenerateUniformConductivity != value)
+                if (_Model.GenerateUniformConductivity != value)
                 {
-                    _FormData.GenerateUniformConductivity = value;
+                    _Model.GenerateUniformConductivity = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int NumElementsInXDir
         {
-            get { return _FormData.NumElementsInXDir; }
+            get { return _Model.NumElementsInXDir; }
             set
             {
-                if(_FormData.NumElementsInXDir != value)
+                if(_Model.NumElementsInXDir != value)
                 {
-                    _FormData.NumElementsInXDir = value;
+                    _Model.NumElementsInXDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int NumElementsInYDir
         {
-            get { return _FormData.NumElementsInYDir; }
+            get { return _Model.NumElementsInYDir; }
             set
             {
-                if(_FormData.NumElementsInYDir != value)
+                if(_Model.NumElementsInYDir != value)
                 {
-                    _FormData.NumElementsInYDir = value;
+                    _Model.NumElementsInYDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool IsDrainPresent
         {
-            get { return _FormData.IsDrainPresent; }
+            get { return _Model.IsDrainPresent; }
             set
             {
-                if(_FormData.IsDrainPresent != value)
+                if(_Model.IsDrainPresent != value)
                 {
-                    _FormData.IsDrainPresent = value;
+                    _Model.IsDrainPresent = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("DrainXDimension");
                     NotifyPropertyChanged("DrainYDimension");
@@ -361,240 +501,240 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         }
         public double DrainXDimension
         {
-            get { return _FormData.DrainXDimension; }
+            get { return _Model.DrainXDimension; }
             set
             {
-                if(_FormData.DrainXDimension != value)
+                if(_Model.DrainXDimension != value)
                 {
-                    _FormData.DrainXDimension = value;
+                    _Model.DrainXDimension = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double DrainYDimension
         {
-            get { return _FormData.DrainYDimension; }
+            get { return _Model.DrainYDimension; }
             set
             {
-                if(_FormData.DrainYDimension != value)
+                if(_Model.DrainYDimension != value)
                 {
-                    _FormData.DrainYDimension = value;
+                    _Model.DrainYDimension = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double DrainConductivity
         {
-            get { return _FormData.DrainConductivity; }
+            get { return _Model.DrainConductivity; }
             set
             {
-                if(_FormData.DrainConductivity != value)
+                if(_Model.DrainConductivity != value)
                 {
-                    _FormData.DrainConductivity = value;
+                    _Model.DrainConductivity = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double DamTop
         {
-            get { return _FormData.DamTop; }
+            get { return _Model.DamTop; }
             set
             {
-                if(_FormData.DamTop != value)
+                if(_Model.DamTop != value)
                 {
-                    _FormData.DamTop = value;
+                    _Model.DamTop = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double DamBase
         {
-            get { return _FormData.DamBase; }
+            get { return _Model.DamBase; }
             set
             {
-                if (_FormData.DamBase != value)
+                if (_Model.DamBase != value)
                 {
-                    _FormData.DamBase = value;
+                    _Model.DamBase = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double DamHeight
         {
-            get { return _FormData.DamHeight; }
+            get { return _Model.DamHeight; }
             set
             {
-                if(_FormData.DamHeight != value)
+                if(_Model.DamHeight != value)
                 {
-                    _FormData.DamHeight = value;
+                    _Model.DamHeight = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int NumberOfRealizations
         {
-            get { return _FormData.NumberOfRealizations; }
+            get { return _Model.NumberOfRealizations; }
             set
             {
-                if(_FormData.NumberOfRealizations != value)
+                if(_Model.NumberOfRealizations != value)
                 {
-                    _FormData.NumberOfRealizations = value;
+                    _Model.NumberOfRealizations = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int MaxNumberOfIterations
         {
-            get { return _FormData.MaxNumberOfIterations; }
+            get { return _Model.MaxNumberOfIterations; }
             set
             {
-                if(_FormData.MaxNumberOfIterations != value)
+                if(_Model.MaxNumberOfIterations != value)
                 {
-                    _FormData.MaxNumberOfIterations = value;
+                    _Model.MaxNumberOfIterations = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double ConvergenceTolerance
         {
-            get { return _FormData.ConvergenceTolerance; }
+            get { return _Model.ConvergenceTolerance; }
             set
             {
-                if(_FormData.ConvergenceTolerance != value)
+                if(_Model.ConvergenceTolerance != value)
                 {
-                    _FormData.ConvergenceTolerance = value;
+                    _Model.ConvergenceTolerance = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int? GeneratorSeed
         {
-            get { return _FormData.GeneratorSeed; }
+            get { return _Model.GeneratorSeed; }
             set
             {
-                if(_FormData.GeneratorSeed != value)
+                if(_Model.GeneratorSeed != value)
                 {
-                    _FormData.GeneratorSeed = value;
+                    _Model.GeneratorSeed = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int CorrelationLengthInXDir
         {
-            get { return _FormData.CorrelationLengthInXDir; }
+            get { return _Model.CorrelationLengthInXDir; }
             set
             {
-                if(_FormData.CorrelationLengthInXDir != value)
+                if(_Model.CorrelationLengthInXDir != value)
                 {
-                    _FormData.CorrelationLengthInXDir = value;
+                    _Model.CorrelationLengthInXDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public int CorrelationLengthInYDir
         {
-            get { return _FormData.CorrelationLengthInYDir; }
+            get { return _Model.CorrelationLengthInYDir; }
             set
             {
-                if(_FormData.CorrelationLengthInYDir != value)
+                if(_Model.CorrelationLengthInYDir != value)
                 {
-                    _FormData.CorrelationLengthInYDir = value;
+                    _Model.CorrelationLengthInYDir = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double ConductivityMean
         {
-            get { return _FormData.ConductivityMean; }
+            get { return _Model.ConductivityMean; }
             set
             {
-                if(_FormData.ConductivityMean != value)
+                if(_Model.ConductivityMean != value)
                 {
-                    _FormData.ConductivityMean = value;
+                    _Model.ConductivityMean = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public double ConductivityStdDev
         {
-            get { return _FormData.ConductivityStdDev; }
+            get { return _Model.ConductivityStdDev; }
             set
             {
-                if(_FormData.ConductivityStdDev != value)
+                if(_Model.ConductivityStdDev != value)
                 {
-                    _FormData.ConductivityStdDev = value;
+                    _Model.ConductivityStdDev = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public CovarianceFunction CovFunction
         {
-            get { return _FormData.CovFunction; }
+            get { return _Model.CovFunction; }
             set
             {
-                if(_FormData.CovFunction != value)
+                if(_Model.CovFunction != value)
                 {
-                    _FormData.CovFunction = value;
+                    _Model.CovFunction = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool ModifyHoirzontalSpacing
         {
-            get { return _FormData.ModifyHoirzontalSpacing; }
+            get { return _Model.ModifyHoirzontalSpacing; }
             set
             {
-                if(_FormData.ModifyHoirzontalSpacing != value)
+                if(_Model.ModifyHoirzontalSpacing != value)
                 {
-                    _FormData.ModifyHoirzontalSpacing = value;
+                    _Model.ModifyHoirzontalSpacing = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public SpacingAlgorithm SpacingAlgo
         {
-            get { return _FormData.SpacingAlgo; }
+            get { return _Model.SpacingAlgo; }
             set
             {
-                if(_FormData.SpacingAlgo != value)
+                if(_Model.SpacingAlgo != value)
                 {
-                    _FormData.SpacingAlgo = value;
+                    _Model.SpacingAlgo = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool UseAlternateAlgoIfFirstFails
         {
-            get { return _FormData.UseAlternateAlgoIfFirstFails; }
+            get { return _Model.UseAlternateAlgoIfFirstFails; }
             set
             {
-                if(_FormData.UseAlternateAlgoIfFirstFails != value)
+                if(_Model.UseAlternateAlgoIfFirstFails != value)
                 {
-                    _FormData.UseAlternateAlgoIfFirstFails = value;
+                    _Model.UseAlternateAlgoIfFirstFails = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool RestrainFreeSurfaceNonIncreasing
         {
-            get { return _FormData.RestrainFreeSurfaceNonIncreasing; }
+            get { return _Model.RestrainFreeSurfaceNonIncreasing; }
             set
             {
-                if(_FormData.RestrainFreeSurfaceNonIncreasing != value)
+                if(_Model.RestrainFreeSurfaceNonIncreasing != value)
                 {
-                    _FormData.RestrainFreeSurfaceNonIncreasing = value;
+                    _Model.RestrainFreeSurfaceNonIncreasing = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public bool DampOscillations
         {
-            get { return _FormData.DampOscillations; }
+            get { return _Model.DampOscillations; }
             set
             {
-                if(_FormData.DampOscillations != value)
+                if(_Model.DampOscillations != value)
                 {
-                    _FormData.DampOscillations = value;
+                    _Model.DampOscillations = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -623,79 +763,79 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             switch (propertyName)
             {
                 case "JobTitle":
-                    if (string.IsNullOrEmpty(_FormData.JobTitle) || _FormData.JobTitle.Trim() == "")
+                    if (string.IsNullOrEmpty(_Model.JobTitle) || _Model.JobTitle.Trim() == "")
                         validationMessage = "Job title must have a value.";
                     break;
                 case "BaseName":
-                    if (string.IsNullOrEmpty(_FormData.BaseName) || _FormData.BaseName.Trim()=="")
+                    if (string.IsNullOrEmpty(_Model.BaseName) || _Model.BaseName.Trim()=="")
                         validationMessage = "Base name must have a value.";
                     break;
                 case "RealizationNumber":
-                    if (_FormData.RealizationNumber < 0 & OutputDebugInfo)
+                    if (_Model.RealizationNumber < 0 & OutputDebugInfo)
                         validationMessage = "Realization number must be a positive integer.";
                     break;
                 case "NumEquipotentialDrops":
-                    if (_FormData.NumEquipotentialDrops < 0 & ProducePSPlotOfFirstFlownet & ShowStreamlines)
+                    if (_Model.NumEquipotentialDrops < 0 & ProducePSPlotOfFirstFlownet & ShowStreamlines)
                         validationMessage = "Number of equipotential drops must be a positive integer.";
                     break;
                 case "FlownetWidth":
-                    if (_FormData.FlownetWidth <= 0 & ProducePSPlotOfFirstFlownet )
+                    if (_Model.FlownetWidth <= 0 & ProducePSPlotOfFirstFlownet )
                         validationMessage = "Flownet width must be a positive value.";
                     break;
                 case "NumElementsInXDir":
-                    if (_FormData.NumElementsInXDir < 0)
+                    if (_Model.NumElementsInXDir < 0)
                         validationMessage = "Number of elements must be a positive integer.";
                     break;
                 case "NumElementsInYDir":
-                    if(_FormData.NumElementsInYDir < 0)
+                    if(_Model.NumElementsInYDir < 0)
                         validationMessage = "Number of elements must be a positive integer.";
                     break;
                 case "DrainXDimension":
-                    if (_FormData.DrainXDimension <= 0 & IsDrainPresent)
+                    if (_Model.DrainXDimension <= 0 & IsDrainPresent)
                         validationMessage = "Drain dimensions must be positive values.";
                     break;
                 case "DrainYDimension":
-                    if (_FormData.DrainYDimension <= 0 & IsDrainPresent)
+                    if (_Model.DrainYDimension <= 0 & IsDrainPresent)
                         validationMessage = "Drain dimensions must be positive values.";
                     break;
                 case "DamTop":
-                    if (_FormData.DamTop <= 0)
+                    if (_Model.DamTop <= 0)
                         validationMessage = "Dam dimensions must be positive values.";
                     break;
                 case "DamBase":
-                    if (_FormData.DamBase <= 0)
+                    if (_Model.DamBase <= 0)
                         validationMessage = "Dam dimensions must be positive values.";
                     break;
                 case "DamHeight":
-                    if (_FormData.DamHeight <= 0)
+                    if (_Model.DamHeight <= 0)
                         validationMessage = "Dam dimensions must be positive values.";
                     break;
                 case "NumberOfRealizations":
-                    if (_FormData.NumberOfRealizations < 1)
+                    if (_Model.NumberOfRealizations < 1)
                         validationMessage = "Number of realizations must be a positive integer.";
                     break;
                 case "MaxNumberOfIterations":
-                    if (_FormData.MaxNumberOfIterations < 1)
+                    if (_Model.MaxNumberOfIterations < 1)
                         validationMessage = "Maximum number of iterations must be a positive integer.";
                     break;
                 case "ConvergenceTolerance":
-                    if (_FormData.ConvergenceTolerance < 0 | _FormData.ConvergenceTolerance > 1)
+                    if (_Model.ConvergenceTolerance < 0 | _Model.ConvergenceTolerance > 1)
                         validationMessage = "Convergence tolerance must be between 0 and 1.";
                     break;
                 case "GeneratorSeed":
-                    if (_FormData.GeneratorSeed < 0)
+                    if (_Model.GeneratorSeed < 0)
                         validationMessage = "Generator seed must be a positive integer.";
                     break;
                 case "CorrelationLengthInXDir":
-                    if (_FormData.CorrelationLengthInXDir < 0)
+                    if (_Model.CorrelationLengthInXDir < 0)
                         validationMessage = "Correlation length must be a positive value.";
                     break;
                 case "CorrelationLengthInYDir":
-                    if (_FormData.CorrelationLengthInYDir < 0)
+                    if (_Model.CorrelationLengthInYDir < 0)
                         validationMessage = "Correlation length must be a positive value.";
                     break;
                 case "ConductivityStdDev":
-                    if (_FormData.ConductivityStdDev < 0)
+                    if (_Model.ConductivityStdDev < 0)
                         validationMessage = "Hydraulic conductivity standard deviation must be a positive value.";
                     break;
             }
@@ -733,32 +873,32 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _FormData.CanDisplaySummaryStats;
+                return _Model.CanDisplaySummaryStats && System.IO.File.Exists(SummaryFilePath);
             }
         }
         public bool CanDisplayFlownet
         {
-            get { return _FormData.CanDisplayFlownet; }
+            get { return _Model.CanDisplayFlownet && System.IO.File.Exists(FlownetFilePath); }
         }
         public bool CanDisplayField
         {
-            get { return _FormData.CanDisplayField; }
+            get { return _Model.CanDisplayField && System.IO.File.Exists(FieldFilePath); }
         }
         public bool CanDisplayGradientMeanAndStdDevFields
         {
-            get { return _FormData.CanDisplayGradientMeanAndStdDevFields; }
+            get { return _Model.CanDisplayGradientMeanAndStdDevFields && System.IO.File.Exists(GradientMeanPath); }
         }
         public bool CanDisplayFlowRateHist
         {
-            get { return _FormData.CanDisplayFlowRateHist; }
+            get { return _Model.CanDisplayFlowRateHist && System.IO.File.Exists(FlowRatePath); }
         }
         public bool CanDisplayEffectiveConductivityHist
         {
-            get { return _FormData.CanDisplayEffectiveConductivityHist; }
+            get { return _Model.CanDisplayEffectiveConductivityHist && System.IO.File.Exists(EffectiveConductivityPath); }
         }
         public bool CanDisplayNodeGradientHist
         {
-            get { return _FormData.CanDisplayNodeGradientHist; }
+            get { return _Model.CanDisplayNodeGradientHist && System.IO.File.Exists(NodalGradientPath); }
         }
         public bool ChangesHaveBeenMade
         {
@@ -773,23 +913,21 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _FormData.AppDataFileLocation;
+                return _Model.DataLocation;
             }
         }
-        public string FieldFilePath
+        private string FieldFilePath
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                            _FormData.BaseName + ".fld";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fld";
             }
         }
-        public string FlownetFilePath
+        private string FlownetFilePath
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                            _FormData.BaseName + ".net";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".net";
             }
         }
         
@@ -797,8 +935,70 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".stt";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".stt";
+            }
+        }
+        private string GradientMeanPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".gpm";
+            }
+        }
+        private string GradientStdDevPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".gps";
+            }
+        }
+        private string FluxMeanPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fpm";
+            }
+        }
+        private string FluxStdDevPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fps";
+            }
+        }
+        private string PotentialMeanPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".hpm";
+            }
+        }
+        private string PotentialStdDevPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".hps";
+            }
+        }
+        private string FlowRatePath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".flo";
+            }
+        }
+        private string EffectiveConductivityPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".cnd";
+            }
+        }
+        private string NodalGradientPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".grd";
             }
         }
         public Program Type
@@ -811,32 +1011,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         
 
-        public RDam2DViewModel()
-        {
-
-            _FormData = new RDam2D();
-
-            _FormData.PropertyChanged += NotifyFormDataPropertyChanged;
-
-            foreach (NodeNumber n in _NodesForGradientOutput)
-            {
-                n.PropertyChanged += NodeNumberCollectionChanged;
-            }
-
-            
-        }
-        public RDam2DViewModel(RDam2D formData)
-        {
-            _FormData = formData;
-
-            _FormData.PropertyChanged += NotifyFormDataPropertyChanged;
-
-            for(int i = 0; i <= 5; i++)
-            {
-                _NodesForGradientOutput[i].Value = _FormData.NodesForGradientOutput[i];
-                _NodesForGradientOutput[i].PropertyChanged += NodeNumberCollectionChanged;
-            }
-        }
+        
 
 
         public void Save()
@@ -847,7 +1022,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
             else
             {
-                ModelRepository.Store(_FormData);
+                ModelRepository.Store(_Model);
                 _ChangesHaveBeenMade = false;
             }
         }
@@ -860,123 +1035,63 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
             }
             else
             {
-                ModelRepository.Store(_FormData);
-                ModelRepository.Store(_FormData, filePath);
+                ModelRepository.Store(_Model);
+                ModelRepository.Store(_Model, filePath);
                 _ChangesHaveBeenMade = false;
             }
         }
 
         public void ShowField()
         {
-            var pInfo = new ProcessStartInfo();
-            pInfo.UseShellExecute = false;
-            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\RFEM_Software";
-            string appFileDir = Environment.GetCommandLineArgs()[0];
-            string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
-            displayFilePath += "\\Executables\\display.exe";
-            pInfo.FileName = displayFilePath;
-            pInfo.CreateNoWindow = true;
-            pInfo.Arguments = FieldFilePath;
-            var p = new Process { StartInfo = pInfo };
 
+            DisplayWrapper.Run(FieldFilePath);
 
-            p.Start();
-            p.WaitForExit();
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            pInfo = new ProcessStartInfo();
-            pInfo.UseShellExecute = false;
-            pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\RFEM_Software";
-            pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
-            pInfo.CreateNoWindow = true;
-
-            p = new Process { StartInfo = pInfo };
-            p.Start();
+            gView.Show(FileInfo.OutputDirectory + "\\graph1.ps");
+            
         }
         public void ShowFlownet()
         {
-            var pInfo = new ProcessStartInfo();
-            pInfo.UseShellExecute = false;
-            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\RFEM_Software";
-            string appFileDir = Environment.GetCommandLineArgs()[0];
-            string displayFilePath = System.IO.Path.GetDirectoryName(appFileDir);
-            displayFilePath += "\\Executables\\display.exe";
-            pInfo.FileName = displayFilePath;
-            pInfo.CreateNoWindow = true;
-            pInfo.Arguments = FlownetFilePath;
-            var p = new Process { StartInfo = pInfo };
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-
-            p.Start();
-            p.WaitForExit();
-
-            pInfo = new ProcessStartInfo();
-            pInfo.UseShellExecute = false;
-            pInfo.FileName = "\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"";
-            pInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\RFEM_Software";
-            pInfo.Arguments = pInfo.WorkingDirectory + "\\graph1.ps";
-            pInfo.CreateNoWindow = true;
-
-            p = new Process { StartInfo = pInfo };
-            p.Start();
+            gView.Show(FlownetFilePath);
         }
         public void ShowGradientMeanField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath= Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".gpm";
-
-            GstView.Show(FilePath);
+            gView.Show(GradientMeanPath);
         }
         public void ShowGradientStdDevField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".gps";
-
-            GstView.Show(FilePath);
+            gView.Show(GradientStdDevPath);
         }
         public void ShowFluxMeanField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".fpm";
-
-            GstView.Show(FilePath);
+            gView.Show(FluxMeanPath);
         }
         public void ShowFluxStdDevField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".fps";
-
-            GstView.Show(FilePath);
+            gView.Show(FluxStdDevPath);
         }
         public void ShowPotentialMeanField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".hpm";
-
-            GstView.Show(FilePath);
+            gView.Show(PotentialMeanPath);
         }
         public void ShowPotentialStdDevField()
         {
-            var GstView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
 
-            string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _FormData.BaseName + ".hps";
-
-            GstView.Show(FilePath);
+            gView.Show(PotentialStdDevPath);
         }
 
 
@@ -1003,34 +1118,26 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         public RDam2DFlowRateHist CreateNewFlowRateHistForm()
         {
-
-            string FlowFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + 
-                                "\\RFEM_Software\\" + _FormData.BaseName + ".flo";
-
-            return new RDam2DFlowRateHist(_FormData.NumberOfRealizations, FlowFilePath, _FormData.BaseName);
+            return new RDam2DFlowRateHist(_Model.NumberOfRealizations, FlownetFilePath, _Model.BaseName);
         }
         public RDam2DConductivityHist CreateNewConducivityHistForm()
         {
-            string ConductivityFilePath= Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                "\\RFEM_Software\\" + _FormData.BaseName + ".cnd";
 
-            return new RDam2DConductivityHist(_FormData.NumberOfRealizations,
-                                                ConductivityFilePath,
-                                                _FormData.BaseName,
-                                                _FormData.OutputBlockConductivities,
-                                                _FormData.OutputConductivityAverages);
+            return new RDam2DConductivityHist(_Model.NumberOfRealizations,
+                                                EffectiveConductivityPath,
+                                                _Model.BaseName,
+                                                _Model.OutputBlockConductivities,
+                                                _Model.OutputConductivityAverages);
         }
         public RDam2DNodalGradientHist CreateNewNodalGradientHistForm()
         {
-            string NodalFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                "\\RFEM_Software\\" + _FormData.BaseName + ".grd";
 
-            return new RDam2DNodalGradientHist(_FormData.NodesForGradientOutput.Where(x => x!=null).
+            return new RDam2DNodalGradientHist(_Model.NodesForGradientOutput.Where(x => x!=null).
                                                                                 Select(x => x.Value).
                                                                                 ToList<int>(),
-                                                NodalFilePath,
-                                                _FormData.BaseName,
-                                                _FormData.NumberOfRealizations);
+                                                NodalGradientPath,
+                                                _Model.BaseName,
+                                                _Model.NumberOfRealizations);
         }
     }
 

@@ -21,36 +21,10 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
 
         private List<FrameworkElement> _HoverHelpControls;
-        
-        public ISimViewModel ViewModel
+
+        public RBear2DForm(RBear2DViewModel viewModel)
         {
-            get
-            {
-                return _ViewModel;
-            }
-        }
-
-        /// <summary>
-        /// Contsructor for the form
-        /// </summary>
-        public RBear2DForm()
-        {
-
-            _ViewModel = new RBear2DViewModel();
-
-            this.DataContext = _ViewModel;
-
-            //Required by framework
-            InitializeComponent();
-
-            InitializeHoveredHelpControls();
-
-            dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
-
-        }
-        public RBear2DForm(RBear2D formData)
-        {
-            _ViewModel = new RBear2DViewModel(formData);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 

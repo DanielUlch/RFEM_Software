@@ -234,7 +234,7 @@
 
         </Style>
 
-        <Style TargetType="TabControl" >
+        <Style TargetType="TabControl" x:Key="styleTabControl" >
             <Setter Property="Background" Value="{StaticResource NeutralBrush1}"/>
             <Setter Property="Padding" Value="0"/>
         </Style>

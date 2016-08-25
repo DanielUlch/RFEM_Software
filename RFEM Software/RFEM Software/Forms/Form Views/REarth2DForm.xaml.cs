@@ -26,35 +26,19 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class REarth2DForm : UserControl, ISimView
     {
         private REarth2DViewModel _ViewModel;
-        public REarth2DForm()
+        
+        public REarth2DForm(REarth2DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new REarth2DViewModel();
-
-            this.DataContext = _ViewModel;
-
-            dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
-        }
-        public REarth2DForm(REarth2D form)
-        {
-            InitializeComponent();
-
-            _ViewModel = new REarth2DViewModel(form);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 
             dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
-
+        
         public string GetHoveredHelpTopic()
         {
             throw new NotImplementedException();

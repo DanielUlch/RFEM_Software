@@ -180,37 +180,14 @@ namespace RFEMSoftware.Simulation.Desktop
             if (tabControl.Items.Count > 0)
             {
                 //Get the selected tab
-                var tab = (RFEMTabItem)tabControl.SelectedItem;
+                var tab = (TopLevelTabItem)tabControl.SelectedItem;
+                
+                //Ask the selected form for the help topic associated with a hovered control
+                string helpLocation = tab.GetHoveredHelpTopic();
 
-                //If the tab is a data input tab
-                if (tab.GetType() == typeof(DataEntryTab))
-                {
-                    //Get the selected form
-                    var helpTab = ((DataEntryTab)tab).View;
-
-                    //Ask the selected form for the help topic associated with a hovered control
-                    string helpLocation = helpTab.GetHoveredHelpTopic();
-
-                    //Load the help file
-                    LoadReaderNew(helpLocation);
-
-                }
-                else if (tab.GetType() == typeof(HistogramTab))
-                {
-                    //Get the selected form
-                    var helpTab = ((HistogramTab)tab).View;
-
-                    //Ask the selected form for the help topic associated with a hovered control
-                    string helpLocation = helpTab.GetHoveredHelpTopic();
-
-                    //Load the help file
-                    LoadReaderNew(helpLocation);
-                }
-                else
-                {
-                    //Load the defaul help file for this application
-                    LoadReaderNew("");
-                }
+                //Load the help file
+                LoadReaderNew(helpLocation);
+                
             }
             else
             {
@@ -289,6 +266,7 @@ namespace RFEMSoftware.Simulation.Desktop
             btnBottomExpander.Visibility = Visibility.Visible;
             BottomStatusBar.Visibility = Visibility.Visible;
         }
+        
     }
 }
 

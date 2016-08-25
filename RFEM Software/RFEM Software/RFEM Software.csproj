@@ -112,18 +112,84 @@
     <Compile Include="Custom Controls\TabItemHeader.xaml.cs">
       <DependentUpon>TabItemHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Custom Controls\TopLevelTabItem.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Dialogs\ReadDataFileDialog.xaml.cs">
       <DependentUpon>ReadDataFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FormFactory.cs" />
-    <Compile Include="FormRepository.cs" />
+    <Compile Include="Forms\Histogram ViewModels\REarth2DEarthForcesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\REarth2DSoilSamplesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RFlow2DEffectiveConductivitiesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RFlow2DExitGradientsViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RFlow2DFlowRatesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RFlow3DEffectiveConductivitiesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RFlow3DFlowRatesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RPill2DPillarCapacitiesViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RPill3DPillarCapacityViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl2DDifferentialSettlementsViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl2DEffectiveModuliViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl2DSettlementsViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl3DDifferentialSettlementsViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl3DEffectiveModuliViewModel.cs" />
+    <Compile Include="Forms\Histogram ViewModels\RSetl3DSettlementsViewModel.cs" />
+    <Compile Include="Forms\Histogram Views\REarth2DEarthForces.xaml.cs">
+      <DependentUpon>REarth2DEarthForces.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\REarth2DSoilSamples.xaml.cs">
+      <DependentUpon>REarth2DSoilSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RFlow2DEffectiveConductivities.xaml.cs">
+      <DependentUpon>RFlow2DEffectiveConductivities.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RFlow2DExitGradients.xaml.cs">
+      <DependentUpon>RFlow2DExitGradients.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RFlow2DFlowRates.xaml.cs">
+      <DependentUpon>RFlow2DFlowRates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RFlow3DEffectiveConductivities.xaml.cs">
+      <DependentUpon>RFlow3DEffectiveConductivities.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RFlow3DFlowRates.xaml.cs">
+      <DependentUpon>RFlow3DFlowRates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RPill2DPillarCapacities.xaml.cs">
+      <DependentUpon>RPill2DPillarCapacities.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RPill3DPillarCapacity.xaml.cs">
+      <DependentUpon>RPill3DPillarCapacity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl2DDifferentialSettlements.xaml.cs">
+      <DependentUpon>RSetl2DDifferentialSettlements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl2DEffectiveModuli.xaml.cs">
+      <DependentUpon>RSetl2DEffectiveModuli.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl2DSettlements.xaml.cs">
+      <DependentUpon>RSetl2DSettlements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl3DDifferentialSettlements.xaml.cs">
+      <DependentUpon>RSetl3DDifferentialSettlements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl3DEffectiveModuli.xaml.cs">
+      <DependentUpon>RSetl3DEffectiveModuli.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Histogram Views\RSetl3DSettlements.xaml.cs">
+      <DependentUpon>RSetl3DSettlements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProjectSettings.xaml.cs">
+      <DependentUpon>ProjectSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StorageEnums.cs" />
+    <Compile Include="ViewModelRepository.cs" />
     <Compile Include="Forms\Converters.cs" />
     <Compile Include="Forms\Form ViewModels\RPill2DViewModel.cs" />
     <Compile Include="Forms\Form ViewModels\RPill3DViewModel.cs" />
     <Compile Include="Forms\Form ViewModels\RSetl2DViewModel.cs" />
     <Compile Include="Forms\Form ViewModels\RSetl3DViewModel.cs" />
     <Compile Include="Forms\Form ViewModels\RSlope2DViewModel.cs" />
+    <Compile Include="Forms\Form ViewModels\ViewModelBase.cs" />
     <Compile Include="Forms\Form Views\RPill2DForm.xaml.cs">
       <DependentUpon>RPill2DForm.xaml</DependentUpon>
     </Compile>
@@ -199,6 +265,7 @@
     <Compile Include="Custom Controls\RFEMTabItem.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="ViewModelFactory.cs" />
     <Resource Include="Help Files\RBear Help Files\ShowRFOnDisplacedMeshPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -384,6 +451,70 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Form Views\RFlow3DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\REarth2DEarthForces.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\REarth2DSoilSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RFlow2DEffectiveConductivities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RFlow2DExitGradients.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RFlow2DFlowRates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RFlow3DEffectiveConductivities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RFlow3DFlowRates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RPill2DPillarCapacities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RPill3DPillarCapacity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl2DDifferentialSettlements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl2DEffectiveModuli.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl2DSettlements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl3DDifferentialSettlements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl3DEffectiveModuli.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Histogram Views\RSetl3DSettlements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\ProjectSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -731,6 +862,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Images\Broom.png" />
     <Content Include="RFEMSoftware.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

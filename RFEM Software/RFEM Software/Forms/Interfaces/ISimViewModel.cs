@@ -1,4 +1,5 @@
-﻿using RFEMSoftware.Simulation.Infrastructure;
+﻿using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
 using RFEMSoftware.Simulation.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,16 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
 
         bool CanDisplaySummaryStats { get; }
 
+
+
         ISimModel Model { get; }
+        ISimView View { get; }
+        TopLevelTabItem MasterTab { get; }
+        FileManager FileInfo { get; }
+        string StorageString { get; }
+        void ShowDataTab();
+        void ShowSummaryStats();
+        
+
     }
 }

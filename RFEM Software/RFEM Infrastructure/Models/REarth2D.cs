@@ -137,23 +137,18 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
         }
 
         #endregion
-        public string AppDataFileLocation
+        public string OutputDirectory
         {
-            get
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat";
-            }
+            get; set;
+        }
+        public string DataLocation
+        {
+            get { return OutputDirectory + "\\" + BaseName + ".dat"; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string DataFileLocation()
-        {
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-
-            return directory + "\\" + BaseName + ".dat";
-        }
+        
 
         
         protected void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
@@ -224,7 +219,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
+            pInfo.Arguments = "\"" + DataLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
             p = new Process() { StartInfo = pInfo };

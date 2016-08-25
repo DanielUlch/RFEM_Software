@@ -22,35 +22,16 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RDam2DForm : UserControl, ISimView
     {
         private RDam2DViewModel _ViewModel;
-        public RDam2DForm()
+        
+        public RDam2DForm(RDam2DViewModel viewModel)
         {
-            _ViewModel = new RDam2DViewModel();
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 
             InitializeComponent();
-
-            
         }
-        public RDam2DForm(RDam2D formData)
-        {
-            _ViewModel = new RDam2DViewModel(formData);
-
-            this.DataContext = _ViewModel;
-
-            InitializeComponent();
-
-
-        }
-
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
-
+        
         public string GetHoveredHelpTopic()
         {
             throw new NotImplementedException();

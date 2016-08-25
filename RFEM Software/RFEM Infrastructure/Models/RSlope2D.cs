@@ -12,6 +12,8 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
     public class RSlope2D: ISimModel, INotifyPropertyChanged 
     {
         private bool _CanDisplaySummaryStats;
+        private bool _CanDisplayField;
+        private bool _CanDisplayMesh;
         #region Form Properties
 
         public string JobTitle { get; set; }
@@ -87,11 +89,28 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 }
             }
         }
-        public string AppDataFileLocation
+        public bool CanDisplayField
         {
-            get
+            get { return _CanDisplayField; }
+            set
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat";
+                if (_CanDisplayField != value)
+                {
+                    _CanDisplayField = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool CanDisplayMesh
+        {
+            get { return _CanDisplayMesh; }
+            set
+            {
+                if (_CanDisplayMesh != value)
+                {
+                    _CanDisplayMesh = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
@@ -114,13 +133,13 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 {0,0,0,0,0,1}
             };
         }
-
-        public string DataFileLocation()
+        public string OutputDirectory
         {
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
-
-            return directory + "\\" + BaseName + ".dat";
+            get; set;
+        }
+        public string DataLocation
+        {
+            get { return OutputDirectory + "\\" + BaseName + ".dat"; }
         }
 
         public string RunSim(IProgress<int> simIteration, IProgress<string> currentOp, CancellationToken token)
@@ -141,7 +160,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
+            pInfo.Arguments = "\"" + DataLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
             p = new Process() { StartInfo = pInfo };
@@ -186,7 +205,10 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
             }
 
             CanDisplaySummaryStats = true;
-
+            if (PlotARandomField)
+                CanDisplayField = true;
+            if (ProducePSPlotOfDisplacedMesh)
+                CanDisplayMesh = true;
 
             currentOp.Report("Finished");
 

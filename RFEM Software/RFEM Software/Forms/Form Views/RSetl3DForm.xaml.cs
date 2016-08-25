@@ -22,30 +22,16 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RSetl3DForm : UserControl, ISimView
     {
         private RSetl3DViewModel _ViewModel;
-        public RSetl3DForm()
+
+        public RSetl3DForm(RSetl3DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RSetl3DViewModel();
-
-            this.DataContext = _ViewModel;
-        }
-        public RSetl3DForm(RSetl3D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RSetl3DViewModel(model);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
 
         public string GetHoveredHelpTopic()
         {

@@ -1,6 +1,8 @@
-﻿using RFEMSoftware.Simulation.Infrastructure;
+﻿using RFEMSoftware.Simulation.Desktop.CustomControls;
+using RFEMSoftware.Simulation.Infrastructure;
 using RFEMSoftware.Simulation.Infrastructure.Models;
 using RFEMSoftware.Simulation.Infrastructure.Persistence;
+using RFEMSoftware.Simulation.Infrastructure.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,27 +10,91 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace RFEMSoftware.Simulation.Desktop.Forms
 {
-    class RPill3DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
+    public class RPill3DViewModel : INotifyPropertyChanged, IDataErrorInfo, ISimViewModel
     {
         private bool _ChangesHaveBeenMade;
 
         private RPill3D _Model;
 
+        private RPill3DForm _View;
+
+        private TopLevelTabItem _MasterTab;
+
         private List<string> _Errors = new List<string>();
 
-        public RPill3DViewModel()
+        public FileManager FileInfo { get; private set; }
+
+        public TopLevelTabItem MasterTab
+        {
+            get { return _MasterTab; }
+        }
+
+        public ISimModel Model
+        {
+            get { return _Model; }
+        }
+        public ISimView View
+        {
+            get { return _View; }
+        }
+        public string StorageString
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public RPill3DViewModel(CommandBindingCollection commandBindings, double width,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
         {
             _Model = new RPill3D();
+
+            _View = new RPill3DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(null);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
         }
-        public RPill3DViewModel(RPill3D model)
+        public RPill3DViewModel(CommandBindingCollection commandBindings, double width, RPill3D model,
+                               RoutedEventHandler closeTopTab,
+                               RoutedEventHandler closeAllTopTabs)
         {
             _Model = model;
+
+            _View = new RPill3DForm(this);
+
+            _MasterTab = new TopLevelTabItem(commandBindings, width, this, closeTopTab, closeAllTopTabs);
+
+            FileInfo = new FileManager(model.DataLocation);
+
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+
+            FileInfo.PropertyChanged += OutputDirectoryChanged;
         }
 
+        public void ShowSummaryStats()
+        {
+            _MasterTab.ShowSummaryStats();
+        }
+        public void ShowDataTab()
+        {
+            _MasterTab.ShowDataTab();
+        }
 
+        private void OutputDirectoryChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _Model.OutputDirectory = FileInfo.OutputDirectory;
+            SaveAs(DataFilePath);
+
+            NotifyPropertyChanged("CanDisplaySummaryStats");
+            NotifyPropertyChanged("CanDisplayField");
+        }
         #region Form Properties
 
         public string JobTitle
@@ -472,7 +538,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return _Model.DataFileLocation();
+                return _Model.DataLocation;
             }
         }
 
@@ -480,11 +546,31 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
         {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" +
-                    _Model.BaseName + ".stt";
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".stt";
+            }
+        }
+        private string FieldPath
+        {
+            get
+            {
+                return FileInfo.OutputDirectory + "\\" + _Model.BaseName + ".fld";
             }
         }
 
+        public bool CanDisplaySummaryStats
+        {
+            get
+            {
+                return _Model.CanDisplaySummaryStats && System.IO.File.Exists(SummaryFilePath);
+            }
+        }
+        public bool CanDisplayField
+        {
+            get
+            {
+                return _Model.CanDisplayField && System.IO.File.Exists(FieldPath);
+            }
+        }
 
         public Program Type
         {
@@ -493,22 +579,7 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
                 return Program.RPill3D;
             }
         }
-
-        public bool CanDisplaySummaryStats
-        {
-            get
-            {
-                return _Model.CanDisplaySummaryStats;
-            }
-        }
-
-        public ISimModel Model
-        {
-            get
-            {
-                return _Model;
-            }
-        }
+        
 
 
         #region Validation
@@ -603,6 +674,14 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
                 ModelRepository.Store(_Model, filePath);
                 _ChangesHaveBeenMade = false;
             }
+        }
+        public void ShowField()
+        {
+            DisplayWrapper.Run(FieldPath);
+
+            GhostViewWrapper gView = new GhostViewWrapper("\"" + (string)Properties.Settings.Default["GhostViewPath"] + "\"");
+
+            gView.Show(FileInfo.OutputDirectory + "\\graph1.ps");
         }
     }
 }

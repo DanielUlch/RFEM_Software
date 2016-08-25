@@ -13,14 +13,13 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 {
     public class RBear2D : ISimModel, INotifyPropertyChanged
     {
-
         
-        
-
         private bool _CanDisplaySummaryStats;
         private bool _CanDisplayMesh;
         private bool _CanDisplayField;
         private bool _CanDisplayBearingHist;
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,15 +27,6 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
         {
             get { return Program.RBear2D; }
         }
-
-        public string JobTitle { get; set; }
-        public string BaseName { get; set; }
-
-        public bool EchoInputDataToOutputFile { get; set; }
-        public bool ReportRunProgress { get; set; }
-        public bool WriteDebugDataToOutputFile { get; set; }
-        public bool PlotFirstRandomField { get; set; }
-
         public bool CanDisplaySummaryStats
         {
             get { return _CanDisplaySummaryStats; }
@@ -61,7 +51,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 }
             }
         }
-        
+
         public bool CanDisplayField
         {
             get { return _CanDisplayField; }
@@ -79,14 +69,31 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
             get { return _CanDisplayBearingHist; }
             set
             {
-                if(_CanDisplayBearingHist != value)
+                if (_CanDisplayBearingHist != value)
                 {
                     _CanDisplayBearingHist = value;
                     NotifyPropertyChanged();
                 }
             }
         }
+       public string OutputDirectory
+        {
+            get; set;
+        }
+        public string DataLocation
+        {
+            get { return OutputDirectory + "\\" + BaseName + ".dat"; }
+        }
 
+        #region Form Properties
+        public string JobTitle { get; set; }
+        public string BaseName { get; set; }
+
+        public bool EchoInputDataToOutputFile { get; set; }
+        public bool ReportRunProgress { get; set; }
+        public bool WriteDebugDataToOutputFile { get; set; }
+        public bool PlotFirstRandomField { get; set; }
+        
         public SoilProperty FirstRandomFieldProperty { get; set; }
 
         public bool ProducePSPLOTOfFirstFEM { get; set; }
@@ -135,14 +142,9 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
         public double?[,] CorMatrix { get; set; }
 
-        public string DataFileLocation()
-        {
-            string appFileName = Environment.GetCommandLineArgs()[0];
-            string directory = System.IO.Path.GetDirectoryName(appFileName);
+        #endregion
 
-            return directory + "\\" + BaseName + ".dat";
-
-        }
+        
         
         public RBear2D()
         {
@@ -195,7 +197,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
 
             pInfo.FileName = directory;
             pInfo.RedirectStandardOutput = true;
-            pInfo.Arguments = "\"" + AppDataFileLocation + "\"";
+            pInfo.Arguments = "\"" + DataLocation + "\"";
             pInfo.UseShellExecute = false;
             pInfo.CreateNoWindow = true;
             p = new Process() { StartInfo = pInfo };
@@ -308,9 +310,6 @@ namespace RFEMSoftware.Simulation.Infrastructure.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        public string AppDataFileLocation
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\RFEM_Software\\" + BaseName + ".dat"; }
-        }
+        
     }
 }

@@ -25,34 +25,18 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     {
         private RPill3DViewModel _ViewModel;
 
-        public RPill3DForm()
+
+        public RPill3DForm(RPill3DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RPill3DViewModel();
-
-            this.DataContext = _ViewModel;
-
-            dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
-        }
-        public RPill3DForm(RPill3D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RPill3DViewModel(model);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
 
             dgCorrelationMatrix.ItemsSource = DataGridMatrixHelper.GetBindable2DArray(_ViewModel.CorrelationMatrix);
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
 
         public string GetHoveredHelpTopic()
         {

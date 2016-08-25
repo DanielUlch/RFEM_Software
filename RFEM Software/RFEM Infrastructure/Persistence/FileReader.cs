@@ -378,7 +378,7 @@ namespace RFEMSoftware.Simulation.Infrastructure.Persistence
                 formData.ShowTitlesOnFlownet = TFInverse(Line.Substring(LHSLength));
 
                 Line = reader.ReadLine();
-                formData.FlownetWidth = int.Parse(Line.Substring(LHSLength));
+                formData.FlownetWidth = double.Parse(Line.Substring(LHSLength));
 
                 Line = reader.ReadLine();
                 formData.DebugCode = int.Parse(Line.Substring(LHSLength));

@@ -22,31 +22,16 @@ namespace RFEMSoftware.Simulation.Desktop.Forms
     public partial class RSetl2DForm : UserControl, ISimView 
     {
         private RSetl2DViewModel _ViewModel;
-        public RSetl2DForm()
+
+        public RSetl2DForm(RSetl2DViewModel viewModel)
         {
             InitializeComponent();
 
-            _ViewModel = new RSetl2DViewModel();
-
-            this.DataContext = _ViewModel;
-
-        }
-        public RSetl2DForm(RSetl2D model)
-        {
-            InitializeComponent();
-
-            _ViewModel = new RSetl2DViewModel(model);
+            _ViewModel = viewModel;
 
             this.DataContext = _ViewModel;
         }
 
-        public ISimViewModel ViewModel
-        {
-            get
-            {
-                return _ViewModel;
-            }
-        }
 
         public string GetHoveredHelpTopic()
         {

@@ -24,6 +24,27 @@ namespace RFEMSoftware.Simulation.Infrastructure.Wrappers
                 case Program.RDam2D:
                     directory += "\\Executables\\hist_dam2d.exe";
                     break;
+                case Program.REarth2D:
+                    directory += "\\Executables\\hist_earth2d.exe";
+                    break;
+                case Program.RFlow2D:
+                    directory += "\\Executables\\hist_flow2d.exe";
+                    break;
+                case Program.RFlow3D:
+                    directory += "\\Executables\\hist_flow3d.exe";
+                    break;
+                case Program.RPill2D:
+                    directory += "\\Executables\\hist_pill2d.exe";
+                    break;
+                case Program.RPill3D:
+                    directory += "\\Executables\\hist_pill3d.exe";
+                    break;
+                case Program.RSetl2D:
+                    directory += "\\Executables\\hist_setl2d.exe";
+                    break;
+                case Program.RSetl3D:
+                    directory += "\\Executables\\hist_setl3d.exe";
+                    break;
                 default:
                     throw new NotImplementedException();
             }

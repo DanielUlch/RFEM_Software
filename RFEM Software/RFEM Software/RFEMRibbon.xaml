@@ -108,12 +108,7 @@
 
 
             <RibbonTab Header="Home">
-                <RibbonGroup Header="Existing Files">
-
-                    <RibbonButton Name="btnOpenExisting"
-                                  Label="Open Existing Data File"
-                                  LargeImageSource="Images/OpenFolder.png" />
-                </RibbonGroup>
+                
 
                 <RibbonGroup Header="Create New Data File"
                              Foreground="Black">
@@ -204,6 +199,13 @@
 
             <RibbonTab Header="Run Control" ContextualTabGroupHeader="Run Tools" Name="RunControlTab">
 
+                <RibbonGroup Header="Existing Files">
+
+                    <RibbonButton Name="btnOpenExisting"
+                                  Label="Open Existing Data File"
+                                  LargeImageSource="Images/OpenFolder.png" />
+                </RibbonGroup>
+                
                 <RibbonGroup Header="Simulation">
 
                     <!--               Buttons common accross all simulations                                -->
@@ -355,6 +357,58 @@
                                   LargeImageSource="Images/BrokenFactoryBlue.png" 
                                   IsEnabled="{Binding Path=CanDisplayRPill2DField}"
                                   Visibility="{Binding Path=RPill2DButtonVisibility}"/>
+                    
+                    <!--                       RPill3D Buttton                       -->
+                    
+                    <RibbonButton Name="btnRPill3DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRPill3DField}"
+                                  Visibility="{Binding Path=RPill3DButtonVisibility}"/>
+                    
+                    <!--                       RSetl2D Buttons                       -->
+
+                    <RibbonButton Name="btnRSetl2DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSetl2DMesh}"
+                                  Visibility="{Binding Path=RSetl2DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnRSetl2DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSetl2DField}"
+                                  Visibility="{Binding Path=RSetl2DButtonVisibility}"/>
+                    
+                    
+                    <!--                       RSetl3D Buttons                         -->
+
+                    <RibbonButton Name="btnRSetl3DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSetl3DMesh}"
+                                  Visibility="{Binding Path=RSetl3DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnRSetl3DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSetl3DField}"
+                                  Visibility="{Binding Path=RSetl3DButtonVisibility}"/>
+                    
+                    <!--                       RSlope2D Buttons                         -->
+
+                    <RibbonButton Name="btnRSlope2DShowMesh" 
+                                  Label="Displaced Mesh" 
+                                  LargeImageSource="Images/Grid.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSlope2DMesh}"
+                                  Visibility="{Binding Path=RSlope2DButtonVisibility}"/>
+
+                    <RibbonButton Name="btnRSlope2DShowField" 
+                                  Label="Random Field" 
+                                  LargeImageSource="Images/BrokenFactoryBlue.png" 
+                                  IsEnabled="{Binding Path=CanDisplayRSlope2DField}"
+                                  Visibility="{Binding Path=RSlope2DButtonVisibility}"/>
+                    
                 </RibbonGroup>
 
             </RibbonTab>

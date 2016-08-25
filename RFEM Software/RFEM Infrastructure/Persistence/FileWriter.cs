@@ -48,21 +48,16 @@ namespace RFEMSoftware.Simulation.Infrastructure.Persistence
                     throw new NotImplementedException();
             }
 
-            using (var fileWriter = new System.IO.StreamWriter(model.DataFileLocation(), false))
-            {
-                fileWriter.Write(DataFileString);
-            }
-
             if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                            "\\RFEM_Software"))
+                                            "\\RFEMSoftware"))
                 System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.
-                                                        LocalApplicationData) + "\\RFEM_Software");
+                                                        LocalApplicationData) + "\\RFEMSoftware");
 
-
-            using (var fileWriter = new System.IO.StreamWriter(model.AppDataFileLocation, false))
+            using (var fileWriter = new System.IO.StreamWriter(model.DataLocation, false))
             {
                 fileWriter.Write(DataFileString);
             }
+            
 
         }
         internal static void Write(ISimModel model, string filePath)
@@ -103,18 +98,21 @@ namespace RFEMSoftware.Simulation.Infrastructure.Persistence
                 default:
                     throw new NotImplementedException();
             }
+
+            if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                            "\\RFEMSoftware"))
+                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.
+                                                        LocalApplicationData) + "\\RFEMSoftware");
+
             using (var fileWriter = new System.IO.StreamWriter(filePath, false))
             {
                 fileWriter.Write(DataFileString);
             }
 
-            if (!System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                            "\\RFEM_Software"))
-                System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.
-                                                        LocalApplicationData) + "\\RFEM_Software");
+            
 
 
-            using (var fileWriter = new System.IO.StreamWriter(model.AppDataFileLocation, false))
+            using (var fileWriter = new System.IO.StreamWriter(model.DataLocation, false))
             {
                 fileWriter.Write(DataFileString);
             }
